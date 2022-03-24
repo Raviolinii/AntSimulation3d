@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6378373397261566712}
   - component: {fileID: 6692632717022393216}
   - component: {fileID: 4825825216480299218}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TestPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,9 +107,9 @@ GameObject:
   - component: {fileID: 7740690661102704647}
   - component: {fileID: 3260586971408208415}
   - component: {fileID: 3909130729692857984}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pheromone
-  m_TagString: Untagged
+  m_TagString: Pheromone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

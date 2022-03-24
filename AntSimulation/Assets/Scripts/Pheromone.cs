@@ -15,9 +15,79 @@ public class Pheromone : MonoBehaviour
         
     }
 
-    public Pheromone[] GetSurroundings() => surroundings;
-    public void AddToSurroundings(Pheromone toAdd, int position) => surroundings[position] = toAdd;
+    public Pheromone[] GetSurroundingsNulls(int chosenMoveIndex)
+    {
+        Pheromone[] result = surroundings;
+        switch (chosenMoveIndex)
+        {
+            case 0:
+            {
+                result[4] = null;
+                result[6] = null;
+                result[7] = null;
+                break;
+            }
+            case 1:
+            {
+                result[5] = null;
+                result[6] = null;
+                result[7] = null;
+                break;
+            }
+            case 2:
+            {
+                result[3] = null;
+                result[5] = null;
+                result[6] = null;
+                break;
+            }
+            case 3:
+            {
+                result[2] = null;
+                result[4] = null;
+                result[7] = null;
+                break;
+            }
+            case 4:
+            {
+                result[2] = null;
+                result[3] = null;
+                result[5] = null;
+                break;
+            }
+            case 5:
+            {
+                result[1] = null;
+                result[2] = null;
+                result[4] = null;
+                break;
+            }
+            case 6:
+            {
+                result[0] = null;
+                result[1] = null;
+                result[2] = null;
+                break;
+            }
+            case 7:
+            {
+                result[0] = null;
+                result[1] = null;
+                result[5] = null;
+                break;
+            }
 
+            default:
+                throw new System.Exception("Invalid chosenMoveIndex in GetSurroundings method");
+        }
+        return result;
+    }
+    public Pheromone[] GetSurroundings() => surroundings;
+    public int GetWorkerPheromoneValue() => workerPheromoneValue;
+    public int GetWorkerFoodPheromoneValue() => workerFoodPheromoneValue;
+    public int GetWarriorPheromoneValue() => warriorPheromoneValue;
+
+    public void AddToSurroundings(Pheromone toAdd, int position) => surroundings[position] = toAdd;
     public void AddWorkerPheromone(int value) => workerPheromoneValue += value;
     public void AddWorkerFoodPheromone(int value) => workerFoodPheromoneValue += value;
     public void AddWarriorPheromone(int value) => warriorPheromoneValue += value;

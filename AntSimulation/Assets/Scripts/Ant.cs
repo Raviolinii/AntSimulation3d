@@ -34,7 +34,7 @@ public abstract class Ant : MonoBehaviour
     {
         if (other.CompareTag("Pheromone"))
         {
-            previousTile = currentTile;
+            //previousTile = currentTile;
         }
     }
 }

@@ -4817,7 +4817,7 @@ GameObject:
   - component: {fileID: 2561932457420077909}
   m_Layer: 0
   m_Name: WarriorPheromone
-  m_TagString: Pheromone
+  m_TagString: WarriorPheromone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

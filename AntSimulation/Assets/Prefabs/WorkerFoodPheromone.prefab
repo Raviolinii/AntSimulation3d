@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4715356508019942748}
   m_Layer: 0
   m_Name: WorkerFoodPheromone
-  m_TagString: Pheromone
+  m_TagString: WorkerFoodPheromone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

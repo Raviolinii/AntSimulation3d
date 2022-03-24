@@ -22,32 +22,32 @@ public class Pheromone : MonoBehaviour
     public void AddWorkerFoodPheromone(int value) => workerFoodPheromoneValue += value;
     public void AddWarriorPheromone(int value) => warriorPheromoneValue += value;
 
-    public void DecreseWorkerPheromone(int value)
+    public void DecreaseWorkerPheromone(int value)
     {
         if (workerPheromoneValue < value)
             workerPheromoneValue = 0;
         else
             workerPheromoneValue -= value;
     }
-    public void DecreseWorkerFoodPheromoneValue(int value)
+    public void DecreaseWorkerFoodPheromoneValue(int value)
     {
         if (workerFoodPheromoneValue < value)
             workerFoodPheromoneValue = 0;
         else
             workerFoodPheromoneValue -= value;
     }
-    public void DecreseWarriorPheromoneValue(int value)
+    public void DecreaseWarriorPheromoneValue(int value)
     {
         if (warriorPheromoneValue < value)
             warriorPheromoneValue = 0;
         else
             warriorPheromoneValue -= value;
     }
-    public void DecresePheromones(int value)
+    public void DecreasePheromones(int value)
     {
-        DecreseWorkerPheromone(value);
-        DecreseWorkerFoodPheromoneValue(value);
-        DecreseWarriorPheromoneValue(value);
+        DecreaseWorkerPheromone(value);
+        DecreaseWorkerFoodPheromoneValue(value);
+        DecreaseWarriorPheromoneValue(value);
     }
     public Vector2 GetIndex() => index;
     public void SetIndex(int i, int j) => index = new Vector2(i, j);

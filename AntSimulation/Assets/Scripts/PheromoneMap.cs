@@ -10,11 +10,16 @@ public class PheromoneMap : MonoBehaviour
     public GameObject pheromone;
     Pheromone[,] pheromonesMap;
 
+    float pheromonesDecreseTime = 2f;
+    int pheromoneDecreseValue = 5;
+
     // Start is called before the first frame update
     void Start()
     {
         CreatePheromonesMap();
-        //AsignSurroundings();
+        AsignSurroundings();
+
+        InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
 
     }
 
@@ -26,9 +31,9 @@ public class PheromoneMap : MonoBehaviour
 
     void AsignSurroundings()
     {
-        for (int i = 1; i < height - 1; i++)
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 1; j < width - 1; j++)
+            for (int j = 0; j < width; j++)
             {
                 AddSurroundingsFor(i, j);
             }
@@ -36,16 +41,28 @@ public class PheromoneMap : MonoBehaviour
     }
     void AddSurroundingsFor(int i, int j)
     {
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i - 1, j - 1], 0);
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i - 1, j], 1);
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i - 1, j + 1], 2);
+        TryAddOneOfSurroundings(i, -1, j, -1, 0);
+        TryAddOneOfSurroundings(i, -1, j,  0, 1);
+        TryAddOneOfSurroundings(i, -1, j,  1, 2);
 
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i, j - 1], 3);
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i, j + 1], 4);
+        TryAddOneOfSurroundings(i,  0, j, -1, 3);
+        TryAddOneOfSurroundings(i,  0, j,  1, 4);
 
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i + 1, j - 1], 5);
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i + 1, j], 6);
-        pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i + 1, j + 1], 7);
+        TryAddOneOfSurroundings(i,  1, j, -1, 5);
+        TryAddOneOfSurroundings(i,  1, j,  0, 6);
+        TryAddOneOfSurroundings(i,  1, j,  1, 7);
+    }
+
+    void TryAddOneOfSurroundings(int i, int iOffset, int j, int jOffset, int index)
+    {
+        try
+        {
+            pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i + iOffset, j + jOffset], index);
+        }
+        catch(System.IndexOutOfRangeException)
+        {
+           return; 
+        }   
     }
 
     private void CreatePheromonesMap()
@@ -67,4 +84,14 @@ public class PheromoneMap : MonoBehaviour
         }
     }
 
+    void DecreasePheromones()
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                pheromonesMap[i, j].DecreasePheromones(pheromoneDecreseValue);
+            }
+        }
+    }
 }

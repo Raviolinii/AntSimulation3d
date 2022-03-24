@@ -50,7 +50,7 @@ public class WorkerAnt : Ant
             int rand;
             for (int i = 0; i < 8; i++)
             {
-                if (surroundings[i] is not null)
+                if (surroundings[i] != null)
                 {
                     pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
                     sum += (int)pheromoneValues[i];
@@ -67,7 +67,7 @@ public class WorkerAnt : Ant
             int rand;
             for (int i = 0; i < 8; i++)
             {
-                if (surroundings[i] is not null)
+                if (surroundings[i] != null)
                 {
                     pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
                     sum += (int)pheromoneValues[i];
@@ -84,7 +84,7 @@ public class WorkerAnt : Ant
     {
         for (int i = 0; i < array.Length; i++)
         {
-            if (array[i] is not null)
+            if (array[i] != null)
             {
                 if (value <= array[i])
                     return i;

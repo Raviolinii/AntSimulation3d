@@ -29,12 +29,4 @@ public abstract class Ant : MonoBehaviour
     {
 
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Pheromone"))
-        {
-            //previousTile = currentTile;
-        }
-    }
 }

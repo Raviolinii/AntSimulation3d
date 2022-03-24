@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3799528430688365219}
   - component: {fileID: 3799528430688365218}
   - component: {fileID: 3799528430688365229}
+  - component: {fileID: 9165920468636367467}
+  - component: {fileID: 2974461712993987472}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -112,6 +114,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &9165920468636367467
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799528430688365231}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2974461712993987472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799528430688365231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 846e01af740b04143bda2d81b8eee4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pheromone: {fileID: 1160636164368401574, guid: f1a63aedd963be6479dcdbdf01820198, type: 3}
+  foodPheromone: {fileID: 1143987201747659676, guid: 2bf920a5fd4c8564dad27ee670f49f3d, type: 3}
 --- !u!1 &3799528432241651009
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,8 +150,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3799528432241651015}
-  - component: {fileID: 8805260433853119701}
-  - component: {fileID: 3152538194160477961}
   m_Layer: 0
   m_Name: WorkerAnt
   m_TagString: Untagged
@@ -145,30 +172,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8805260433853119701
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3799528432241651009}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3152538194160477961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3799528432241651009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 846e01af740b04143bda2d81b8eee4b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pheromone: {fileID: 1160636164368401574, guid: f1a63aedd963be6479dcdbdf01820198, type: 3}
-  foodPheromone: {fileID: 1143987201747659676, guid: 2bf920a5fd4c8564dad27ee670f49f3d, type: 3}

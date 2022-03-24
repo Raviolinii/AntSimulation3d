@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorkerAnt : Ant
 {
     public GameObject foodPheromone;
+    bool lookingForFood = true;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,10 @@ public class WorkerAnt : Ant
     }
     private void OnTriggerEnter(Collider other)
     {
-        if 
+        
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        
     }
 }

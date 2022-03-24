@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pheromone : MonoBehaviour
 {
-    Vector2 index;
+    Vector2Int index;
     int workerPheromoneValue = 0;
     int workerFoodPheromoneValue = 0;
     int warriorPheromoneValue = 0;
@@ -49,6 +49,6 @@ public class Pheromone : MonoBehaviour
         DecreaseWorkerFoodPheromoneValue(value);
         DecreaseWarriorPheromoneValue(value);
     }
-    public Vector2 GetIndex() => index;
-    public void SetIndex(int i, int j) => index = new Vector2(i, j);
+    public Vector2Int GetIndex() => index;
+    public void SetIndex(int i, int j) => index = new Vector2Int(i, j);
 }

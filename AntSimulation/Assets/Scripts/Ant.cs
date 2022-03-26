@@ -7,12 +7,14 @@ public abstract class Ant : MonoBehaviour
 {
     protected float speed = 5f;
     public GameObject pheromone;
-    protected Vector3 previousTile;
-    protected Vector2Int currentTile;
     protected int chosenMoveIndex;
     protected Vector3 targetTile;
     protected NavMeshAgent agent;
     protected Pheromone[] surroundings = new Pheromone[8];
+    protected int pheromoneLeaveAmount = 20;
+
+    protected Vector3 previousTile;
+    protected Vector2Int currentTile;
 
 
     // Start is called before the first frame update

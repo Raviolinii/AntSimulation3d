@@ -25,11 +25,16 @@ public class WorkerAnt : Ant
         {
             var script = other.GetComponent<Pheromone>();
             Debug.Log(script.GetIndex());
+
+            if (lookingForFood)
+                script.AddWorkerPheromone(pheromoneLeaveAmount);
+            else
+                script.AddWorkerFoodPheromone(pheromoneLeaveAmount);
+                
             surroundings = script.GetSurroundingsNulls(chosenMoveIndex);
             ChoseMoveIndex();
 
-            currentTile = script.GetIndex();
-
+            //currentTile = script.GetIndex();
         }
     }
 
@@ -52,7 +57,7 @@ public class WorkerAnt : Ant
             {
                 if (surroundings[i] != null)
                 {
-                    pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
+                    pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
                     sum += (int)pheromoneValues[i];
                     pheromoneValues[i] = sum;
                 }
@@ -69,7 +74,7 @@ public class WorkerAnt : Ant
             {
                 if (surroundings[i] != null)
                 {
-                    pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
+                    pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
                     sum += (int)pheromoneValues[i];
                     pheromoneValues[i] = sum;
                 }

@@ -17,6 +17,7 @@ public class WorkerAnt : Ant
     void Update()
     {
         //MoveInDirection(new Vector3(1,0,0));
+        //Move();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,6 +34,11 @@ public class WorkerAnt : Ant
                 
             surroundings = script.GetSurroundingsNulls(chosenMoveIndex);
             ChoseMoveIndex();
+            Debug.Log(chosenMoveIndex);
+            UpdateTargetTile();
+            Debug.Log(targetTile);
+
+            Move();
 
             //currentTile = script.GetIndex();
         }
@@ -40,6 +46,7 @@ public class WorkerAnt : Ant
 
     void Move()
     {
+        Debug.Log("move");
         agent.destination = targetTile;
     }
 
@@ -58,7 +65,7 @@ public class WorkerAnt : Ant
                 if (surroundings[i] != null)
                 {
                     pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
-                    sum += (int)pheromoneValues[i];
+                    sum += (int)pheromoneValues[i] + 1;
                     pheromoneValues[i] = sum;
                 }
             }
@@ -95,6 +102,9 @@ public class WorkerAnt : Ant
                     return i;
             }
         }
-        throw new System.Exception("Couldnt find index of element from feromons array");
+        // need to go back
+        return Mathf.Abs(chosenMoveIndex - 7);
+        
+        //throw new System.Exception("Couldnt find index of element from feromons array");
     }
 }

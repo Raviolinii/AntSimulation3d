@@ -11,7 +11,7 @@ public class PheromoneMap : MonoBehaviour
     Pheromone[,] pheromonesMap;
 
     float pheromonesDecreseTime = 2f;
-    int pheromoneDecreseValue = 5;
+    int pheromoneDecreseValue = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -42,15 +42,15 @@ public class PheromoneMap : MonoBehaviour
     void AddSurroundingsFor(int i, int j)
     {
         TryAddOneOfSurroundings(i, -1, j, -1, 0);
-        TryAddOneOfSurroundings(i, -1, j,  0, 1);
-        TryAddOneOfSurroundings(i, -1, j,  1, 2);
+        TryAddOneOfSurroundings(i, -1, j, 0, 1);
+        TryAddOneOfSurroundings(i, -1, j, 1, 2);
 
-        TryAddOneOfSurroundings(i,  0, j, -1, 3);
-        TryAddOneOfSurroundings(i,  0, j,  1, 4);
+        TryAddOneOfSurroundings(i, 0, j, -1, 3);
+        TryAddOneOfSurroundings(i, 0, j, 1, 4);
 
-        TryAddOneOfSurroundings(i,  1, j, -1, 5);
-        TryAddOneOfSurroundings(i,  1, j,  0, 6);
-        TryAddOneOfSurroundings(i,  1, j,  1, 7);
+        TryAddOneOfSurroundings(i, 1, j, -1, 5);
+        TryAddOneOfSurroundings(i, 1, j, 0, 6);
+        TryAddOneOfSurroundings(i, 1, j, 1, 7);
     }
 
     void TryAddOneOfSurroundings(int i, int iOffset, int j, int jOffset, int index)
@@ -59,10 +59,10 @@ public class PheromoneMap : MonoBehaviour
         {
             pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i + iOffset, j + jOffset], index);
         }
-        catch(System.IndexOutOfRangeException)
+        catch (System.IndexOutOfRangeException)
         {
-           return; 
-        }   
+            return;
+        }
     }
 
     private void CreatePheromonesMap()
@@ -76,7 +76,7 @@ public class PheromoneMap : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                currentGameObject = Instantiate(pheromone, new Vector3(j * 5f, 1, -i * 5f), pheromone.transform.rotation);
+                currentGameObject = Instantiate(pheromone, new Vector3(j * 5f, -2, -i * 5f), pheromone.transform.rotation);
                 currentScript = currentGameObject.GetComponent<Pheromone>();
                 pheromonesMap[i, j] = currentScript;
                 pheromonesMap[i, j].SetIndex(i, j);

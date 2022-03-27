@@ -6,15 +6,14 @@ using UnityEngine.AI;
 public abstract class Ant : MonoBehaviour
 {
     protected float speed = 5f;
-    public GameObject pheromone;
     protected int chosenMoveIndex;
     protected Vector3 targetTile;
     protected NavMeshAgent agent;
     protected Pheromone[] surroundings = new Pheromone[8];
     protected int pheromoneLeaveAmount = 20;
-
+    protected Pheromone tileScript;
     protected Vector3 previousTile;
-    protected Vector2Int currentTile;
+    protected Vector3 currentTile;
 
 
     // Start is called before the first frame update

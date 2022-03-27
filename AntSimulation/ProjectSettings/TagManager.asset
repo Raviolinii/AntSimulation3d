@@ -8,6 +8,8 @@ TagManager:
   - WorkerFoodPheromone
   - WarriorPheromone
   - Pheromone
+  - Food
+  - AntWorker
   layers:
   - Default
   - TransparentFX
@@ -16,9 +18,9 @@ TagManager:
   - Water
   - UI
   - Ant
-  - PheromoneDetector
+  - Detector
   - Pheromone
-  - 
+  - FoodStoppingDistance
   - 
   - 
   - 

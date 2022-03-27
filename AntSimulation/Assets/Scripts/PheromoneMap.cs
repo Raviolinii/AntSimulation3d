@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PheromoneMap : MonoBehaviour
 {
-    int width = 50;
-    int height = 50;
+    int width = 3; // 50 50
+    int height = 3;
     public GameObject pheromone;
     Pheromone[,] pheromonesMap;
 

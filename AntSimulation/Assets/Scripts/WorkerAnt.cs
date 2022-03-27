@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class WorkerAnt : Ant
 {
-    public GameObject foodPheromone;
     bool lookingForFood = true;
+    bool foodInRange = false;
+    float gatheringTime = 2.5f;
+    Food foodScript;
+    int gatheringAmount = 20;
+    Coroutine gatherFoodCoroutine;
+    int foodGathered = 0;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -16,38 +22,64 @@ public class WorkerAnt : Ant
     // Update is called once per frame
     void Update()
     {
+
+
         //MoveInDirection(new Vector3(1,0,0));
-        //Move();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pheromone"))
         {
-            var script = other.GetComponent<Pheromone>();
-            Debug.Log(script.GetIndex());
+            previousTile = currentTile;
+            currentTile = other.transform.position;
 
+            tileScript = other.GetComponent<Pheromone>();
             if (lookingForFood)
-                script.AddWorkerPheromone(pheromoneLeaveAmount);
+                tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
             else
-                script.AddWorkerFoodPheromone(pheromoneLeaveAmount);
-                
-            surroundings = script.GetSurroundingsNulls(chosenMoveIndex);
-            ChoseMoveIndex();
-            Debug.Log(chosenMoveIndex);
-            UpdateTargetTile();
-            Debug.Log(targetTile);
+                tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
 
-            Move();
+            surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
+            if (!foodInRange)
+            {
+                ChoseMoveIndex();
+                UpdateTargetTile();
+                Move();
+            }
 
             //currentTile = script.GetIndex();
+        }
+
+        if (other.CompareTag("Food") && lookingForFood && !foodInRange)
+        {
+            foodInRange = true;
+            targetTile = other.transform.position;
+            Move();
+            foodScript = other.GetComponent<Food>();
         }
     }
 
     void Move()
     {
-        Debug.Log("move");
         agent.destination = targetTile;
+    }
+
+    public void GatherFood()
+    {
+        gatherFoodCoroutine = StartCoroutine("GatherFoodIEnumerator");
+    }
+
+    IEnumerator GatherFoodIEnumerator()
+    {
+        Debug.Log("Gathering");
+        yield return new WaitForSeconds(gatheringTime);
+        if (foodScript != null)
+        {
+            foodGathered = foodScript.GatherFood(gatheringAmount);
+            foodInRange = false;
+            Debug.Log("Got it");
+        }
     }
 
     void UpdateTargetTile() => targetTile = surroundings[chosenMoveIndex].transform.position;
@@ -103,8 +135,17 @@ public class WorkerAnt : Ant
             }
         }
         // need to go back
-        return Mathf.Abs(chosenMoveIndex - 7);
-        
+        int result = Mathf.Abs(chosenMoveIndex - 7);
+        AddPreviousTile(result);
+        return result;
+
         //throw new System.Exception("Couldnt find index of element from feromons array");
+    }
+
+    void AddPreviousTile(int index) => surroundings[index] = tileScript.GetTile(index);
+    public void StopAntNearFood()
+    {
+        if (foodInRange)
+            agent.isStopped = true;
     }
 }

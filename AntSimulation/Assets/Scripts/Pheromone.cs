@@ -9,7 +9,7 @@ public class Pheromone : MonoBehaviour
     int workerFoodPheromoneValue = 0;
     int warriorPheromoneValue = 0;
 
-    Pheromone[] surroundings = new Pheromone[8];
+    public Pheromone[] surroundings = new Pheromone[8];
     private void Start()
     {
         
@@ -17,7 +17,7 @@ public class Pheromone : MonoBehaviour
 
     public Pheromone[] GetSurroundingsNulls(int chosenMoveIndex)
     {
-        Pheromone[] result = surroundings;
+        Pheromone[] result = (Pheromone[]) surroundings.Clone();
         switch (chosenMoveIndex)
         {
             case 0:
@@ -83,6 +83,7 @@ public class Pheromone : MonoBehaviour
         return result;
     }
     public Pheromone[] GetSurroundings() => surroundings;
+    public Pheromone GetTile(int index) => surroundings[index];
     public int GetWorkerPheromoneValue() => workerPheromoneValue;
     public int GetWorkerFoodPheromoneValue() => workerFoodPheromoneValue;
     public int GetWarriorPheromoneValue() => warriorPheromoneValue;

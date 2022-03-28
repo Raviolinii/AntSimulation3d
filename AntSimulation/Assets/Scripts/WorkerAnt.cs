@@ -60,11 +60,6 @@ public class WorkerAnt : Ant
         }
     }
 
-    void Move()
-    {
-        agent.destination = targetTile;
-    }
-
     public void GatherFood()
     {
         gatherFoodCoroutine = StartCoroutine("GatherFoodIEnumerator");
@@ -79,6 +74,7 @@ public class WorkerAnt : Ant
             foodGathered = foodScript.GatherFood(gatheringAmount);
             foodInRange = false;
             Debug.Log("Got it");
+            GoToPreviousTile();
         }
     }
 

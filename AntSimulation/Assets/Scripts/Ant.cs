@@ -34,6 +34,7 @@ public abstract class Ant : MonoBehaviour
     protected void GoToPreviousTile()
     {
         targetTile = previousTile;
+        chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
         Move();
     }
 }

@@ -50,7 +50,7 @@ public class Pheromone : MonoBehaviour
             }
             case 4:
             {
-                result[2] = null;
+                result[0] = null;
                 result[3] = null;
                 result[5] = null;
                 break;
@@ -73,7 +73,7 @@ public class Pheromone : MonoBehaviour
             {
                 result[0] = null;
                 result[1] = null;
-                result[5] = null;
+                result[3] = null;
                 break;
             }
 

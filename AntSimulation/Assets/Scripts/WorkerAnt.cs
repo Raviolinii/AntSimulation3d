@@ -74,7 +74,9 @@ public class WorkerAnt : Ant
             foodGathered = foodScript.GatherFood(gatheringAmount);
             foodInRange = false;
             Debug.Log("Got it");
+            lookingForFood = false;
             GoToPreviousTile();
+            agent.isStopped = false;
         }
     }
 
@@ -110,7 +112,7 @@ public class WorkerAnt : Ant
                 if (surroundings[i] != null)
                 {
                     pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
-                    sum += (int)pheromoneValues[i];
+                    sum += (int)pheromoneValues[i] + 1;
                     pheromoneValues[i] = sum;
                 }
             }

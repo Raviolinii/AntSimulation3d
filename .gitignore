@@ -71,3 +71,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 *.log
+AntSimulation/Library/ArtifactDB
+AntSimulation/Library/SourceAssetDB
+AntSimulation/Logs/shadercompiler-UnityShaderCompiler.exe0.log

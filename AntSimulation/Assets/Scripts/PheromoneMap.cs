@@ -21,6 +21,8 @@ public class PheromoneMap : MonoBehaviour
 
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
 
+        Invoke("TestSpawnFood", 1.5f);
+
     }
 
     // Update is called once per frame
@@ -28,6 +30,16 @@ public class PheromoneMap : MonoBehaviour
     {
 
     }
+
+    void TestSpawnFood() => SpawnFoodAtIndex(2,2);
+    /* void TestSpawnFood()
+    {
+        SpawnFoodAtIndex(1,1);
+        SpawnFoodAtIndex(1,2);
+        SpawnFoodAtIndex(2,1);
+        SpawnFoodAtIndex(2,2);
+    } */
+    void SpawnFoodAtIndex(int i, int j) => tileMap[i,j].SpawnFood();
 
     void AsignSurroundings()
     {

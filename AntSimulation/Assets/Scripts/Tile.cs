@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour
     Pheromone workerFoodPheromone = new Pheromone();
     Pheromone warriorPheromone = new Pheromone();
     GameObject objectOnTile;
+    public GameObject foodPrefab;
+    Food foodScript;
     bool hasObject = false;
     public Tile[] surroundings = new Tile[8];
 
@@ -21,6 +23,13 @@ public class Tile : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void SpawnFood()
+    {
+        GameObject foodInstance = Instantiate(foodPrefab, new Vector3(transform.position.x, 20, transform.position.z), foodPrefab.transform.rotation);
+        foodScript = foodInstance.GetComponent<Food>();
+        hasObject = true;
     }
 
     public void AddToSurroundings(Tile tile, int index) => surroundings[index] = tile;

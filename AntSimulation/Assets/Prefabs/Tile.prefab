@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd85e390becc5c04ca0ea45f6e940df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foodPrefab: {fileID: 4522986440629134478, guid: 3b3de57570e8e204b95a7522de692224, type: 3}
   surroundings:
   - {fileID: 0}
   - {fileID: 0}

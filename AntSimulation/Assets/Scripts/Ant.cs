@@ -9,9 +9,9 @@ public abstract class Ant : MonoBehaviour
     protected int chosenMoveIndex;
     protected Vector3 targetTile;
     protected NavMeshAgent agent;
-    protected Pheromone[] surroundings = new Pheromone[8];
+    protected Tile[] surroundings = new Tile[8];
     protected int pheromoneLeaveAmount = 20;
-    protected Pheromone tileScript;
+    protected Tile tileScript;
     public Vector3 previousTile;
     protected Vector3 currentTile;
 

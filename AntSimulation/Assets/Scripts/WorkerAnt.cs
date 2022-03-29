@@ -29,12 +29,12 @@ public class WorkerAnt : Ant
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Pheromone"))
+        if (other.CompareTag("Tile"))
         {
             previousTile = currentTile;
             currentTile = other.transform.position;
 
-            tileScript = other.GetComponent<Pheromone>();
+            tileScript = other.GetComponent<Tile>();
             if (lookingForFood)
                 tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
             else

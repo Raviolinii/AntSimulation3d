@@ -7,8 +7,8 @@ public class PheromoneMap : MonoBehaviour
 {
     int width = 3; // 50 50
     int height = 3;
-    public GameObject pheromone;
-    Pheromone[,] pheromonesMap;
+    public GameObject tile;
+    Tile[,] tileMap;    // changed from pheromones
 
     float pheromonesDecreseTime = 2f;
     int pheromoneDecreseValue = 1;
@@ -16,7 +16,7 @@ public class PheromoneMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CreatePheromonesMap();
+        CreateTileMap();
         AsignSurroundings();
 
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
@@ -57,7 +57,7 @@ public class PheromoneMap : MonoBehaviour
     {
         try
         {
-            pheromonesMap[i, j].AddToSurroundings(pheromonesMap[i + iOffset, j + jOffset], index);
+            tileMap[i, j].AddToSurroundings(tileMap[i + iOffset, j + jOffset], index);
         }
         catch (System.IndexOutOfRangeException)
         {
@@ -65,21 +65,21 @@ public class PheromoneMap : MonoBehaviour
         }
     }
 
-    private void CreatePheromonesMap()
+    private void CreateTileMap()
     {
-        pheromonesMap = new Pheromone[height, width];
+        tileMap = new Tile[height, width];
         GameObject currentGameObject;
-        Pheromone currentScript;
+        Tile currentScript;
 
 
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
-                currentGameObject = Instantiate(pheromone, new Vector3(j * 5f, -2, -i * 5f), pheromone.transform.rotation);
-                currentScript = currentGameObject.GetComponent<Pheromone>();
-                pheromonesMap[i, j] = currentScript;
-                pheromonesMap[i, j].SetIndex(i, j);
+                currentGameObject = Instantiate(tile, new Vector3(j * 5f, -2, -i * 5f), tile.transform.rotation);
+                currentScript = currentGameObject.GetComponent<Tile>();
+                tileMap[i, j] = currentScript;
+                //pheromonesMap[i, j].SetIndex(i, j);
             }
         }
     }
@@ -90,7 +90,7 @@ public class PheromoneMap : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                pheromonesMap[i, j].DecreasePheromones(pheromoneDecreseValue);
+                tileMap[i, j].DecreasePheromones(pheromoneDecreseValue);
             }
         }
     }

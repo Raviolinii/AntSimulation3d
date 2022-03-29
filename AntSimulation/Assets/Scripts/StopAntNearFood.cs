@@ -9,8 +9,11 @@ public class StopAntNearFood : MonoBehaviour
         if (other.CompareTag("AntWorker"))
         {
             WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
-            workerScript.StopAntNearFood();
-            workerScript.GatherFood();
+            if (workerScript.WantToGather())
+            {
+                workerScript.StopAntNearFood();
+                workerScript.GatherFood();
+            }
 
         }
     }

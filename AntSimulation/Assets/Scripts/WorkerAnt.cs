@@ -146,4 +146,11 @@ public class WorkerAnt : Ant
         if (foodInRange)
             agent.isStopped = true;
     }
+    public bool WantToGather()
+    {
+        if (foodInRange)
+            return true;
+        else
+            return false;
+    }
 }

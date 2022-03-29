@@ -29,12 +29,12 @@ public class WorkerAnt : Ant
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Pheromone"))
+        if (other.CompareTag("Tile"))
         {
             previousTile = currentTile;
             currentTile = other.transform.position;
 
-            tileScript = other.GetComponent<Pheromone>();
+            tileScript = other.GetComponent<Tile>();
             if (lookingForFood)
                 tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
             else
@@ -60,11 +60,6 @@ public class WorkerAnt : Ant
         }
     }
 
-    void Move()
-    {
-        agent.destination = targetTile;
-    }
-
     public void GatherFood()
     {
         gatherFoodCoroutine = StartCoroutine("GatherFoodIEnumerator");
@@ -79,6 +74,9 @@ public class WorkerAnt : Ant
             foodGathered = foodScript.GatherFood(gatheringAmount);
             foodInRange = false;
             Debug.Log("Got it");
+            lookingForFood = false;
+            GoToPreviousTile();
+            agent.isStopped = false;
         }
     }
 
@@ -114,7 +112,7 @@ public class WorkerAnt : Ant
                 if (surroundings[i] != null)
                 {
                     pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
-                    sum += (int)pheromoneValues[i];
+                    sum += (int)pheromoneValues[i] + 1;
                     pheromoneValues[i] = sum;
                 }
             }

@@ -9,10 +9,10 @@ public abstract class Ant : MonoBehaviour
     protected int chosenMoveIndex;
     protected Vector3 targetTile;
     protected NavMeshAgent agent;
-    protected Pheromone[] surroundings = new Pheromone[8];
+    protected Tile[] surroundings = new Tile[8];
     protected int pheromoneLeaveAmount = 20;
-    protected Pheromone tileScript;
-    protected Vector3 previousTile;
+    protected Tile tileScript;
+    public Vector3 previousTile;
     protected Vector3 currentTile;
 
 
@@ -29,5 +29,12 @@ public abstract class Ant : MonoBehaviour
     void Update()
     {
 
+    }
+    protected void Move() => agent.destination = targetTile;
+    protected void GoToPreviousTile()
+    {
+        targetTile = previousTile;
+        chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
+        Move();
     }
 }

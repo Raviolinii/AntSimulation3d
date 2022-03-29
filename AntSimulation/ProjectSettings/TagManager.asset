@@ -10,6 +10,7 @@ TagManager:
   - Pheromone
   - Food
   - AntWorker
+  - Tile
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - UI
   - Ant
   - Detector
-  - Pheromone
+  - Tile
   - FoodStoppingDistance
   - 
   - 

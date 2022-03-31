@@ -5,17 +5,19 @@ using UnityEngine;
 public class Anthill : MonoBehaviour
 {
 
-    Owner _owner;
+    public Owner _owner;
     public int foodGathered;
     int maxFoodAmount = 300;
     int maxReachableFoodAmount = 2_000;
     int minimalReachableFoodAmount = 300;
     public GameObject queen;
+    StopAntNearAnthill stopAntNearAnthillScript;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        stopAntNearAnthillScript = GetComponentInChildren<StopAntNearAnthill>();
+        //stopAntNearAnthillScript.SetOwner(_owner);
     }
 
     // Update is called once per frame

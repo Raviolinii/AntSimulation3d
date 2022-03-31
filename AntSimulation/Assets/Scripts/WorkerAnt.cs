@@ -21,6 +21,7 @@ public class WorkerAnt : Ant
     protected override void Start()
     {
         base.Start();
+        SetOwner(Owner.player);
     }
 
     // Update is called once per frame
@@ -65,10 +66,15 @@ public class WorkerAnt : Ant
         if (other.CompareTag("Anthill") && !lookingForFood && !anthillInRange)
         {
             Debug.Log("Anthill");
-            anthillInRange = true;
-            targetTile = other.transform.position;
-            Move();
             anthillScript = other.GetComponent<Anthill>();
+            Debug.Log(anthillScript.GetOwner());
+            if (anthillScript.GetOwner() == _owner)
+            {
+                anthillInRange = true;
+                targetTile = other.transform.position;
+                Move();
+            }
+            else anthillScript = null;
         }
     }
 

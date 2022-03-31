@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public abstract class Ant : MonoBehaviour
 {
+    protected Owner _owner;
     protected float speed = 5f;
     protected int chosenMoveIndex;
     protected Vector3 targetTile;
@@ -37,4 +38,7 @@ public abstract class Ant : MonoBehaviour
         chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
         Move();
     }
+    
+    public Owner GetOwner() => _owner;
+    public void SetOwner(Owner owner) => _owner = owner;
 }

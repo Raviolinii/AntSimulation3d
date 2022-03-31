@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class StopAntNearAnthill : MonoBehaviour
 {
+    public Owner _owner;
+
+    public void SetOwner(Owner owner) => _owner = owner;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("AntWorker"))

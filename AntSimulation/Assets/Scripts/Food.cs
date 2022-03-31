@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Food : MonoBehaviour
 {
+    Tile _tile;
     object _ = new object();
     int amount = 2_000;
     // Start is called before the first frame update
     void Start()
     {
-
+        Invoke("Depleted", 1.5f);
     }
 
     // Update is called once per frame
@@ -41,5 +42,11 @@ public class Food : MonoBehaviour
     void Depleted()
     {
         Destroy(gameObject);
+    }
+    public void SetTile(Tile tile) => _tile = tile;
+    public Tile GetTile() => _tile;
+    private void OnDestroy()
+    {
+        _tile.ObjectDestroyed();
     }
 }

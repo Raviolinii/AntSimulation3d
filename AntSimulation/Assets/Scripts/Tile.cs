@@ -27,8 +27,12 @@ public class Tile : MonoBehaviour
 
     public void SpawnFood()
     {
+        if (hasObject)
+            return;
+
         GameObject foodInstance = Instantiate(foodPrefab, new Vector3(transform.position.x, 20, transform.position.z), foodPrefab.transform.rotation);
         foodScript = foodInstance.GetComponent<Food>();
+        foodScript.SetTile(this);
         hasObject = true;
     }
 
@@ -126,4 +130,8 @@ public class Tile : MonoBehaviour
     public Tile GetTile(int index) => surroundings[index];
     public bool HasSpawnedObject() => hasObject;
 
+    public void ObjectDestroyed()
+    {
+        Debug.Log("I know");
+    }
 }

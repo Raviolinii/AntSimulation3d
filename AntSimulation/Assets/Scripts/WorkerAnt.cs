@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class WorkerAnt : Ant
 {
-    bool lookingForFood = true;
-    bool foodInRange = false;
+    public bool lookingForFood = true;
+    public bool foodInRange = false;
+    public bool anthillInRange = false;
     float gatheringTime = 2.5f;
+    float storingTime = 1.5f;
     Food foodScript;
+    Anthill anthillScript;
     int gatheringAmount = 20;
     Coroutine gatherFoodCoroutine;
+    Coroutine storeFoodCoroutine;
     int foodGathered = 0;
 
 
@@ -17,6 +21,7 @@ public class WorkerAnt : Ant
     protected override void Start()
     {
         base.Start();
+        SetOwner(Owner.player);
     }
 
     // Update is called once per frame
@@ -58,6 +63,41 @@ public class WorkerAnt : Ant
             Move();
             foodScript = other.GetComponent<Food>();
         }
+        if (other.CompareTag("Anthill") && !lookingForFood && !anthillInRange)
+        {
+            Debug.Log("Anthill");
+            anthillScript = other.GetComponent<Anthill>();
+            Debug.Log(anthillScript.GetOwner());
+            if (anthillScript.GetOwner() == _owner)
+            {
+                anthillInRange = true;
+                targetTile = other.transform.position;
+                Move();
+            }
+            else anthillScript = null;
+        }
+    }
+
+    public void StoreFood()
+    {
+        storeFoodCoroutine = StartCoroutine("StoreFoodIEnumerator");
+    }
+    IEnumerator StoreFoodIEnumerator()
+    {
+        Debug.Log("Storing");
+        yield return new WaitForSeconds(storingTime);
+        if (anthillScript != null)
+        {
+            if (anthillScript.AddFood(foodGathered))
+                foodGathered = 0;
+
+            anthillInRange = false;
+            Debug.Log("Got it");
+            lookingForFood = true;
+            anthillScript = null;              // null food script
+            GoToPreviousTile();
+            agent.isStopped = false;
+        }
     }
 
     public void GatherFood()
@@ -75,6 +115,7 @@ public class WorkerAnt : Ant
             foodInRange = false;
             Debug.Log("Got it");
             lookingForFood = false;
+            foodScript = null;              // null food script
             GoToPreviousTile();
             agent.isStopped = false;
         }
@@ -141,16 +182,11 @@ public class WorkerAnt : Ant
     }
 
     void AddPreviousTile(int index) => surroundings[index] = tileScript.GetTile(index);
-    public void StopAntNearFood()
+    public void StopAntNearDestination()
     {
-        if (foodInRange)
+        if (foodInRange || anthillInRange)
             agent.isStopped = true;
     }
-    public bool WantToGather()
-    {
-        if (foodInRange)
-            return true;
-        else
-            return false;
-    }
+    public bool WantToGather() => foodInRange ? true : false;
+    public bool WantToStoreFood() => anthillInRange ? true : false;
 }

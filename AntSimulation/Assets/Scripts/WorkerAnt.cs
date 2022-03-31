@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WorkerAnt : Ant
 {
-    bool lookingForFood = true;
-    bool foodInRange = false;
-    bool anthillInRange = false;
+    public bool lookingForFood = true;
+    public bool foodInRange = false;
+    public bool anthillInRange = false;
     float gatheringTime = 2.5f;
     float storingTime = 1.5f;
     Food foodScript;
@@ -85,9 +85,9 @@ public class WorkerAnt : Ant
             if (anthillScript.AddFood(foodGathered))
                 foodGathered = 0;
 
-            foodInRange = false;
+            anthillInRange = false;
             Debug.Log("Got it");
-            lookingForFood = false;
+            lookingForFood = true;
             anthillScript = null;              // null food script
             GoToPreviousTile();
             agent.isStopped = false;

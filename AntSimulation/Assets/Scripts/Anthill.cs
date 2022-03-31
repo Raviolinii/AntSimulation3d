@@ -6,7 +6,7 @@ public class Anthill : MonoBehaviour
 {
 
     Owner _owner;
-    int foodGathered;
+    public int foodGathered;
     int maxFoodAmount = 300;
     int maxReachableFoodAmount = 2_000;
     int minimalReachableFoodAmount = 300;

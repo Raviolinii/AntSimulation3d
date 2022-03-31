@@ -11,6 +11,7 @@ TagManager:
   - Food
   - AntWorker
   - Tile
+  - Anthill
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Ant
   - Detector
   - Tile
-  - FoodStoppingDistance
+  - StoppingDistance
   - 
   - 
   - 

@@ -11,7 +11,7 @@ public class StopAntNearFood : MonoBehaviour
             WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
             if (workerScript.WantToGather())
             {
-                workerScript.StopAntNearFood();
+                workerScript.StopAntNearDestination();
                 workerScript.GatherFood();
             }
 

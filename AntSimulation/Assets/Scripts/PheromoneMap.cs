@@ -13,6 +13,8 @@ public class PheromoneMap : MonoBehaviour
     float pheromonesDecreseTime = 2f;
     int pheromoneDecreseValue = 1;
 
+    public GameObject foodPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +33,7 @@ public class PheromoneMap : MonoBehaviour
 
     }
 
-    void TestSpawnFood() => SpawnFoodAtIndex(2,2);
+    void TestSpawnFood() => SpawnFoodAtIndex(2, 2);
     /* void TestSpawnFood()
     {
         SpawnFoodAtIndex(1,1);
@@ -39,7 +41,14 @@ public class PheromoneMap : MonoBehaviour
         SpawnFoodAtIndex(2,1);
         SpawnFoodAtIndex(2,2);
     } */
-    void SpawnFoodAtIndex(int i, int j) => tileMap[i,j].SpawnFood();
+    void SpawnFoodAtIndex(int i, int j)
+    {
+        Vector3 position = tileMap[i, j].transform.position;
+        position.y = 10;
+        Instantiate(foodPrefab, position, foodPrefab.transform.rotation);
+    }
+
+
 
     void AsignSurroundings()
     {
@@ -69,7 +78,7 @@ public class PheromoneMap : MonoBehaviour
     {
         try
         {
-            tileMap[i, j].AddToSurroundings(tileMap[i + iOffset, j + jOffset], index);
+            tileMap[i, j].AddToBothSurroundings(tileMap[i + iOffset, j + jOffset], index);
         }
         catch (System.IndexOutOfRangeException)
         {

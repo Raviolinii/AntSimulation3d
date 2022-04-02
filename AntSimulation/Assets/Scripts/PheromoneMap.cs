@@ -14,6 +14,7 @@ public class PheromoneMap : MonoBehaviour
     int pheromoneDecreseValue = 1;
 
     public GameObject foodPrefab;
+    public GameObject anthillPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,9 @@ public class PheromoneMap : MonoBehaviour
 
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
 
-        Invoke("TestSpawnFood", 1.5f);
+        //Invoke("TestSpawnFood", 1.5f);
+        Invoke("TestSpawnAnthill", 1.5f);
+        
 
     }
 
@@ -34,6 +37,7 @@ public class PheromoneMap : MonoBehaviour
     }
 
     void TestSpawnFood() => SpawnFoodAtIndex(2, 2);
+    void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 2, 2);
     /* void TestSpawnFood()
     {
         SpawnFoodAtIndex(1,1);
@@ -48,7 +52,17 @@ public class PheromoneMap : MonoBehaviour
         Instantiate(foodPrefab, position, foodPrefab.transform.rotation);
     }
 
+    void SpawnAnthillAtIndex(Owner owner, int i, int j)
+    {
+        Anthill prefabScript = anthillPrefab.GetComponent<Anthill>();
+        prefabScript._owner = owner;
 
+        Vector3 position = tileMap[i, j].transform.position;
+        //position.y = Terrain.activeTerrain.SampleHeight(transform.position);  // Test with terrain required
+        position.y = 2;
+
+        Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation);
+    }
 
     void AsignSurroundings()
     {

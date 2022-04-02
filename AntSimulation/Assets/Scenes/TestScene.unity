@@ -344,6 +344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tile: {fileID: 8841845960278720627, guid: 5ae4acbaf91b67f409a3353072d62b52, type: 3}
   foodPrefab: {fileID: 4522986440629134478, guid: 3b3de57570e8e204b95a7522de692224, type: 3}
+  anthillPrefab: {fileID: 7078397792803786314, guid: 99c9d35d8c0bbf5458259c8b93f8866b, type: 3}
 --- !u!4 &359878846
 Transform:
   m_ObjectHideFlags: 0

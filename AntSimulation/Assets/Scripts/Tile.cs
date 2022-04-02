@@ -8,10 +8,9 @@ public class Tile : MonoBehaviour
     Pheromone workerFoodPheromone = new Pheromone();
     Pheromone warriorPheromone = new Pheromone();
     GameObject objectOnTile;
-    public GameObject foodPrefab;
-    Food foodScript;
     bool hasObject = false;
     public Tile[] surroundings = new Tile[8];
+    Tile[] backupSurroundings = new Tile[8];
 
     // Start is called before the first frame update
     void Start()
@@ -25,13 +24,29 @@ public class Tile : MonoBehaviour
 
     }
 
-    public void SpawnFood()
+    public void AddToBothSurroundings(Tile tile, int index)
     {
-        GameObject foodInstance = Instantiate(foodPrefab, new Vector3(transform.position.x, 20, transform.position.z), foodPrefab.transform.rotation);
-        foodScript = foodInstance.GetComponent<Food>();
-        hasObject = true;
+        surroundings[index] = tile;
+        backupSurroundings[index] = tile;
     }
-
+    public void RecallOneOfSurroundings(int index) => surroundings[index] = backupSurroundings[index];
+    public void ForgetOneOfSurroundings(int index) => surroundings[index] = null;
+    public void RemoveFromOthers()
+    {
+        for (int x = 0; x < 8; x++)
+        {
+            if (surroundings[x])
+                surroundings[x].ForgetOneOfSurroundings(Mathf.Abs(x - 7));
+        }
+    }
+    public void RecallInOthers()
+    {
+        for (int x = 0; x < 8; x++)
+        {
+            if (surroundings[x])
+                surroundings[x].RecallOneOfSurroundings(Mathf.Abs(x - 7));
+        }
+    }
     public void AddToSurroundings(Tile tile, int index) => surroundings[index] = tile;
     public int GetWorkerPheromoneValue() => workerPheromone.GetPheromoneValue();
     public int GetWorkerFoodPheromoneValue() => workerFoodPheromone.GetPheromoneValue();
@@ -125,5 +140,15 @@ public class Tile : MonoBehaviour
 
     public Tile GetTile(int index) => surroundings[index];
     public bool HasSpawnedObject() => hasObject;
-
+    public void ObjectSpawned()
+    {
+        hasObject = true;
+        RemoveFromOthers();
+    }
+    public void ObjectDestroyed()
+    {
+        Debug.Log("I know");
+        RecallInOthers();
+        hasObject = false;
+    }
 }

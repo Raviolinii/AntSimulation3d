@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Anthill : MonoBehaviour
+public class Anthill : WorldObject
 {
-
     public Owner _owner;
     public int foodGathered;
     int maxFoodAmount = 300;

@@ -23,7 +23,7 @@ TagManager:
   - Detector
   - Tile
   - StoppingDistance
-  - 
+  - AntAreaDetector
   - 
   - 
   - 

@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463622f87492a7f4eb56e66da0328f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amount: 2000
 --- !u!54 &8834712163104246833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -181,7 +182,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6211892677292758499}
   - component: {fileID: 5774363266176874897}
-  - component: {fileID: 4397570465881589483}
   m_Layer: 9
   m_Name: AntDetector
   m_TagString: Food
@@ -216,15 +216,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4397570465881589483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8031464358240748176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cf3a17bcba9b264eb68a3f25b37f9b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -15,6 +15,7 @@ public abstract class Ant : MonoBehaviour
     protected Tile tileScript;
     public Vector3 previousTile;
     protected Vector3 currentTile;
+    protected SphereCollider areaDetector;
 
 
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public abstract class Ant : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
+        areaDetector = GetComponentInChildren<SphereCollider>();
         chosenMoveIndex = Random.Range(0,8);
 
     }

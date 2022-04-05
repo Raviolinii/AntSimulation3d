@@ -147,7 +147,7 @@ public class Tile : MonoBehaviour
     }
     public void ObjectDestroyed()
     {
-        Debug.Log("I know");
+        //Debug.Log("I know");
         RecallInOthers();
         hasObject = false;
     }

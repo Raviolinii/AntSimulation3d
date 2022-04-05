@@ -7,10 +7,10 @@ public abstract class Ant : MonoBehaviour
 {
     protected Owner _owner;
     protected float speed = 5f;
-    protected int chosenMoveIndex;
+    public int chosenMoveIndex;
     protected Vector3 targetTile;
     protected NavMeshAgent agent;
-    protected Tile[] surroundings = new Tile[8];
+    public Tile[] surroundings = new Tile[8];
     protected int pheromoneLeaveAmount = 20;
     protected Tile tileScript;
     public Vector3 previousTile;
@@ -37,6 +37,7 @@ public abstract class Ant : MonoBehaviour
     protected void GoToPreviousTile()
     {
         targetTile = previousTile;
+        //Debug.Log("PreviousTule");
         chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
         Move();
     }

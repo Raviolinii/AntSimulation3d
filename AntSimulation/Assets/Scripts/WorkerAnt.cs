@@ -34,7 +34,7 @@ public class WorkerAnt : Ant
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Tile"))
+        if (other.CompareTag("Tile") && !foodInRange && !anthillInRange)
         {
             previousTile = currentTile;
             currentTile = other.transform.position;
@@ -121,7 +121,14 @@ public class WorkerAnt : Ant
         }
     }
 
-    void UpdateTargetTile() => targetTile = surroundings[chosenMoveIndex].transform.position;
+    void UpdateTargetTile()
+    {
+        if (surroundings[chosenMoveIndex] != null)
+            targetTile = surroundings[chosenMoveIndex].transform.position;
+
+        else
+            targetTile = previousTile;
+    }
     void ChoseMoveIndex()
     {
         // RouletteTileSelection
@@ -155,6 +162,7 @@ public class WorkerAnt : Ant
                     pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
                     sum += (int)pheromoneValues[i] + 1;
                     pheromoneValues[i] = sum;
+                    Debug.Log(pheromoneValues[i]);
                 }
             }
 
@@ -174,6 +182,7 @@ public class WorkerAnt : Ant
             }
         }
         // need to go back
+        Debug.Log("Back??");
         int result = Mathf.Abs(chosenMoveIndex - 7);
         AddPreviousTile(result);
         return result;

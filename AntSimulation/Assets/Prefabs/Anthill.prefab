@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2972563547616408409}
   - component: {fileID: 5242278799236986237}
-  - component: {fileID: 7415351790172174492}
   m_Layer: 9
   m_Name: AntStoppingDistance
   m_TagString: Anthill
@@ -45,19 +44,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7415351790172174492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307792145429481249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 116f38c872dccfc40835987d1f5b94c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _owner: 0
 --- !u!1 &7078397792803786314
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +185,7 @@ GameObject:
   - component: {fileID: 3230294037776003763}
   - component: {fileID: 3009613774579636902}
   m_Layer: 7
-  m_Name: PheromoneTriger
+  m_Name: TileDetector
   m_TagString: Anthill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

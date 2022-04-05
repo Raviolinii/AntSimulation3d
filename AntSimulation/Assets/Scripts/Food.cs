@@ -5,24 +5,26 @@ using UnityEngine;
 public class Food : WorldObject
 {
     object _ = new object();
-    int amount = 2_000;
+    public int amount = 2_000;
+
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("Depleted", 2.5f);
+        //Invoke("Depleted", 2.5f);
+        stoppingDistance = GetComponentInChildren<SphereCollider>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public int GetFoodAmount() => amount;
     public int GatherFood(int value)
     {
         int decresedBy = 0;
-        lock (_)
+        //lock (_)
         {
             if (amount < value)
             {
@@ -43,5 +45,21 @@ public class Food : WorldObject
         //Debug.Log(_tile);
         //_tile.ObjectDestroyed();
         Destroy(gameObject);
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        if (other.CompareTag("AntWorker"))
+        {
+            WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
+            if (workerScript.WantToGather())
+            {
+                workerScript.StopAntNearDestination();
+                workerScript.GatherFood();
+            }
+
+        }
     }
 }

@@ -24,8 +24,8 @@ public class PheromoneMap : MonoBehaviour
 
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
 
-        //Invoke("TestSpawnFood", 1.5f);
-        Invoke("TestSpawnAnthill", 1.5f);
+        Invoke("TestSpawnFood", 1.5f);
+        //Invoke("TestSpawnAnthill", 1.5f);
         
 
     }
@@ -36,7 +36,7 @@ public class PheromoneMap : MonoBehaviour
 
     }
 
-    void TestSpawnFood() => SpawnFoodAtIndex(2, 2);
+    void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
     void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 2, 2);
     /* void TestSpawnFood()
     {

@@ -10,19 +10,32 @@ public class Anthill : WorldObject
     int maxReachableFoodAmount = 2_000;
     int minimalReachableFoodAmount = 300;
     public GameObject queen;
-    StopAntNearAnthill stopAntNearAnthillScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        stopAntNearAnthillScript = GetComponentInChildren<StopAntNearAnthill>();
-        //stopAntNearAnthillScript.SetOwner(_owner);
+        stoppingDistance = GetComponentInChildren<SphereCollider>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        
+        if (other.CompareTag("AntWorker"))
+        {
+            WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
+            if (workerScript.WantToStoreFood())
+            {
+                workerScript.StopAntNearDestination();
+                workerScript.StoreFood();
+            }
+        }
     }
 
     public void SetMaxFoodAmount(int value) => maxFoodAmount = value;

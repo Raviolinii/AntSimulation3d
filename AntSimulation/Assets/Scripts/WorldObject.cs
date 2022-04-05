@@ -5,10 +5,11 @@ using UnityEngine;
 public class WorldObject : MonoBehaviour
 {
     protected Tile _tile;
+    protected SphereCollider stoppingDistance;
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -17,7 +18,7 @@ public class WorldObject : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Tile"))
         {

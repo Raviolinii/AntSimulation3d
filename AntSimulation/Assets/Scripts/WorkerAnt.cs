@@ -95,7 +95,6 @@ public class WorkerAnt : Ant
             Debug.Log("Got it");
             lookingForFood = true;
             anthillScript = null;              // null food script
-            GoToPreviousTile();
             agent.isStopped = false;
         }
     }
@@ -116,7 +115,6 @@ public class WorkerAnt : Ant
             Debug.Log("Got it");
             lookingForFood = false;
             foodScript = null;              // null food script
-            GoToPreviousTile();
             agent.isStopped = false;
         }
     }
@@ -129,6 +127,8 @@ public class WorkerAnt : Ant
         else
             targetTile = previousTile;
     }
+
+    public void SetTargetTile(Vector3 target) => targetTile = target;
     void ChoseMoveIndex()
     {
         // RouletteTileSelection
@@ -182,7 +182,6 @@ public class WorkerAnt : Ant
             }
         }
         // need to go back
-        Debug.Log("Back??");
         int result = Mathf.Abs(chosenMoveIndex - 7);
         AddPreviousTile(result);
         return result;

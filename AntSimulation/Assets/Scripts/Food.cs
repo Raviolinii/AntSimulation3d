@@ -57,9 +57,10 @@ public class Food : WorldObject
             if (workerScript.WantToGather())
             {
                 workerScript.StopAntNearDestination();
+                Vector3 antPosition = workerScript.transform.position;
+                workerScript.SetTargetTile(antPosition);
                 workerScript.GatherFood();
             }
-
         }
     }
 }

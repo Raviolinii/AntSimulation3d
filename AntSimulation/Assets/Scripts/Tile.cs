@@ -147,8 +147,26 @@ public class Tile : MonoBehaviour
     }
     public void ObjectDestroyed()
     {
-        Debug.Log("I know");
+        //Debug.Log("I know");
         RecallInOthers();
         hasObject = false;
+    }
+    public Tile FindTheClosest(Vector3 pos)
+    {
+        int index = 0;
+        float distance = Vector3.Distance(pos, surroundings[0].transform.position);
+        Debug.Log(distance);
+        float current;
+        for (int x = 1; x < 8; x++)
+        {
+            current = Vector3.Distance(pos, surroundings[x].transform.position);
+            Debug.Log(current);
+            if (current > distance)
+            {
+                distance = current;
+                index = x;
+            }
+        }
+        return surroundings[index];
     }
 }

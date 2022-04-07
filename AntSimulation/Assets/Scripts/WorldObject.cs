@@ -9,7 +9,7 @@ public class WorldObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -22,7 +22,6 @@ public class WorldObject : MonoBehaviour
     {
         if (other.CompareTag("Tile"))
         {
-            Debug.Log("Tile detected");
             _tile = other.GetComponent<Tile>();
             _tile.ObjectSpawned();
             Debug.Log(_tile);
@@ -35,4 +34,10 @@ public class WorldObject : MonoBehaviour
 
     public void SetTile(Tile tile) => _tile = tile;
     public Tile GetTile() => _tile;
+
+    protected Vector3 FindDirection(Vector3 pos)
+    {
+        Tile closest = _tile.FindTheClosest(pos);
+        return closest.transform.position;
+    }
 }

@@ -24,7 +24,7 @@ public class Food : WorldObject
     public int GatherFood(int value)
     {
         int decresedBy = 0;
-        //lock (_)
+        lock (_)
         {
             if (amount < value)
             {
@@ -57,9 +57,10 @@ public class Food : WorldObject
             if (workerScript.WantToGather())
             {
                 workerScript.StopAntNearDestination();
+                Vector3 antPosition = workerScript.transform.position;
+                workerScript.SetTargetTile(antPosition);
                 workerScript.GatherFood();
             }
-
         }
     }
 }

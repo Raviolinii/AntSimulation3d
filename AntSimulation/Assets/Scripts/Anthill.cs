@@ -26,13 +26,15 @@ public class Anthill : WorldObject
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-        
+
         if (other.CompareTag("AntWorker"))
         {
             WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
             if (workerScript.WantToStoreFood())
             {
                 workerScript.StopAntNearDestination();
+                Vector3 antPosition = workerScript.transform.position;
+                workerScript.SetTargetTile(antPosition);
                 workerScript.StoreFood();
             }
         }

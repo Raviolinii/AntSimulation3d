@@ -31,13 +31,15 @@ public abstract class Ant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
     protected void Move() => agent.destination = targetTile;
-    protected void GoToPreviousTile()
+    public void GoToPreviousTile()
     {
-        targetTile = previousTile;
-        //Debug.Log("PreviousTule");
+        //if (currentTile == targetTile)
+            targetTile = previousTile;
+        //else
+            //targetTile = currentTile;
         chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
         Move();
     }

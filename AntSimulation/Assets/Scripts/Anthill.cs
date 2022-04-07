@@ -15,6 +15,7 @@ public class Anthill : WorldObject
     void Start()
     {
         stoppingDistance = GetComponentInChildren<SphereCollider>();
+        typeOfObject = Tile.SpawnedObject.anthill;
     }
 
     // Update is called once per frame
@@ -33,8 +34,7 @@ public class Anthill : WorldObject
             if (workerScript.WantToStoreFood())
             {
                 workerScript.StopAntNearDestination();
-                Vector3 antPosition = workerScript.transform.position;
-                workerScript.SetTargetTile(antPosition);
+                workerScript.GoToPreviousTile();
                 workerScript.StoreFood();
             }
         }

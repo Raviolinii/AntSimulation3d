@@ -55,27 +55,6 @@ public class WorkerAnt : Ant
 
             //currentTile = script.GetIndex();
         }
-
-        if (other.CompareTag("Food") && lookingForFood && !foodInRange)
-        {
-            foodInRange = true;
-            targetTile = other.transform.position;
-            Move();
-            foodScript = other.GetComponent<Food>();
-        }
-        if (other.CompareTag("Anthill") && !lookingForFood && !anthillInRange)
-        {
-            Debug.Log("Anthill");
-            anthillScript = other.GetComponent<Anthill>();
-            Debug.Log(anthillScript.GetOwner());
-            if (anthillScript.GetOwner() == _owner)
-            {
-                anthillInRange = true;
-                targetTile = other.transform.position;
-                Move();
-            }
-            else anthillScript = null;
-        }
     }
 
     public void StoreFood()
@@ -89,7 +68,7 @@ public class WorkerAnt : Ant
         if (anthillScript != null)
         {
             if (anthillScript.AddFood(foodGathered))
-                foodGathered = 0;
+                foodGathered = 0;              // should excess food be destroyed?? 
 
             anthillInRange = false;
             Debug.Log("Got it");
@@ -111,11 +90,34 @@ public class WorkerAnt : Ant
         if (foodScript != null)
         {
             foodGathered = foodScript.GatherFood(gatheringAmount);
-            foodInRange = false;
-            Debug.Log("Got it");
-            lookingForFood = false;
             foodScript = null;              // null food script
-            agent.isStopped = false;
+        }
+        else
+            GoToPreviousTile();
+
+        foodInRange = false;
+        lookingForFood = false;
+        agent.isStopped = false;
+    }
+
+    void FoundFood(Food food)
+    {
+        if (!foodInRange)
+        {
+            foodInRange = true;
+            foodScript = food;
+            UpdateTargetTile();
+            Move();
+        }
+    }
+    void AnthillFound(Anthill anthill)
+    {
+        if (!anthillInRange)
+        {
+            anthillScript = anthill;
+            anthillInRange = true;
+            UpdateTargetTile();
+            Move();
         }
     }
 
@@ -134,40 +136,74 @@ public class WorkerAnt : Ant
         // RouletteTileSelection
 
         int?[] pheromoneValues = new int?[8];
+        int sum = 0;
         if (lookingForFood)
-        {
-            int sum = 0;
-            int rand;
-            for (int i = 0; i < 8; i++)
-            {
-                if (surroundings[i] != null)
-                {
-                    pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
-                    sum += (int)pheromoneValues[i] + 1;
-                    pheromoneValues[i] = sum;
-                }
-            }
+            LookingForFoodMoveIndex(pheromoneValues, sum);
 
-            rand = Random.Range(1, sum + 1);
-            chosenMoveIndex = FindIndex(pheromoneValues, rand);
-        }
         else if (!lookingForFood)
-        {
-            int sum = 0;
-            int rand;
-            for (int i = 0; i < 8; i++)
-            {
-                if (surroundings[i] != null)
-                {
-                    pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
-                    sum += (int)pheromoneValues[i] + 1;
-                    pheromoneValues[i] = sum;
-                    Debug.Log(pheromoneValues[i]);
-                }
-            }
+            NotLookingForFoodMoveIndex(pheromoneValues, sum);
 
-            rand = Random.Range(1, sum + 1);
-            chosenMoveIndex = FindIndex(pheromoneValues, rand);
+    }
+    void NotLookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
+    {
+        int rand;
+        for (int i = 0; i < 8; i++)
+        {
+            if (surroundings[i] != null && ((int)surroundings[i].GetSpawnedObjectType() < 2))   // 0 is a free space, 1 is anthill, 2 is food, 3 is obstacle
+            {
+                if (surroundings[i].GetSpawnedObjectType() == Tile.SpawnedObject.anthill)
+                {
+                    Anthill anthill = (Anthill)surroundings[i].GetSpawnedObject();
+                    if (anthill.GetOwner() == _owner)
+                    {
+                        AnthillFound(anthill);
+                        chosenMoveIndex = i;
+                        return;
+                    }
+                }
+                pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
+                sum += (int)pheromoneValues[i] + 1;
+                pheromoneValues[i] = sum;
+            }
+        }
+
+        rand = Random.Range(1, sum + 1);
+        int index = FindIndex(pheromoneValues, rand);
+        ValidationChosenIndex(index);
+    }
+    void LookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
+    {
+        int rand;
+        for (int i = 0; i < 8; i++)
+        {
+            if (surroundings[i] != null)
+            {
+                if (surroundings[i].GetSpawnedObjectType() == Tile.SpawnedObject.food)
+                {
+                    Food food = (Food)surroundings[i].GetSpawnedObject();
+                    FoundFood(food);
+                    chosenMoveIndex = i;
+                    return;
+                }
+
+                pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
+                sum += (int)pheromoneValues[i] + 1;
+                pheromoneValues[i] = sum;
+            }
+        }
+
+        rand = Random.Range(1, sum + 1);
+        int index = FindIndex(pheromoneValues, rand);
+        ValidationChosenIndex(index);
+    }
+    void ValidationChosenIndex(int index)
+    {
+        if (index != -1)
+            chosenMoveIndex = index;
+        else
+        {
+            surroundings = tileScript.GetSurroundings();
+            ChoseMoveIndex();
         }
     }
 
@@ -181,11 +217,8 @@ public class WorkerAnt : Ant
                     return i;
             }
         }
-        // need to go back
-        int result = Mathf.Abs(chosenMoveIndex - 7);
-        AddPreviousTile(result);
-        return result;
-
+        // need to look around (-1 is special)
+        return -1;
         //throw new System.Exception("Couldnt find index of element from feromons array");
     }
 
@@ -197,4 +230,5 @@ public class WorkerAnt : Ant
     }
     public bool WantToGather() => foodInRange ? true : false;
     public bool WantToStoreFood() => anthillInRange ? true : false;
+
 }

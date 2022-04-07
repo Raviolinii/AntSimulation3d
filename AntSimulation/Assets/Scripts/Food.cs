@@ -12,6 +12,7 @@ public class Food : WorldObject
     {
         //Invoke("Depleted", 2.5f);
         stoppingDistance = GetComponentInChildren<SphereCollider>();
+        typeOfObject = Tile.SpawnedObject.food;
     }
 
     // Update is called once per frame
@@ -57,8 +58,7 @@ public class Food : WorldObject
             if (workerScript.WantToGather())
             {
                 workerScript.StopAntNearDestination();
-                Vector3 antPosition = workerScript.transform.position;
-                workerScript.SetTargetTile(antPosition);
+                workerScript.GoToPreviousTile();
                 workerScript.GatherFood();
             }
         }

@@ -7,10 +7,9 @@ public class Tile : MonoBehaviour
     Pheromone workerPheromone = new Pheromone();
     Pheromone workerFoodPheromone = new Pheromone();
     Pheromone warriorPheromone = new Pheromone();
-    GameObject objectOnTile;
-    bool hasObject = false;
+    public WorldObject objectOnTile;
+    public SpawnedObject spawnedObjectType;
     public Tile[] surroundings = new Tile[8];
-    Tile[] backupSurroundings = new Tile[8];
 
     // Start is called before the first frame update
     void Start()
@@ -24,29 +23,6 @@ public class Tile : MonoBehaviour
 
     }
 
-    public void AddToBothSurroundings(Tile tile, int index)
-    {
-        surroundings[index] = tile;
-        backupSurroundings[index] = tile;
-    }
-    public void RecallOneOfSurroundings(int index) => surroundings[index] = backupSurroundings[index];
-    public void ForgetOneOfSurroundings(int index) => surroundings[index] = null;
-    public void RemoveFromOthers()
-    {
-        for (int x = 0; x < 8; x++)
-        {
-            if (surroundings[x])
-                surroundings[x].ForgetOneOfSurroundings(Mathf.Abs(x - 7));
-        }
-    }
-    public void RecallInOthers()
-    {
-        for (int x = 0; x < 8; x++)
-        {
-            if (surroundings[x])
-                surroundings[x].RecallOneOfSurroundings(Mathf.Abs(x - 7));
-        }
-    }
     public void AddToSurroundings(Tile tile, int index) => surroundings[index] = tile;
     public int GetWorkerPheromoneValue() => workerPheromone.GetPheromoneValue();
     public int GetWorkerFoodPheromoneValue() => workerFoodPheromone.GetPheromoneValue();
@@ -62,17 +38,16 @@ public class Tile : MonoBehaviour
         workerPheromone.DecreasePheromone(value);
         warriorPheromone.DecreasePheromone(value);
     }
-
-
-    public Tile[] GetSurroundings() => surroundings;
+    public Tile[] GetSurroundings() => (Tile[])surroundings.Clone();
     public Tile[] GetSurroundingsNulls(int chosenMoveIndex)
     {
         Tile[] result = (Tile[])surroundings.Clone();
         for (int i = 0; i < 8; i++)
-        {
-            if (result[i] != null && result[i].HasSpawnedObject())
+        {            
+            if (result[i] != null && result[i].GetSpawnedObjectType() == SpawnedObject.obstacle)
                 result[i] = null;
         }
+
         switch (chosenMoveIndex)
         {
             case 0:
@@ -139,34 +114,23 @@ public class Tile : MonoBehaviour
     }
 
     public Tile GetTile(int index) => surroundings[index];
-    public bool HasSpawnedObject() => hasObject;
-    public void ObjectSpawned()
+    public SpawnedObject GetSpawnedObjectType() => spawnedObjectType;
+    public WorldObject GetSpawnedObject() => objectOnTile;
+    public void ObjectSpawned(WorldObject objectSpawned, SpawnedObject spawned)
     {
-        hasObject = true;
-        RemoveFromOthers();
+        objectOnTile = objectSpawned;
+        spawnedObjectType = spawned;
     }
     public void ObjectDestroyed()
     {
-        //Debug.Log("I know");
-        RecallInOthers();
-        hasObject = false;
+        objectOnTile = null;
+        spawnedObjectType = SpawnedObject.no;
     }
-    public Tile FindTheClosest(Vector3 pos)
+    public enum SpawnedObject
     {
-        int index = 0;
-        float distance = Vector3.Distance(pos, surroundings[0].transform.position);
-        Debug.Log(distance);
-        float current;
-        for (int x = 1; x < 8; x++)
-        {
-            current = Vector3.Distance(pos, surroundings[x].transform.position);
-            Debug.Log(current);
-            if (current > distance)
-            {
-                distance = current;
-                index = x;
-            }
-        }
-        return surroundings[index];
+        no,
+        anthill,
+        food,
+        obstacle
     }
 }

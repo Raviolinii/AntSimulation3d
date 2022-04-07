@@ -92,7 +92,7 @@ public class PheromoneMap : MonoBehaviour
     {
         try
         {
-            tileMap[i, j].AddToBothSurroundings(tileMap[i + iOffset, j + jOffset], index);
+            tileMap[i, j].AddToSurroundings(tileMap[i + iOffset, j + jOffset], index);
         }
         catch (System.IndexOutOfRangeException)
         {

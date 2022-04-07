@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Tile;
 
 public class WorldObject : MonoBehaviour
 {
     protected Tile _tile;
     protected SphereCollider stoppingDistance;
+    protected SpawnedObject typeOfObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,7 @@ public class WorldObject : MonoBehaviour
         if (other.CompareTag("Tile"))
         {
             _tile = other.GetComponent<Tile>();
-            _tile.ObjectSpawned();
+            _tile.ObjectSpawned(this, typeOfObject);
             Debug.Log(_tile);
         }
     }
@@ -34,10 +36,4 @@ public class WorldObject : MonoBehaviour
 
     public void SetTile(Tile tile) => _tile = tile;
     public Tile GetTile() => _tile;
-
-    protected Vector3 FindDirection(Vector3 pos)
-    {
-        Tile closest = _tile.FindTheClosest(pos);
-        return closest.transform.position;
-    }
 }

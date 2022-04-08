@@ -24,26 +24,32 @@ public abstract class Ant : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
         areaDetector = GetComponentInChildren<SphereCollider>();
-        chosenMoveIndex = Random.Range(0,8);
+        chosenMoveIndex = Random.Range(0, 8);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    protected void Move() => agent.destination = targetTile;
+    //protected void Move() => agent.destination = targetTile;
+    protected void Move()
+    {
+        Vector3 position = targetTile;
+        position.y = Terrain.activeTerrain.SampleHeight(transform.position);
+        agent.destination = position;
+    }
     public void GoToPreviousTile()
     {
         //if (currentTile == targetTile)
-            targetTile = previousTile;
+        targetTile = previousTile;
         //else
-            //targetTile = currentTile;
+        //targetTile = currentTile;
         chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
         Move();
     }
-    
+
     public Owner GetOwner() => _owner;
     public void SetOwner(Owner owner) => _owner = owner;
 }

@@ -12,7 +12,7 @@ public class Food : WorldObject
     {
         //Invoke("Depleted", 2.5f);
         stoppingDistance = GetComponentInChildren<SphereCollider>();
-        typeOfObject = Tile.SpawnedObject.food;
+        typeOfObject = SpawnedObject.food;
     }
 
     // Update is called once per frame

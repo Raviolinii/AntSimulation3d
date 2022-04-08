@@ -151,7 +151,7 @@ public class WorkerAnt : Ant
         {
             if (surroundings[i] != null && ((int)surroundings[i].GetSpawnedObjectType() < 2))   // 0 is a free space, 1 is anthill, 2 is food, 3 is obstacle
             {
-                if (surroundings[i].GetSpawnedObjectType() == Tile.SpawnedObject.anthill)
+                if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.anthill)
                 {
                     Anthill anthill = (Anthill)surroundings[i].GetSpawnedObject();
                     if (anthill.GetOwner() == _owner)
@@ -178,7 +178,7 @@ public class WorkerAnt : Ant
         {
             if (surroundings[i] != null)
             {
-                if (surroundings[i].GetSpawnedObjectType() == Tile.SpawnedObject.food)
+                if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.food)
                 {
                     Food food = (Food)surroundings[i].GetSpawnedObject();
                     FoundFood(food);

@@ -15,7 +15,7 @@ public class Anthill : WorldObject
     void Start()
     {
         stoppingDistance = GetComponentInChildren<SphereCollider>();
-        typeOfObject = Tile.SpawnedObject.anthill;
+        typeOfObject = SpawnedObject.anthill;
     }
 
     // Update is called once per frame
@@ -80,9 +80,4 @@ public class Anthill : WorldObject
     public int GetFoodGathered() => foodGathered;
     public void SetOwner(Owner owner) => _owner = owner;
     public Owner GetOwner() => _owner;
-}
-public enum Owner
-{
-    player,
-    AI
 }

@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class PheromoneMap : MonoBehaviour
 {
-    int width = 3; // 50 50
-    int height = 3;
+    int width = 50; // 50 50
+    int height = 50;
     public GameObject tile;
     Tile[,] tileMap;    // changed from pheromones
 
-    float pheromonesDecreseTime = 2f;
-    int pheromoneDecreseValue = 1;
+    float pheromonesDecreseTime = 4f;
+    int pheromoneDecreseValue = 5;
 
     public GameObject foodPrefab;
     public GameObject anthillPrefab;
@@ -25,7 +25,7 @@ public class PheromoneMap : MonoBehaviour
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
 
         Invoke("TestSpawnFood", 1.5f);
-        //Invoke("TestSpawnAnthill", 1.5f);
+        Invoke("TestSpawnAnthill", 1.5f);
         
 
     }
@@ -37,7 +37,7 @@ public class PheromoneMap : MonoBehaviour
     }
 
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
-    void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 2, 2);
+    void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 3);
     /* void TestSpawnFood()
     {
         SpawnFoodAtIndex(1,1);
@@ -59,7 +59,8 @@ public class PheromoneMap : MonoBehaviour
 
         Vector3 position = tileMap[i, j].transform.position;
         //position.y = Terrain.activeTerrain.SampleHeight(transform.position);  // Test with terrain required
-        position.y = 2;
+        position.y = Terrain.activeTerrain.SampleHeight(position);  // Test with terrain required
+        //position.y = 2;
 
         Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation);
     }
@@ -111,7 +112,7 @@ public class PheromoneMap : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                currentGameObject = Instantiate(tile, new Vector3(j * 5f, -2, -i * 5f), tile.transform.rotation);
+                currentGameObject = Instantiate(tile, new Vector3(j * 5f, 1, -i * 5f), tile.transform.rotation);
                 currentScript = currentGameObject.GetComponent<Tile>();
                 tileMap[i, j] = currentScript;
                 //pheromonesMap[i, j].SetIndex(i, j);

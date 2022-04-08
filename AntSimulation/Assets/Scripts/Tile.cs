@@ -126,11 +126,4 @@ public class Tile : MonoBehaviour
         objectOnTile = null;
         spawnedObjectType = SpawnedObject.no;
     }
-    public enum SpawnedObject
-    {
-        no,
-        anthill,
-        food,
-        obstacle
-    }
 }

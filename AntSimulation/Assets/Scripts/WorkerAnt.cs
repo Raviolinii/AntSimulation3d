@@ -171,7 +171,7 @@ public class WorkerAnt : Ant
         int index = FindIndex(pheromoneValues, rand);
         ValidationChosenIndex(index);
     }
-    void LookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
+    void LookingForFoodMoveIndex(int?[] pheromoneValues, int sum)                   // doesnt care about obstacles and want go through anthill
     {
         int rand;
         for (int i = 0; i < 8; i++)

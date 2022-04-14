@@ -12,6 +12,7 @@ TagManager:
   - AntWorker
   - Tile
   - Anthill
+  - AntWarrior
   layers:
   - Default
   - TransparentFX

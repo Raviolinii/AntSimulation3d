@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4866776227977308620}
   - component: {fileID: 5698210794326029950}
   - component: {fileID: 8834712163104246833}
+  - component: {fileID: -2039099463586259044}
   m_Layer: 0
   m_Name: Food
   m_TagString: Food
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 814b34d473f2f0647b36a41ad2ce74de, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463622f87492a7f4eb56e66da0328f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 2000
+  amount: 200
 --- !u!54 &8834712163104246833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,6 +129,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!208 &-2039099463586259044
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522986440629134478}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7031978270678396573
 GameObject:
   m_ObjectHideFlags: 0

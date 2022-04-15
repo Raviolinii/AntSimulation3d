@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Pheromone
 {
-    //Vector2Int index;
     int pheromoneValue = 0;
     public int GetPheromoneValue() => pheromoneValue;
     public void AddPheromone(int value) => pheromoneValue += value;
@@ -16,6 +15,5 @@ public class Pheromone
         else
             pheromoneValue -= value;
     }
-    //public Vector2Int GetIndex() => index;
-    //public void SetIndex(int i, int j) => index = new Vector2Int(i, j);
+
 }

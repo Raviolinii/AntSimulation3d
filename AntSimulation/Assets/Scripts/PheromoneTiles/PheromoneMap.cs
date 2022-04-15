@@ -5,16 +5,20 @@ using UnityEngine;
 
 public class PheromoneMap : MonoBehaviour
 {
-    int width = 50; // 50 50
-    int height = 50;
+    // Map
     public GameObject tile;
+    int width = 50;
+    int height = 50;
     Tile[,] tileMap;    // changed from pheromones
 
-    float pheromonesDecreseTime = 4f;
-    int pheromoneDecreseValue = 5;
+    // Pheromones
+    float pheromonesDecreseTime = 10f;
+    int pheromoneDecreseValue = 2;
 
+    // World Objects
     public GameObject foodPrefab;
     public GameObject anthillPrefab;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +31,6 @@ public class PheromoneMap : MonoBehaviour
         Invoke("TestSpawnFood", 1.5f);
         Invoke("TestSpawnAnthill", 1.5f);
         
-
     }
 
     // Update is called once per frame
@@ -36,15 +39,9 @@ public class PheromoneMap : MonoBehaviour
 
     }
 
+    // World Objects
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
     void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 3);
-    /* void TestSpawnFood()
-    {
-        SpawnFoodAtIndex(1,1);
-        SpawnFoodAtIndex(1,2);
-        SpawnFoodAtIndex(2,1);
-        SpawnFoodAtIndex(2,2);
-    } */
     void SpawnFoodAtIndex(int i, int j)
     {
         Vector3 position = tileMap[i, j].transform.position;
@@ -58,13 +55,12 @@ public class PheromoneMap : MonoBehaviour
         prefabScript._owner = owner;
 
         Vector3 position = tileMap[i, j].transform.position;
-        //position.y = Terrain.activeTerrain.SampleHeight(transform.position);  // Test with terrain required
-        position.y = Terrain.activeTerrain.SampleHeight(position);  // Test with terrain required
-        //position.y = 2;
+        position.y = Terrain.activeTerrain.SampleHeight(position);
 
         Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation);
     }
 
+    // Map
     void AsignSurroundings()
     {
         for (int i = 0; i < height; i++)
@@ -75,6 +71,7 @@ public class PheromoneMap : MonoBehaviour
             }
         }
     }
+
     void AddSurroundingsFor(int i, int j)
     {
         TryAddOneOfSurroundings(i, -1, j, -1, 0);
@@ -107,7 +104,6 @@ public class PheromoneMap : MonoBehaviour
         GameObject currentGameObject;
         Tile currentScript;
 
-
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -115,7 +111,6 @@ public class PheromoneMap : MonoBehaviour
                 currentGameObject = Instantiate(tile, new Vector3(j * 5f, 1, -i * 5f), tile.transform.rotation);
                 currentScript = currentGameObject.GetComponent<Tile>();
                 tileMap[i, j] = currentScript;
-                //pheromonesMap[i, j].SetIndex(i, j);
             }
         }
     }

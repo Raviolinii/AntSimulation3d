@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class WorkerAnt : Ant
 {
+
+    // Food
     public bool lookingForFood = true;
     public bool foodInRange = false;
-    public bool anthillInRange = false;
-    float gatheringTime = 2.5f;
-    float storingTime = 1.5f;
     Food foodScript;
-    Anthill anthillScript;
     int gatheringAmount = 20;
-    Coroutine gatherFoodCoroutine;
-    Coroutine storeFoodCoroutine;
+    float gatheringTime = 2.5f;
     int foodGathered = 0;
+    Coroutine gatherFoodCoroutine;
+
+
+    // Anthill
+    public bool anthillInRange = false;
+    Anthill anthillScript;
+    float storingTime = 1.5f;
+    Coroutine storeFoodCoroutine;
 
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        //SetOwner(Owner.player);
         hp = 10;
         dmg = 2;
     }
@@ -29,8 +33,6 @@ public class WorkerAnt : Ant
     // Update is called once per frame
     void Update()
     {
-
-
         //MoveInDirection(new Vector3(1,0,0));
     }
 
@@ -50,19 +52,18 @@ public class WorkerAnt : Ant
             surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
             if (!foodInRange)
             {
-                ChoseMoveIndex();
-                UpdateTargetTile();
-                Move();
+                GoToNextTile();
             }
-
-            //currentTile = script.GetIndex();
         }
     }
 
+
+    // Anthill
     public void StoreFood()
     {
         storeFoodCoroutine = StartCoroutine("StoreFoodIEnumerator");
     }
+
     IEnumerator StoreFoodIEnumerator()
     {
         Debug.Log("Storing");
@@ -80,6 +81,21 @@ public class WorkerAnt : Ant
         }
     }
 
+    void AnthillFound(Anthill anthill)
+    {
+        if (!anthillInRange)
+        {
+            anthillScript = anthill;
+            anthillInRange = true;
+            UpdateTargetTile();
+            Move();
+        }
+    }
+
+    public bool WantToGather() => foodInRange ? true : false;
+
+
+    // Food
     public void GatherFood()
     {
         gatherFoodCoroutine = StartCoroutine("GatherFoodIEnumerator");
@@ -112,18 +128,13 @@ public class WorkerAnt : Ant
             Move();
         }
     }
-    void AnthillFound(Anthill anthill)
-    {
-        if (!anthillInRange)
-        {
-            anthillScript = anthill;
-            anthillInRange = true;
-            UpdateTargetTile();
-            Move();
-        }
-    }
 
+    public bool WantToStoreFood() => anthillInRange ? true : false;
+
+
+    // Movement
     public void SetTargetTile(Vector3 target) => targetTile = target;
+
     protected override void ChoseMoveIndex()
     {
         // RouletteTileSelection
@@ -137,6 +148,7 @@ public class WorkerAnt : Ant
             NotLookingForFoodMoveIndex(pheromoneValues, sum);
 
     }
+
     void NotLookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
     {
         int rand;
@@ -164,7 +176,8 @@ public class WorkerAnt : Ant
         int index = FindIndex(pheromoneValues, rand);
         ChosenIndexValidation(index);
     }
-    void LookingForFoodMoveIndex(int?[] pheromoneValues, int sum)                   // doesnt care about obstacles and want go through anthill
+
+    void LookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
     {
         int rand;
         for (int i = 0; i < 8; i++)
@@ -192,16 +205,10 @@ public class WorkerAnt : Ant
         ChosenIndexValidation(index);
     }
 
-
-
-
-    //void AddPreviousTile(int index) => surroundings[index] = tileScript.GetTile(index);
     public void StopAntNearDestination()
     {
         if (foodInRange || anthillInRange)
             agent.isStopped = true;
     }
-    public bool WantToGather() => foodInRange ? true : false;
-    public bool WantToStoreFood() => anthillInRange ? true : false;
 
 }

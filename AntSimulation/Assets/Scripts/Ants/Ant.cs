@@ -8,10 +8,12 @@ public abstract class Ant : MonoBehaviour
     // Owner
     public Owner _owner;
 
+
     // Movement
     protected float speed = 5f;
     public int chosenMoveIndex;
     protected NavMeshAgent agent;
+
 
     // Tiles and positions
     protected Vector3 targetTile;
@@ -20,11 +22,14 @@ public abstract class Ant : MonoBehaviour
     public Vector3 previousTile;
     protected Vector3 currentTile;
 
+
     // Pheromones
-    protected int pheromoneLeaveAmount = 20;
+    protected int pheromoneLeaveAmount = 4;
+
 
     // Colliders
     protected SphereCollider areaDetector;
+
 
     // Fight
     public int hp;
@@ -40,16 +45,11 @@ public abstract class Ant : MonoBehaviour
         agent.speed = speed;
         areaDetector = GetComponentInChildren<SphereCollider>();
         chosenMoveIndex = Random.Range(0, 8);
-
     }
+
 
     // Update is called once per frame
     void Update()
-    {
-
-    }
-
-    private void OnTriggerEnter(Collider other)
     {
 
     }
@@ -62,6 +62,7 @@ public abstract class Ant : MonoBehaviour
         position.y = Terrain.activeTerrain.SampleHeight(transform.position);
         agent.destination = position;
     }
+
     public void GoToPreviousTile()
     {
         //if (currentTile == targetTile)
@@ -71,6 +72,7 @@ public abstract class Ant : MonoBehaviour
         chosenMoveIndex = Mathf.Abs(chosenMoveIndex - 7);
         Move();
     }
+
     protected void UpdateTargetTile()
     {
         if (surroundings[chosenMoveIndex] != null)
@@ -79,6 +81,7 @@ public abstract class Ant : MonoBehaviour
         else
             targetTile = previousTile;
     }
+
     protected abstract void ChoseMoveIndex();
 
     protected int FindIndex(int?[] array, int value)
@@ -94,6 +97,7 @@ public abstract class Ant : MonoBehaviour
         // need to look around (-1 is special)
         return -1;
     }
+
     protected void ChosenIndexValidation(int index)
     {
         if (index != -1)
@@ -105,9 +109,18 @@ public abstract class Ant : MonoBehaviour
         }
     }
 
+    protected void GoToNextTile()
+    {
+        ChoseMoveIndex();
+        UpdateTargetTile();
+        Move();
+    }
+
+
     // Owners
     public Owner GetOwner() => _owner;
     public void SetOwner(Owner owner) => _owner = owner;
+
 
     // Fight
     public int GetHp() => hp;
@@ -124,6 +137,7 @@ public abstract class Ant : MonoBehaviour
             Dead();
         }
     }
+
     public IEnumerator Attack(Ant target)
     {
         yield return new WaitForSeconds(1.5f);
@@ -137,8 +151,6 @@ public abstract class Ant : MonoBehaviour
         {
             Fight(target);
         }
-
-
     }
 
     protected void Dead()

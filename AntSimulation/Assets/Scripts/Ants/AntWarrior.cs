@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AntWarrior : Ant
 {
+    
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -12,6 +13,7 @@ public class AntWarrior : Ant
         hp = 10;
         dmg = 5;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -27,14 +29,10 @@ public class AntWarrior : Ant
             currentTile = other.transform.position;
 
             tileScript = other.GetComponent<Tile>();
-
             tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
-
             surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
 
-            ChoseMoveIndex();
-            UpdateTargetTile();
-            Move();
+            GoToNextTile();
         }
 
         if (other.CompareTag("AntWorker") || other.CompareTag("AntWarrior"))
@@ -50,6 +48,7 @@ public class AntWarrior : Ant
             AntDetected(other);
         }
     }
+
 
     // Move
     protected override void ChoseMoveIndex()
@@ -82,6 +81,7 @@ public class AntWarrior : Ant
         int index = FindIndex(pheromoneValues, rand);
         ChosenIndexValidation(index);
     }
+
 
     // Fight
     void AntDetected(Collider ant)

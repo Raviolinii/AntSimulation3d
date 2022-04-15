@@ -51,6 +51,7 @@ public class AntsMaster : MonoBehaviour
         position.y = Terrain.activeTerrain.SampleHeight(position);
         return position;
     }
+
     protected void SpawnWorker()
     {
         if (CanAddAnt())
@@ -79,7 +80,8 @@ public class AntsMaster : MonoBehaviour
             antWorkers.Add(newAntScript);
             IncreasePopulation();
         }
-    }    
+    }
+
     protected void SpawnWarrior()
     {
         if (CanAddAnt())
@@ -110,6 +112,7 @@ public class AntsMaster : MonoBehaviour
         }
     }
 
+
     // Population
     public int GetPopulation() => population;
     public void IncreasePopulation(int value) => population += value;
@@ -122,7 +125,9 @@ public class AntsMaster : MonoBehaviour
         if (maxPopulation + populationIncreaseValue <= maxReachablePopulation)
             maxPopulation += populationIncreaseValue;
     }
+
     public void DecreaseMaxPopulation() => maxPopulation -= populationIncreaseValue;
+
 
     // Initialization
     protected void SetAnthillMaster() => anthill.SetMaster(this);
@@ -136,6 +141,7 @@ public class AntsMaster : MonoBehaviour
         }
         Debug.Log(anthill);
     }
+
 
     // Food
     public void DecreaseMaxFoodAmount() => maxFoodAmount -= foodIncreaseValue;
@@ -159,6 +165,7 @@ public class AntsMaster : MonoBehaviour
             return false;
         }
     }
+    
     public bool SpendFood(int value)
     {
         if (foodGathered >= value)

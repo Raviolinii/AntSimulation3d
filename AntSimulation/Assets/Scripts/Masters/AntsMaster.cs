@@ -22,7 +22,9 @@ public class AntsMaster : MonoBehaviour
 
     // Ants
     public GameObject antWorkerPrefab;
+    public GameObject antWarriorPrefab;
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
+    protected List<AntWarrior> antWarriors = new List<AntWarrior>();
 
 
 
@@ -32,7 +34,8 @@ public class AntsMaster : MonoBehaviour
         owner = Owner.player;
         Invoke("FindAnthill", 2f);
         Invoke("SetAnthillMaster", 2.2f);
-        //Invoke("SpawnWorker", 2.5f);
+        Invoke("SpawnWorker", 2.5f);
+        Invoke("SpawnWarrior", 2.5f);
 
     }
 
@@ -43,6 +46,11 @@ public class AntsMaster : MonoBehaviour
     }
 
     // Ants
+    Vector3 AsignYPosition(Vector3 position)
+    {
+        position.y = Terrain.activeTerrain.SampleHeight(position);
+        return position;
+    }
     protected void SpawnWorker()
     {
         if (CanAddAnt())
@@ -55,17 +63,49 @@ public class AntsMaster : MonoBehaviour
             {
                 if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                 {
-                    if (maxFoodPheromone < surroundings[i].GetWorkerFoodPheromoneValue())
+                    int pheromoneValue = surroundings[i].GetWorkerFoodPheromoneValue();
+                    if (maxFoodPheromone < pheromoneValue)
                     {
-                        maxFoodPheromone = surroundings[i].GetWorkerFoodPheromoneValue();
+                        maxFoodPheromone = pheromoneValue;
                         index = i;
                     }
                 }
             }
             Vector3 position = surroundings[index].transform.position;
-            position.y = Terrain.activeTerrain.SampleHeight(position);
+            position = AsignYPosition(position);
             GameObject newAnt = Instantiate(antWorkerPrefab, position, antWorkerPrefab.transform.rotation);
-            antWorkers.Add(newAnt.GetComponent<WorkerAnt>());
+            WorkerAnt newAntScript = newAnt.GetComponent<WorkerAnt>();
+            newAntScript.SetOwner(owner);
+            antWorkers.Add(newAntScript);
+            IncreasePopulation();
+        }
+    }    
+    protected void SpawnWarrior()
+    {
+        if (CanAddAnt())
+        {
+            Tile anthillTile = anthill.GetTile();
+            Tile[] surroundings = anthillTile.GetSurroundings();
+            int maxWarriorPheromone = -1;
+            int index = 6;
+            for (int i = 0; i < 7; i++)
+            {
+                if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                {
+                    int pheromoneValue = surroundings[i].GetWarriorPheromoneValue();
+                    if (maxWarriorPheromone < pheromoneValue)
+                    {
+                        maxWarriorPheromone = pheromoneValue;
+                        index = i;
+                    }
+                }
+            }
+            Vector3 position = surroundings[index].transform.position;
+            position = AsignYPosition(position);
+            GameObject newAnt = Instantiate(antWarriorPrefab, position, antWarriorPrefab.transform.rotation);
+            AntWarrior newAntScript = newAnt.GetComponent<AntWarrior>();
+            newAntScript.SetOwner(owner);
+            antWarriors.Add(newAntScript);
             IncreasePopulation();
         }
     }

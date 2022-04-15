@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846e01af740b04143bda2d81b8eee4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _owner: 0
   chosenMoveIndex: 0
   surroundings:
   - {fileID: 0}
@@ -205,6 +206,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   previousTile: {x: 0, y: 0, z: 0}
+  hp: 0
   lookingForFood: 1
   foodInRange: 0
   anthillInRange: 0

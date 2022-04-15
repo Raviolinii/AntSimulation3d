@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 7606747514109593751}
   m_Layer: 7
   m_Name: TileDetector
-  m_TagString: AntWorker
+  m_TagString: AntWarrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beff037a317c5dc449bd5ce010581d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _owner: 0
   chosenMoveIndex: 0
   surroundings:
   - {fileID: 0}
@@ -249,3 +250,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   previousTile: {x: 0, y: 0, z: 0}
+  hp: 0

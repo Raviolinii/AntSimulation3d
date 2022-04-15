@@ -8,7 +8,7 @@ public class AntWarrior : Ant
     protected override void Start()
     {
         base.Start();
-        SetOwner(Owner.AI);
+        //SetOwner(Owner.AI);
         hp = 10;
         dmg = 5;
     }

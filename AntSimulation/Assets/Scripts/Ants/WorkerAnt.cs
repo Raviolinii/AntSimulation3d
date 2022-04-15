@@ -21,7 +21,7 @@ public class WorkerAnt : Ant
     protected override void Start()
     {
         base.Start();
-        SetOwner(Owner.player);
+        //SetOwner(Owner.player);
         hp = 10;
         dmg = 2;
     }

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public abstract class Ant : MonoBehaviour
 {
     // Owner
-    protected Owner _owner;
+    public Owner _owner;
 
     // Movement
     protected float speed = 5f;

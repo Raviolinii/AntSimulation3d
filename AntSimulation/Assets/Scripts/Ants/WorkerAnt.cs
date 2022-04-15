@@ -23,6 +23,8 @@ public class WorkerAnt : Ant
 
     // Alarm
     public bool dangerSpotted = false;
+    Vector3 anthillsPosition;
+    Coroutine raiseAlarmCoroutine;
 
 
     // Start is called before the first frame update
@@ -55,9 +57,34 @@ public class WorkerAnt : Ant
                 tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
 
             surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
-            if (!foodInRange)
+            if (!foodInRange && !dangerSpotted)
             {
                 GoToNextTile();
+            }
+            else if (!foodInRange && dangerSpotted)
+            {
+                surroundings = tileScript.GetSurroundings();
+                float lowestDistance = float.MaxValue;
+                Vector3 positionFixed;
+                int index = -1;
+                float distance;
+                for (int i = 0; i < 8; i++)
+                {
+                    if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                    {
+                        positionFixed = surroundings[i].transform.position;
+                        positionFixed.y = 0;
+                        distance = Vector3.Distance(anthillsPosition, positionFixed);
+                        if (distance < lowestDistance)
+                        {
+                            lowestDistance = distance;
+                            index = i;
+                        }
+                    }
+                }
+                chosenMoveIndex = index;
+                UpdateTargetTile();
+                Move();
             }
         }
 
@@ -72,6 +99,12 @@ public class WorkerAnt : Ant
     }
 
     // Alarm
+    public void SetAnthillsPosition(Vector3 position)
+    {
+        anthillsPosition = position;
+        anthillsPosition.y = 0;
+    }
+
     void Alarm()
     {
         lookingForFood = false;
@@ -80,6 +113,15 @@ public class WorkerAnt : Ant
     }
 
     public bool WantToAlarm() => dangerSpotted ? true : false;
+
+    public void RaiseAlarm()
+    {
+        raiseAlarmCoroutine = StartCoroutine("RaiseAlarmCoroutine");
+    }
+    IEnumerator RaiseAlarmCoroutine()
+    {
+        yield return new WaitForSeconds(1f);                                            // Tests
+    }
 
     // Anthill
     public void StoreFood()
@@ -230,7 +272,7 @@ public class WorkerAnt : Ant
 
     public void StopAntNearDestination()
     {
-        if (foodInRange || anthillInRange)
+        if (foodInRange || anthillInRange || dangerSpotted)
             agent.isStopped = true;
     }
 

@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846e01af740b04143bda2d81b8eee4b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _owner: 0
+  _owner: 1
   chosenMoveIndex: 0
   surroundings:
   - {fileID: 0}
@@ -210,6 +210,7 @@ MonoBehaviour:
   lookingForFood: 1
   foodInRange: 0
   anthillInRange: 0
+  dangerSpotted: 0
 --- !u!1 &7047440853952836067
 GameObject:
   m_ObjectHideFlags: 0

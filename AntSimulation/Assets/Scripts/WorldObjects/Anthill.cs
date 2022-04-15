@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Anthill : WorldObject
 {
+    // Owner
     public Owner _owner;
     protected AntsMaster antsMaster;
     //public GameObject queen;
+
+    // Alarm
+    bool dangerSpotted = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,19 @@ public class Anthill : WorldObject
         if (other.CompareTag("AntWorker"))
         {
             WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
+
+            if (!workerScript.WantToAlarm() && !workerScript.WantToStoreFood())
+                return;
+            else
+            if (workerScript.WantToAlarm())
+            {
+                workerScript.StopAntNearDestination();
+                workerScript.GoToPreviousTile();
+                Alarm();
+                if (!workerScript.WantToGather())
+                    workerScript.RaiseAlarm();
+            }
+
             if (workerScript.WantToStoreFood())
             {
                 workerScript.StopAntNearDestination();
@@ -37,8 +54,24 @@ public class Anthill : WorldObject
         }
     }
 
+
+    // Owner
     public void SetMaster(AntsMaster master) => antsMaster = master; 
-    public bool AddFood(int value) => antsMaster.AddFood(value);
     public void SetOwner(Owner owner) => _owner = owner;
     public Owner GetOwner() => _owner;
+
+
+    // Food
+    public bool AddFood(int value) => antsMaster.AddFood(value);
+
+
+    // Alarm
+    public void Alarm()
+    {
+        if (!dangerSpotted)
+        {
+            dangerSpotted = true;
+            antsMaster.Alarm();
+        }
+    }
 }

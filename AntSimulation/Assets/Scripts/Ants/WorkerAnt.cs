@@ -21,6 +21,9 @@ public class WorkerAnt : Ant
     float storingTime = 1.5f;
     Coroutine storeFoodCoroutine;
 
+    // Alarm
+    public bool dangerSpotted = false;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -46,8 +49,10 @@ public class WorkerAnt : Ant
             tileScript = other.GetComponent<Tile>();
             if (lookingForFood)
                 tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
-            else
+            else if (!dangerSpotted)
                 tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
+            else
+                tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
 
             surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
             if (!foodInRange)
@@ -55,8 +60,26 @@ public class WorkerAnt : Ant
                 GoToNextTile();
             }
         }
+
+        else if (other.CompareTag("AntWorker"))
+        {
+            WorkerAnt otherScript = other.GetComponent<WorkerAnt>();
+            if (otherScript.GetOwner() != _owner && !dangerSpotted)
+            {
+                Alarm();
+            }
+        }
     }
 
+    // Alarm
+    void Alarm()
+    {
+        lookingForFood = false;
+        dangerSpotted = true;
+        GoToPreviousTile();
+    }
+
+    public bool WantToAlarm() => dangerSpotted ? true : false;
 
     // Anthill
     public void StoreFood()

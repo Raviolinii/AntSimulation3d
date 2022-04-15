@@ -178,10 +178,12 @@ public class WorkerAnt : Ant
                     chosenMoveIndex = i;
                     return;
                 }
-
-                pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
-                sum += (int)pheromoneValues[i] + 1;
-                pheromoneValues[i] = sum;
+                else if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                {
+                    pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
+                    sum += (int)pheromoneValues[i] + 1;
+                    pheromoneValues[i] = sum;
+                }
             }
         }
 

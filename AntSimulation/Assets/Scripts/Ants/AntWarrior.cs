@@ -61,9 +61,20 @@ public class AntWarrior : Ant
         {
             if (surroundings[i] != null)
             {
-                pheromoneValues[i] = surroundings[i].GetWarriorPheromoneValue();
-                sum += (int)pheromoneValues[i] + 1;
-                pheromoneValues[i] = sum;
+                if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.anthill)
+                {
+                    Anthill anthillScript = surroundings[i].GetSpawnedObject().GetComponent<Anthill>();
+                    if (anthillScript.GetOwner() != _owner)
+                    {
+                        // Attack anthill
+                    }
+                }
+                else if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                {
+                    pheromoneValues[i] = surroundings[i].GetWarriorPheromoneValue();
+                    sum += (int)pheromoneValues[i] + 1;
+                    pheromoneValues[i] = sum;
+                }
             }
         }
 

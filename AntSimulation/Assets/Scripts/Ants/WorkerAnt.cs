@@ -21,6 +21,11 @@ public class WorkerAnt : Ant
     float storingTime = 1.5f;
     Coroutine storeFoodCoroutine;
 
+    // Alarm
+    public bool dangerSpotted = false;
+    Vector3 anthillsPosition;
+    Coroutine raiseAlarmCoroutine;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -46,17 +51,104 @@ public class WorkerAnt : Ant
             tileScript = other.GetComponent<Tile>();
             if (lookingForFood)
                 tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
-            else
+            else if (!dangerSpotted)
                 tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
+            else
+                tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
 
             surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
-            if (!foodInRange)
+            if (!foodInRange && !dangerSpotted)
             {
                 GoToNextTile();
+            }
+            else if (!foodInRange && dangerSpotted)
+            {
+                surroundings = tileScript.GetSurroundings();
+                float lowestDistance = float.MaxValue;
+                Vector3 positionFixed;
+                int index = -1;
+                float distance;
+                for (int i = 0; i < 8; i++)
+                {
+                    if (surroundings[i]!= null && surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                    {
+                        positionFixed = surroundings[i].transform.position;
+                        positionFixed.y = 0;
+                        distance = Vector3.Distance(anthillsPosition, positionFixed);
+                        if (distance < lowestDistance)
+                        {
+                            lowestDistance = distance;
+                            index = i;
+                        }
+                    }
+                }
+                chosenMoveIndex = index;
+                UpdateTargetTile();
+                Move();
+            }
+        }
+
+        else if (other.CompareTag("AntWorker"))
+        {
+            WorkerAnt otherScript = other.GetComponent<WorkerAnt>();
+            if (otherScript.GetOwner() != _owner && !dangerSpotted)
+            {
+                Alarm();
             }
         }
     }
 
+    // Alarm
+    public void SetAnthillsPosition(Vector3 position)
+    {
+        anthillsPosition = position;
+        anthillsPosition.y = 0;
+    }
+
+    void Alarm()
+    {
+        dangerSpotted = true;
+        GoToPreviousTile();
+
+        if (gatherFoodCoroutine != null)
+        {
+            lookingForFood = false;
+            foodInRange = false;
+            StopCoroutine(gatherFoodCoroutine);
+            gatherFoodCoroutine = null;
+            agent.isStopped = false;
+        }
+
+    }
+
+    public bool WantToAlarm() => dangerSpotted ? true : false;
+
+    public void RaiseAlarm()
+    {
+        raiseAlarmCoroutine = StartCoroutine("RaiseAlarmCoroutine");
+    }
+    IEnumerator RaiseAlarmCoroutine()
+    {
+        if (gatherFoodCoroutine != null)
+        {
+            StopCoroutine(gatherFoodCoroutine);
+            gatherFoodCoroutine = null;
+        }
+
+        yield return new WaitForSeconds(1f);                                            // Tests
+        if (anthillScript != null)
+            anthillScript.Alarm();
+
+        if (!WantToStoreFood())
+        {
+            anthillInRange = false;
+            lookingForFood = true;
+            anthillScript = null;
+            agent.isStopped = false;
+        }
+        dangerSpotted = false;
+        raiseAlarmCoroutine = null;
+    }
 
     // Anthill
     public void StoreFood()
@@ -68,7 +160,7 @@ public class WorkerAnt : Ant
     {
         Debug.Log("Storing");
         yield return new WaitForSeconds(storingTime);
-        if (anthillScript != null)
+        if (anthillInRange == true && anthillScript != null)
         {
             if (anthillScript.AddFood(foodGathered))
                 foodGathered = 0;              // should excess food be destroyed?? 
@@ -76,9 +168,10 @@ public class WorkerAnt : Ant
             anthillInRange = false;
             Debug.Log("Got it");
             lookingForFood = true;
-            anthillScript = null;              // null food script
+            anthillScript = null;
             agent.isStopped = false;
         }
+        storeFoodCoroutine = null;
     }
 
     void AnthillFound(Anthill anthill)
@@ -92,7 +185,7 @@ public class WorkerAnt : Ant
         }
     }
 
-    public bool WantToGather() => foodInRange ? true : false;
+    public bool WantToStoreFood() => anthillInRange && foodGathered > 0 ? true : false;
 
 
     // Food
@@ -116,6 +209,7 @@ public class WorkerAnt : Ant
         foodInRange = false;
         lookingForFood = false;
         agent.isStopped = false;
+        gatherFoodCoroutine = null;
     }
 
     void FoundFood(Food food)
@@ -129,7 +223,9 @@ public class WorkerAnt : Ant
         }
     }
 
-    public bool WantToStoreFood() => anthillInRange ? true : false;
+    public bool WantToGather() => foodInRange ? true : false;
+
+
 
 
     // Movement
@@ -207,7 +303,7 @@ public class WorkerAnt : Ant
 
     public void StopAntNearDestination()
     {
-        if (foodInRange || anthillInRange)
+        if (foodInRange || anthillInRange || dangerSpotted)
             agent.isStopped = true;
     }
 

@@ -24,8 +24,12 @@ public class AntsMaster : MonoBehaviour
     public GameObject antWorkerPrefab;
     public GameObject antWarriorPrefab;
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
+    int antWarriorsStacked = 0;
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
 
+
+    // Alarm
+    bool dangerSpotted = false;
 
 
     // Start is called before the first frame update
@@ -43,6 +47,19 @@ public class AntsMaster : MonoBehaviour
     void Update()
     {
 
+    }
+
+    // Alarm
+    public void Alarm()
+    {
+        dangerSpotted = true;
+        if (antWarriorsStacked > 0)
+        {
+            for (int i = 0; i < antWarriorsStacked; i++)
+            {
+                SpawnWarrior();
+            }
+        }
     }
 
     // Ants
@@ -77,6 +94,7 @@ public class AntsMaster : MonoBehaviour
             GameObject newAnt = Instantiate(antWorkerPrefab, position, antWorkerPrefab.transform.rotation);
             WorkerAnt newAntScript = newAnt.GetComponent<WorkerAnt>();
             newAntScript.SetOwner(owner);
+            newAntScript.SetAnthillsPosition(anthill.transform.position);
             antWorkers.Add(newAntScript);
             IncreasePopulation();
         }

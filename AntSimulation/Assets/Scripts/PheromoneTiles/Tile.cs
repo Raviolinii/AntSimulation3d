@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    // Pheromones
     Pheromone workerPheromone = new Pheromone();
     Pheromone workerFoodPheromone = new Pheromone();
     Pheromone warriorPheromone = new Pheromone();
+
+    // Surroundings
+    public Tile[] surroundings = new Tile[8];
+
+    // World Objects
     public WorldObject objectOnTile;
     public SpawnedObject spawnedObjectType;
-    public Tile[] surroundings = new Tile[8];
 
     // Start is called before the first frame update
     void Start()
@@ -23,27 +28,30 @@ public class Tile : MonoBehaviour
 
     }
 
-    public void AddToSurroundings(Tile tile, int index) => surroundings[index] = tile;
+    // Pheromones
     public int GetWorkerPheromoneValue() => workerPheromone.GetPheromoneValue();
     public int GetWorkerFoodPheromoneValue() => workerFoodPheromone.GetPheromoneValue();
     public int GetWarriorPheromoneValue() => warriorPheromone.GetPheromoneValue();
-
     public void AddWorkerPheromone(int value) => workerPheromone.AddPheromone(value);
     public void AddWorkerFoodPheromone(int value) => workerFoodPheromone.AddPheromone(value);
     public void AddWarriorPheromone(int value) => warriorPheromone.AddPheromone(value);
-
     public void DecreasePheromones(int value)
     {
         workerFoodPheromone.DecreasePheromone(value);
         workerPheromone.DecreasePheromone(value);
         warriorPheromone.DecreasePheromone(value);
     }
+
+
+    // Surroundings
+    public Tile GetTile(int index) => surroundings[index];
+    public void AddToSurroundings(Tile tile, int index) => surroundings[index] = tile;
     public Tile[] GetSurroundings() => (Tile[])surroundings.Clone();
     public Tile[] GetSurroundingsNulls(int chosenMoveIndex)
     {
         Tile[] result = (Tile[])surroundings.Clone();
         for (int i = 0; i < 8; i++)
-        {            
+        {
             if (result[i] != null && result[i].GetSpawnedObjectType() == SpawnedObject.obstacle)
                 result[i] = null;
         }
@@ -113,7 +121,8 @@ public class Tile : MonoBehaviour
         return result;
     }
 
-    public Tile GetTile(int index) => surroundings[index];
+
+    // World Objects
     public SpawnedObject GetSpawnedObjectType() => spawnedObjectType;
     public WorldObject GetSpawnedObject() => objectOnTile;
     public void ObjectSpawned(WorldObject objectSpawned, SpawnedObject spawned)

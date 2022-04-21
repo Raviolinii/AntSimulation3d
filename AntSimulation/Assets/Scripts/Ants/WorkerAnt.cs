@@ -70,7 +70,7 @@ public class WorkerAnt : Ant
                 float distance;
                 for (int i = 0; i < 8; i++)
                 {
-                    if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                    if (surroundings[i]!= null && surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                     {
                         positionFixed = surroundings[i].transform.position;
                         positionFixed.y = 0;
@@ -107,9 +107,18 @@ public class WorkerAnt : Ant
 
     void Alarm()
     {
-        lookingForFood = false;
         dangerSpotted = true;
         GoToPreviousTile();
+
+        if (gatherFoodCoroutine != null)
+        {
+            lookingForFood = false;
+            foodInRange = false;
+            StopCoroutine(gatherFoodCoroutine);
+            gatherFoodCoroutine = null;
+            agent.isStopped = false;
+        }
+
     }
 
     public bool WantToAlarm() => dangerSpotted ? true : false;
@@ -120,7 +129,25 @@ public class WorkerAnt : Ant
     }
     IEnumerator RaiseAlarmCoroutine()
     {
+        if (gatherFoodCoroutine != null)
+        {
+            StopCoroutine(gatherFoodCoroutine);
+            gatherFoodCoroutine = null;
+        }
+
         yield return new WaitForSeconds(1f);                                            // Tests
+        if (anthillScript != null)
+            anthillScript.Alarm();
+
+        if (!WantToStoreFood())
+        {
+            anthillInRange = false;
+            lookingForFood = true;
+            anthillScript = null;
+            agent.isStopped = false;
+        }
+        dangerSpotted = false;
+        raiseAlarmCoroutine = null;
     }
 
     // Anthill
@@ -133,7 +160,7 @@ public class WorkerAnt : Ant
     {
         Debug.Log("Storing");
         yield return new WaitForSeconds(storingTime);
-        if (anthillScript != null)
+        if (anthillInRange == true && anthillScript != null)
         {
             if (anthillScript.AddFood(foodGathered))
                 foodGathered = 0;              // should excess food be destroyed?? 
@@ -141,9 +168,10 @@ public class WorkerAnt : Ant
             anthillInRange = false;
             Debug.Log("Got it");
             lookingForFood = true;
-            anthillScript = null;              // null food script
+            anthillScript = null;
             agent.isStopped = false;
         }
+        storeFoodCoroutine = null;
     }
 
     void AnthillFound(Anthill anthill)
@@ -157,7 +185,7 @@ public class WorkerAnt : Ant
         }
     }
 
-    public bool WantToGather() => foodInRange ? true : false;
+    public bool WantToStoreFood() => anthillInRange && foodGathered > 0 ? true : false;
 
 
     // Food
@@ -181,6 +209,7 @@ public class WorkerAnt : Ant
         foodInRange = false;
         lookingForFood = false;
         agent.isStopped = false;
+        gatherFoodCoroutine = null;
     }
 
     void FoundFood(Food food)
@@ -194,7 +223,9 @@ public class WorkerAnt : Ant
         }
     }
 
-    public bool WantToStoreFood() => anthillInRange ? true : false;
+    public bool WantToGather() => foodInRange ? true : false;
+
+
 
 
     // Movement

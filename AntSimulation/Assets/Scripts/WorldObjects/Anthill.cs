@@ -35,14 +35,12 @@ public class Anthill : WorldObject
 
             if (!workerScript.WantToAlarm() && !workerScript.WantToStoreFood())
                 return;
-            else
+
             if (workerScript.WantToAlarm())
             {
                 workerScript.StopAntNearDestination();
                 workerScript.GoToPreviousTile();
-                Alarm();
-                if (!workerScript.WantToGather())
-                    workerScript.RaiseAlarm();
+                workerScript.RaiseAlarm();
             }
 
             if (workerScript.WantToStoreFood())
@@ -56,7 +54,7 @@ public class Anthill : WorldObject
 
 
     // Owner
-    public void SetMaster(AntsMaster master) => antsMaster = master; 
+    public void SetMaster(AntsMaster master) => antsMaster = master;
     public void SetOwner(Owner owner) => _owner = owner;
     public Owner GetOwner() => _owner;
 

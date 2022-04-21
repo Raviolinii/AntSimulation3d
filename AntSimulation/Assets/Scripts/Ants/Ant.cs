@@ -7,6 +7,7 @@ public abstract class Ant : MonoBehaviour
 {
     // Owner
     public Owner _owner;
+    protected AntsMaster _master;
 
 
     // Movement
@@ -111,6 +112,9 @@ public abstract class Ant : MonoBehaviour
     public Owner GetOwner() => _owner;
     public void SetOwner(Owner owner) => _owner = owner;
 
+    public AntsMaster GetAntsMaster() => _master;
+    public void SetMaster(AntsMaster master) => _master = master;
+
 
     // Fight
     public int GetHp() => hp;
@@ -145,6 +149,7 @@ public abstract class Ant : MonoBehaviour
 
     protected void Dead()
     {
+        _master.DecreasePopulation();
         Destroy(gameObject);
     }
     

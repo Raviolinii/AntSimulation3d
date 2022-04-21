@@ -86,11 +86,10 @@ public class AntsMaster : MonoBehaviour
     {
         if (CanAddAnt())
         {
-            Tile anthillTile = anthill.GetTile();
-            Tile[] surroundings = anthillTile.GetSurroundings();
+            Tile[] surroundings = anthill.GetSurroundings();
             int maxFoodPheromone = -1;
-            int index = 6;
-            for (int i = 0; i < 7; i++)
+            int index = -1;
+            for (int i = 0; i < 16; i++)
             {
                 if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                 {
@@ -102,8 +101,10 @@ public class AntsMaster : MonoBehaviour
                     }
                 }
             }
+            
             Vector3 position = surroundings[index].transform.position;
             position = AsignYPosition(position);
+
             GameObject newAnt = Instantiate(antWorkerPrefab, position, antWorkerPrefab.transform.rotation);
             WorkerAnt newAntScript = newAnt.GetComponent<WorkerAnt>();
             newAntScript.SetOwner(owner);
@@ -117,11 +118,10 @@ public class AntsMaster : MonoBehaviour
     {
         if (CanAddAnt())
         {
-            Tile anthillTile = anthill.GetTile();
-            Tile[] surroundings = anthillTile.GetSurroundings();
+            Tile[] surroundings = anthill.GetSurroundings();
             int maxWarriorPheromone = -1;
-            int index = 6;
-            for (int i = 0; i < 7; i++)
+            int index = -1;
+            for (int i = 0; i < 16; i++)
             {
                 if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                 {

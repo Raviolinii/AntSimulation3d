@@ -30,7 +30,7 @@ public class PheromoneMap : MonoBehaviour
 
         Invoke("TestSpawnFood", 1.5f);
         Invoke("TestSpawnAnthill", 1.5f);
-        
+
     }
 
     // Update is called once per frame
@@ -41,7 +41,7 @@ public class PheromoneMap : MonoBehaviour
 
     // World Objects
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
-    void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 3);
+    void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 4);
     void SpawnFoodAtIndex(int i, int j)
     {
         Vector3 position = tileMap[i, j].transform.position;
@@ -57,7 +57,8 @@ public class PheromoneMap : MonoBehaviour
         Vector3 position = tileMap[i, j].transform.position;
         position.y = Terrain.activeTerrain.SampleHeight(position);
 
-        Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation);
+        Anthill spawned = Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation).GetComponent<Anthill>();
+        spawned.SetTile(tileMap[i, j]);
     }
 
     // Map
@@ -121,6 +122,7 @@ public class PheromoneMap : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
+                //Debug.Log(tileMap[i,j].GetWorkerPheromoneValue());
                 tileMap[i, j].DecreasePheromones(pheromoneDecreseValue);
             }
         }

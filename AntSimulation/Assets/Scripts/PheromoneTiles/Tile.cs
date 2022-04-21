@@ -47,6 +47,7 @@ public class Tile : MonoBehaviour
     public Tile GetTile(int index) => surroundings[index];
     public void AddToSurroundings(Tile tile, int index) => surroundings[index] = tile;
     public Tile[] GetSurroundings() => (Tile[])surroundings.Clone();
+    public Tile[] GetActualSurroundings() => (Tile[])surroundings;
     public Tile[] GetSurroundingsNulls(int chosenMoveIndex)
     {
         Tile[] result = (Tile[])surroundings.Clone();

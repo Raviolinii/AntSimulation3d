@@ -5,7 +5,7 @@ using static Tile;
 
 public class WorldObject : MonoBehaviour
 {
-    protected Tile _tile;
+    public Tile _tile;
     protected SphereCollider stoppingDistance;
     protected SpawnedObject typeOfObject;
     // Start is called before the first frame update
@@ -24,9 +24,9 @@ public class WorldObject : MonoBehaviour
     {
         if (other.CompareTag("Tile"))
         {
-            _tile = other.GetComponent<Tile>();
-            _tile.ObjectSpawned(this, typeOfObject);
-            Debug.Log(_tile);
+            Tile tileScript = other.GetComponent<Tile>();
+            tileScript.ObjectSpawned(this, typeOfObject);
+            Debug.Log(tileScript);
         }
     }
     protected virtual void OnDestroy()
@@ -34,6 +34,6 @@ public class WorldObject : MonoBehaviour
         _tile.ObjectDestroyed();
     }
 
-    public void SetTile(Tile tile) => _tile = tile;
+    public virtual void SetTile(Tile tile) => _tile = tile;
     public Tile GetTile() => _tile;
 }

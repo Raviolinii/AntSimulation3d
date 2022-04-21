@@ -12,6 +12,9 @@ public class Anthill : WorldObject
     // Alarm
     bool dangerSpotted = false;
 
+    // Tiles
+    public Tile[] surroundings = new Tile[16];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,4 +75,52 @@ public class Anthill : WorldObject
             antsMaster.Alarm();
         }
     }
+
+
+    // Destroy
+    protected override void OnDestroy()
+    {
+        Tile[] otherParts = _tile.GetActualSurroundings();
+        for (int i = 0; i < 8; i++)
+        {
+            otherParts[i].ObjectDestroyed();
+        }
+        base.OnDestroy();
+    }
+
+
+    // Tiles
+    public override void SetTile(Tile tile)
+    {
+        base.SetTile(tile);
+        AsignSurroundings();
+    }
+
+    private void AsignSurroundings()
+    {
+        Tile current = _tile.GetTile(0);
+        surroundings[0] = current.GetTile(0);
+        surroundings[1] = current.GetTile(1);
+        surroundings[2] = current.GetTile(2);
+        surroundings[5] = current.GetTile(3);
+        surroundings[7] = current.GetTile(5);
+
+        current = _tile.GetTile(2);
+        surroundings[3] = current.GetTile(1);
+        surroundings[4] = current.GetTile(2);
+        surroundings[6] = current.GetTile(4);
+        surroundings[8] = current.GetTile(7);
+
+        current = _tile.GetTile(5);
+        surroundings[9] = current.GetTile(3);
+        surroundings[11] = current.GetTile(5);
+        surroundings[12] = current.GetTile(6);
+
+        current = _tile.GetTile(7);
+        surroundings[10] = current.GetTile(4);
+        surroundings[13] = current.GetTile(5);
+        surroundings[14] = current.GetTile(6);
+        surroundings[15] = current.GetTile(7);
+    }
+    public Tile[] GetSurroundings() => surroundings;
 }

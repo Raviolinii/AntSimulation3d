@@ -82,6 +82,17 @@ public class AntWarrior : Ant
         ChosenIndexValidation(index);
     }
 
+    protected override void ChosenIndexValidation(int index)
+    {
+        if (index != -1)
+            chosenMoveIndex = index;
+        else
+        {
+            surroundings = tileScript.GetSurroundings();
+            ChoseMoveIndex();
+        }
+    }
+
 
     // Fight
     void AntDetected(Collider ant)

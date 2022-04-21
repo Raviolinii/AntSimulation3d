@@ -29,6 +29,7 @@ public class AntsMaster : MonoBehaviour
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     public int warriorsStacked = 0;
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
+    float movementRange = 50f;
 
 
     // Buy Ants

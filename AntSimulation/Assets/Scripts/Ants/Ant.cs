@@ -98,17 +98,7 @@ public abstract class Ant : MonoBehaviour
         return -1;
     }
 
-    protected void ChosenIndexValidation(int index)
-    {
-        if (index != -1)
-            chosenMoveIndex = index;
-        else
-        {
-            surroundings = tileScript.GetSurroundings();
-            ChoseMoveIndex();
-        }
-    }
-
+    protected abstract void ChosenIndexValidation(int index);
     protected void GoToNextTile()
     {
         ChoseMoveIndex();

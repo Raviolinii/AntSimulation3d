@@ -26,6 +26,9 @@ public class WorkerAnt : Ant
     Vector3 anthillsPosition;
     Coroutine raiseAlarmCoroutine;
 
+    // Movement
+    float movementRange = 50;
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -80,28 +83,7 @@ public class WorkerAnt : Ant
                     }
                     else
                     {
-                        surroundings = tileScript.GetSurroundings();
-                        float lowestDistance = float.MaxValue;
-                        Vector3 positionFixed;
-                        int index = -1;
-                        float distance;
-                        for (int i = 0; i < 8; i++)
-                        {
-                            if (surroundings[i] != null && surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
-                            {
-                                positionFixed = surroundings[i].transform.position;
-                                positionFixed.y = 0;
-                                distance = Vector3.Distance(anthillsPosition, positionFixed);
-                                if (distance < lowestDistance)
-                                {
-                                    lowestDistance = distance;
-                                    index = i;
-                                }
-                            }
-                        }
-                        chosenMoveIndex = index;
-                        UpdateTargetTile();
-                        Move();
+                        MoveCloserToAnthill();
                     }
                 }
             }
@@ -248,7 +230,42 @@ public class WorkerAnt : Ant
 
 
     // Movement
+    void MoveCloserToAnthill()
+    {
+        surroundings = tileScript.GetSurroundings();
+        float lowestDistance = float.MaxValue;
+        Vector3 positionFixed;
+        int index = -1;
+        float distance;
+        for (int i = 0; i < 8; i++)
+        {
+            if (surroundings[i] != null && surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+            {
+                positionFixed = surroundings[i].transform.position;
+                positionFixed.y = 0;
+                distance = Vector3.Distance(anthillsPosition, positionFixed);
+                if (distance < lowestDistance)
+                {
+                    lowestDistance = distance;
+                    index = i;
+                }
+            }
+        }
+        chosenMoveIndex = index;
+        UpdateTargetTile();
+        Move();
+    }
+
     public void SetTargetTile(Vector3 target) => targetTile = target;
+    protected override void ChosenIndexValidation(int index)
+    {
+        if (index != -1)
+            chosenMoveIndex = index;
+        else
+        {
+            MoveCloserToAnthill();
+        }
+    }
 
     protected override void ChoseMoveIndex()
     {
@@ -267,6 +284,8 @@ public class WorkerAnt : Ant
     void NotLookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
     {
         int rand;
+        float distance;
+        Vector3 tilePosition;
         for (int i = 0; i < 8; i++)
         {
             if (surroundings[i] != null && ((int)surroundings[i].GetSpawnedObjectType() < 2))   // 0 is a free space, 1 is anthill, 2 is food, 3 is obstacle
@@ -281,9 +300,18 @@ public class WorkerAnt : Ant
                         return;
                     }
                 }
-                pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
-                sum += (int)pheromoneValues[i] + 1;
-                pheromoneValues[i] = sum;
+                tilePosition = surroundings[i].transform.position;
+                tilePosition.y = 0;
+                distance = Vector3.Distance(anthillsPosition, tilePosition);
+
+                if (distance <= movementRange)
+                {
+                    pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
+                    sum += (int)pheromoneValues[i] + 1;
+                    pheromoneValues[i] = sum;
+                }
+                else
+                    pheromoneValues[i] = null;
             }
         }
 
@@ -295,6 +323,8 @@ public class WorkerAnt : Ant
     void LookingForFoodMoveIndex(int?[] pheromoneValues, int sum)
     {
         int rand;
+        float distance;
+        Vector3 tilePosition;
         for (int i = 0; i < 8; i++)
         {
             if (surroundings[i] != null)
@@ -308,9 +338,18 @@ public class WorkerAnt : Ant
                 }
                 else if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                 {
-                    pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
-                    sum += (int)pheromoneValues[i] + 1;
-                    pheromoneValues[i] = sum;
+                    tilePosition = surroundings[i].transform.position;
+                    tilePosition.y = 0;
+                    distance = Vector3.Distance(anthillsPosition, tilePosition);
+
+                    if (distance <= movementRange)
+                    {
+                        pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
+                        sum += (int)pheromoneValues[i] + 1;
+                        pheromoneValues[i] = sum;
+                    }
+                    else
+                        pheromoneValues[i] = null;
                 }
             }
         }

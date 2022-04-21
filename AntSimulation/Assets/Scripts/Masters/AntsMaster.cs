@@ -8,28 +8,36 @@ public class AntsMaster : MonoBehaviour
     protected Anthill anthill;
     protected Owner owner;
 
+
     // Food
-    int maxFoodAmount = 300;
+    int maxFoodAmount = 540;
     public int foodGathered;
     int maxReachableFoodAmount = 2_000;
     protected int foodIncreaseValue;
 
+
     // Population
     protected int population = 0;
-    protected int maxPopulation = 400;
-    protected int maxReachablePopulation = 400;
+    protected int maxPopulation = 10;
+    protected int maxReachablePopulation = 50;
     protected int populationIncreaseValue = 5;
+
 
     // Ants
     public GameObject antWorkerPrefab;
     public GameObject antWarriorPrefab;
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
-    int antWarriorsStacked = 0;
+    public int warriorsStacked = 0;
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
 
 
+    // Buy Ants
+    int workerPrice = 60;
+    int warriorPrice = 120;
+
+
     // Alarm
-    bool dangerSpotted = false;
+    public bool dangerSpotted = false;
 
 
     // Start is called before the first frame update
@@ -38,8 +46,15 @@ public class AntsMaster : MonoBehaviour
         owner = Owner.player;
         Invoke("FindAnthill", 2f);
         Invoke("SetAnthillMaster", 2.2f);
-        Invoke("SpawnWorker", 2.5f);
-        Invoke("SpawnWarrior", 2.5f);
+        //Invoke("SpawnWorker", 2.5f);
+        //Invoke("SpawnWarrior", 2.5f);
+        AddFood(540);
+        Invoke("BuyWorker", 2.5f);
+        Invoke("BuyWarrior", 2.5f);        
+        Invoke("BuyWorker", 4.5f);
+        Invoke("BuyWarrior", 4.5f);        
+        Invoke("BuyWorker", 6.5f);
+        Invoke("BuyWarrior", 6.5f);
         //Invoke("Zerg", 2.5f);
 
     }
@@ -62,13 +77,38 @@ public class AntsMaster : MonoBehaviour
 
     }
 
+
+    // Buy Ants
+    public void BuyWorker()
+    {
+        if (CanAddAnt() && foodGathered >= workerPrice)
+        {
+            foodGathered -= workerPrice;
+            SpawnWorker();
+        }
+    }
+
+    public void BuyWarrior()
+    {
+        if (CanAddAnt() && foodGathered >= warriorPrice)
+        {
+            foodGathered -= warriorPrice;
+
+            if (!dangerSpotted)
+                warriorsStacked++;
+            
+            else
+                SpawnWarrior();
+        }
+    }
+
     // Alarm
     public void Alarm()
     {
         dangerSpotted = true;
-        if (antWarriorsStacked > 0)
+        if (warriorsStacked > 0)
         {
-            for (int i = 0; i < antWarriorsStacked; i++)
+            for (int i = 0; i < warriorsStacked; i++)
             {
                 SpawnWarrior();
             }
@@ -101,7 +141,7 @@ public class AntsMaster : MonoBehaviour
                     }
                 }
             }
-            
+
             Vector3 position = surroundings[index].transform.position;
             position = AsignYPosition(position);
 

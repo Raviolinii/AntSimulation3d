@@ -17,7 +17,7 @@ public class WorkerAnt : Ant
 
     // Anthill
     public bool anthillInRange = false;
-    Anthill anthillScript;
+    public Anthill anthillScript;
     float storingTime = 1.5f;
     Coroutine storeFoodCoroutine;
 
@@ -43,53 +43,66 @@ public class WorkerAnt : Ant
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Tile") && !anthillInRange)
+        if (other.CompareTag("Tile"))
         {
+            previousTile = currentTile;
+            currentTile = other.transform.position;
+
+            tileScript = other.GetComponent<Tile>();
+            if (lookingForFood)
+                tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
+            else if (!dangerSpotted)
+                tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
+            else
+                tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
             if (foodInRange && foodScript == null)
                 foodInRange = false;
 
-            if (!foodInRange)
+            if (!anthillInRange)
             {
-                previousTile = currentTile;
-                currentTile = other.transform.position;
-
-                tileScript = other.GetComponent<Tile>();
-                if (lookingForFood)
-                    tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
-                else if (!dangerSpotted)
-                    tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
-                else
-                    tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
-
-                surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
-                if (!foodInRange && !dangerSpotted)
+                if (!foodInRange)
                 {
-                    GoToNextTile();
-                }
-                else if (!foodInRange && dangerSpotted)
-                {
-                    surroundings = tileScript.GetSurroundings();
-                    float lowestDistance = float.MaxValue;
-                    Vector3 positionFixed;
-                    int index = -1;
-                    float distance;
-                    for (int i = 0; i < 8; i++)
+                    /*                 previousTile = currentTile;
+                                    currentTile = other.transform.position;
+
+                                    tileScript = other.GetComponent<Tile>();
+                                    if (lookingForFood)
+                                        tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
+                                    else if (!dangerSpotted)
+                                        tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
+                                    else
+                                        tileScript.AddWarriorPheromone(pheromoneLeaveAmount); */
+
+                    surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
+                    if (!dangerSpotted)
                     {
-                        if (surroundings[i] != null && surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                        GoToNextTile();
+                    }
+                    else
+                    {
+                        surroundings = tileScript.GetSurroundings();
+                        float lowestDistance = float.MaxValue;
+                        Vector3 positionFixed;
+                        int index = -1;
+                        float distance;
+                        for (int i = 0; i < 8; i++)
                         {
-                            positionFixed = surroundings[i].transform.position;
-                            positionFixed.y = 0;
-                            distance = Vector3.Distance(anthillsPosition, positionFixed);
-                            if (distance < lowestDistance)
+                            if (surroundings[i] != null && surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                             {
-                                lowestDistance = distance;
-                                index = i;
+                                positionFixed = surroundings[i].transform.position;
+                                positionFixed.y = 0;
+                                distance = Vector3.Distance(anthillsPosition, positionFixed);
+                                if (distance < lowestDistance)
+                                {
+                                    lowestDistance = distance;
+                                    index = i;
+                                }
                             }
                         }
+                        chosenMoveIndex = index;
+                        UpdateTargetTile();
+                        Move();
                     }
-                    chosenMoveIndex = index;
-                    UpdateTargetTile();
-                    Move();
                 }
             }
         }
@@ -191,6 +204,8 @@ public class WorkerAnt : Ant
 
     public bool WantToStoreFood() => anthillInRange ? true : false;
     //public bool WantToStoreFood() => anthillInRange && foodGathered > 0 ? true : false;
+
+    public void SetAnthillScript(Anthill script) => anthillScript = script;
 
 
     // Food

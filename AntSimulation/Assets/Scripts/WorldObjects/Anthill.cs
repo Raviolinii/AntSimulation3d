@@ -41,8 +41,10 @@ public class Anthill : WorldObject
 
             if (workerScript.WantToAlarm())
             {
+                Debug.Log("Wants to alarm");
                 workerScript.StopAntNearDestination();
                 workerScript.GoToPreviousTile();
+                workerScript.SetAnthillScript(this);
                 workerScript.RaiseAlarm();
             }
 
@@ -71,6 +73,7 @@ public class Anthill : WorldObject
     {
         if (!dangerSpotted)
         {
+            Debug.Log("Alarm from anthill");
             dangerSpotted = true;
             antsMaster.Alarm();
         }

@@ -16,8 +16,8 @@ public class AntsMaster : MonoBehaviour
 
     // Population
     protected int population = 0;
-    protected int maxPopulation = 10;
-    protected int maxReachablePopulation = 20;
+    protected int maxPopulation = 400;
+    protected int maxReachablePopulation = 400;
     protected int populationIncreaseValue = 5;
 
     // Ants
@@ -40,7 +40,20 @@ public class AntsMaster : MonoBehaviour
         Invoke("SetAnthillMaster", 2.2f);
         Invoke("SpawnWorker", 2.5f);
         Invoke("SpawnWarrior", 2.5f);
+        //Invoke("Zerg", 2.5f);
 
+    }
+
+    void Zerg()
+    {
+        for (int i = 0; i < 70; i++)
+        {
+            SpawnWorker();
+        }
+        for (int i = 0; i < 30; i++)
+        {
+            SpawnWarrior();
+        }
     }
 
     // Update is called once per frame
@@ -183,7 +196,7 @@ public class AntsMaster : MonoBehaviour
             return false;
         }
     }
-    
+
     public bool SpendFood(int value)
     {
         if (foodGathered >= value)

@@ -19,7 +19,6 @@ public class Anthill : WorldObject
     void Start()
     {
         stoppingDistance = GetComponentInChildren<SphereCollider>();
-        typeOfObject = SpawnedObject.anthill;
     }
 
     // Update is called once per frame
@@ -41,7 +40,7 @@ public class Anthill : WorldObject
 
             if (workerScript.WantToAlarm())
             {
-                Debug.Log("Wants to alarm");
+                //Debug.Log("Wants to alarm");
                 workerScript.StopAntNearDestination();
                 workerScript.GoToPreviousTile();
                 workerScript.SetAnthillScript(this);
@@ -73,7 +72,7 @@ public class Anthill : WorldObject
     {
         if (!dangerSpotted)
         {
-            Debug.Log("Alarm from anthill");
+            //Debug.Log("Alarm from anthill");
             dangerSpotted = true;
             antsMaster.Alarm();
         }

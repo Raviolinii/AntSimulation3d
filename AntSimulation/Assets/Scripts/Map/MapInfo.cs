@@ -17,12 +17,6 @@ public class MapInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(Random.Range(0, 2));
-        Debug.Log(Random.Range(0, 2));
-        Debug.Log(Random.Range(0, 2));
-        Debug.Log(Random.Range(0, 2));
-        Debug.Log(Random.Range(0, 2));
-        Debug.Log(Random.Range(0, 2));
         map = new int[height, width];
     }
 
@@ -156,7 +150,6 @@ public class MapInfo : MonoBehaviour
         {
             for (int y = -1; y < 2; y++)
             {
-                Debug.Log($"j: {i}, x: {x}, i: {j}, y: {y}");
                 if (map[i + x, j + y] != 0)
                     return false;
             }

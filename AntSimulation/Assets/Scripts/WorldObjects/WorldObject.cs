@@ -7,7 +7,7 @@ public class WorldObject : MonoBehaviour
 {
     public Tile _tile;
     protected SphereCollider stoppingDistance;
-    protected SpawnedObject typeOfObject;
+    public SpawnedObject typeOfObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +26,6 @@ public class WorldObject : MonoBehaviour
         {
             Tile tileScript = other.GetComponent<Tile>();
             tileScript.ObjectSpawned(this, typeOfObject);
-            Debug.Log(tileScript);
         }
     }
     protected virtual void OnDestroy()

@@ -136,7 +136,7 @@ public abstract class Ant : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        Debug.Log("Dmg");
+        //Debug.Log("Dmg");
         if (target != null)
             target.DecreseHp(dmg);
         inFight = false;
@@ -157,7 +157,7 @@ public abstract class Ant : MonoBehaviour
     {
         if (!inFight)
         {
-            Debug.Log("InFight");
+            //Debug.Log("InFight");
             inFight = true;
             agent.isStopped = true;
             

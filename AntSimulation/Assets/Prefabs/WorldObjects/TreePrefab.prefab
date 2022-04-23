@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tile: {fileID: 0}
+  typeOfObject: 3
 --- !u!65 &4729129593272676965
 BoxCollider:
   m_ObjectHideFlags: 0

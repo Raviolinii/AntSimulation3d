@@ -271,7 +271,7 @@ public class AntsMaster : MonoBehaviour
             if (anthillsFound[i].GetOwner() == owner)
                 anthill = anthillsFound[i];
         }
-        Debug.Log(anthill);
+        //Debug.Log(anthill);
     }
 
 

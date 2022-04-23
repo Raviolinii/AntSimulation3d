@@ -99,6 +99,7 @@ public class WorkerAnt : Ant
         }
     }
 
+
     // Alarm
     public void SetAnthillsPosition(Vector3 position)
     {
@@ -150,6 +151,7 @@ public class WorkerAnt : Ant
         dangerSpotted = false;
         raiseAlarmCoroutine = null;
     }
+
 
     // Anthill
     public void StoreFood()
@@ -225,8 +227,6 @@ public class WorkerAnt : Ant
     }
 
     public bool WantToGather() => foodInRange ? true : false;
-
-
 
 
     // Movement
@@ -365,4 +365,5 @@ public class WorkerAnt : Ant
             agent.isStopped = true;
     }
 
+    public void SetMovementRange(int value) => movementRange = value;
 }

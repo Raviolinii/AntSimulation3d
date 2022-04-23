@@ -29,7 +29,7 @@ public class AntsMaster : MonoBehaviour
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     public int warriorsStacked = 0;
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
-    float movementRange = 50f;
+    int movementRange = 50;
 
 
     // Buy Ants
@@ -42,11 +42,11 @@ public class AntsMaster : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        owner = Owner.player;
         Invoke("FindAnthill", 2f);
         Invoke("SetAnthillMaster", 2.2f);
+
         //Invoke("SpawnWorker", 2.5f);
         //Invoke("SpawnWarrior", 2.5f);
         AddFood(540);
@@ -150,6 +150,8 @@ public class AntsMaster : MonoBehaviour
             WorkerAnt newAntScript = newAnt.GetComponent<WorkerAnt>();
             newAntScript.SetOwner(owner);
             newAntScript.SetAnthillsPosition(anthill.transform.position);
+            newAntScript.SetMovementRange(movementRange);
+            newAntScript.SetMaster(this);
             antWorkers.Add(newAntScript);
             IncreasePopulation();
         }
@@ -179,11 +181,20 @@ public class AntsMaster : MonoBehaviour
             GameObject newAnt = Instantiate(antWarriorPrefab, position, antWarriorPrefab.transform.rotation);
             AntWarrior newAntScript = newAnt.GetComponent<AntWarrior>();
             newAntScript.SetOwner(owner);
+            newAntScript.SetMaster(this);
             antWarriors.Add(newAntScript);
             IncreasePopulation();
         }
     }
 
+    public void SetMovementRange(int value)
+    {
+        movementRange = value;
+        for(int i = 0; i < antWorkers.Count; i++)
+        {
+            antWorkers[i].SetMovementRange(value);
+        }
+    }
 
     // Population
     public int GetPopulation() => population;

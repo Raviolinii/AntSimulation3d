@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1918236352758603739}
   - component: {fileID: 1918236352758603740}
-  - component: {fileID: 5914971621103876775}
+  - component: {fileID: 7751625944412234936}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -51,7 +51,7 @@ MonoBehaviour:
   scrollSpeed: 20
   minScroll: 20
   maxScroll: 120
---- !u!114 &5914971621103876775
+--- !u!114 &7751625944412234936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,12 +60,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1918236352758603738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61d0ff85bbf346c45b10f83be0a0629e, type: 3}
+  m_Script: {fileID: 11500000, guid: fe0e280e76b3d684eb0571e59f49ecb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   foodGathered: 0
   antWorkerPrefab: {fileID: 3286779821155920880, guid: a787d39b50ce7db4e99124ca82a99d20, type: 3}
   antWarriorPrefab: {fileID: 7800207842538972470, guid: c0a465b2c8df36e4c9a6f80d197e05c4, type: 3}
+  warriorsStacked: 0
+  dangerSpotted: 0
 --- !u!1 &1918236353500055937
 GameObject:
   m_ObjectHideFlags: 0

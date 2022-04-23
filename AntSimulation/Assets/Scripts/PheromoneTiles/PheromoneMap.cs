@@ -29,7 +29,8 @@ public class PheromoneMap : MonoBehaviour
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
 
         Invoke("TestSpawnFood", 1.5f);
-        Invoke("TestSpawnAnthill", 1.5f);
+        Invoke("TestSpawnPlayersAnthill", 1.5f);
+        Invoke("TestSpawnAiAnthill", 1.5f);
 
     }
 
@@ -41,7 +42,8 @@ public class PheromoneMap : MonoBehaviour
 
     // World Objects
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
-    void TestSpawnAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 4);
+    void TestSpawnPlayersAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 4);
+    void TestSpawnAiAnthill() => SpawnAnthillAtIndex(Owner.AI, 20, 20);
     void SpawnFoodAtIndex(int i, int j)
     {
         Vector3 position = tileMap[i, j].transform.position;

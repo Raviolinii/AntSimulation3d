@@ -18,6 +18,7 @@ public class PheromoneMap : MonoBehaviour
     // World Objects
     public GameObject foodPrefab;
     public GameObject anthillPrefab;
+    public GameObject treePrefab;
 
 
     // Start is called before the first frame update
@@ -31,6 +32,7 @@ public class PheromoneMap : MonoBehaviour
         Invoke("TestSpawnFood", 1.5f);
         Invoke("TestSpawnPlayersAnthill", 1.5f);
         Invoke("TestSpawnAiAnthill", 1.5f);
+        Invoke("TestSpawnTrees", 1.5f);
 
     }
 
@@ -44,6 +46,14 @@ public class PheromoneMap : MonoBehaviour
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
     void TestSpawnPlayersAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 4);
     void TestSpawnAiAnthill() => SpawnAnthillAtIndex(Owner.AI, 20, 20);
+    void TestSpawnTrees()
+    {
+        SpawnTreeAtIndex(0,0);
+        SpawnTreeAtIndex(10,6);
+        SpawnTreeAtIndex(8,14);
+        SpawnTreeAtIndex(14,15);
+        SpawnTreeAtIndex(17,24);
+    }
     void SpawnFoodAtIndex(int i, int j)
     {
         Vector3 position = tileMap[i, j].transform.position;
@@ -61,6 +71,14 @@ public class PheromoneMap : MonoBehaviour
 
         Anthill spawned = Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation).GetComponent<Anthill>();
         spawned.SetTile(tileMap[i, j]);
+    }
+
+    void SpawnTreeAtIndex(int i, int j)
+    {
+        Vector3 position = tileMap[i, j].transform.position;
+        position.y = Terrain.activeTerrain.SampleHeight(position);
+
+        Instantiate(treePrefab, position, treePrefab.transform.rotation);
     }
 
     // Map

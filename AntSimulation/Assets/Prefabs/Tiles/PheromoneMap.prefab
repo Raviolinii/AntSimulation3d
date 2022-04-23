@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6317467282697957068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6317467282697957070}
+  - component: {fileID: 6317467282697957069}
+  m_Layer: 0
+  m_Name: PheromoneMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6317467282697957070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317467282697957068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6317467282697957069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317467282697957068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6cc596f4b4e31468e2bf52e7301681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tile: {fileID: 8841845960278720627, guid: 5ae4acbaf91b67f409a3353072d62b52, type: 3}
+  foodPrefab: {fileID: 4522986440629134478, guid: 3b3de57570e8e204b95a7522de692224, type: 3}
+  anthillPrefab: {fileID: 7078397792803786314, guid: 99c9d35d8c0bbf5458259c8b93f8866b, type: 3}
+  treePrefab: {fileID: 2370524701010018709, guid: c772a66946e5dc045948e6c0e0f7a16d, type: 3}

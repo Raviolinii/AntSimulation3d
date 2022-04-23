@@ -27,9 +27,19 @@ public class AntsMaster : MonoBehaviour
     public GameObject antWorkerPrefab;
     public GameObject antWarriorPrefab;
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
-    public int warriorsStacked = 0;
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
     int movementRange = 50;
+    public int warriorsStacked = 0;
+
+
+    // Coroutine Ants
+    Coroutine workerSpawnCoroutine;
+    Coroutine warriorSpawnCoroutine;
+    float workerSpawnDelay = 1.5f;
+    float warriorSpawnDelay = 1.5f;
+    public int workersQueued = 0;
+    public int warriorsQueued = 0;
+    Queue<IEnumerator> workersQueue = new Queue<IEnumerator>();
 
 
     // Buy Ants
@@ -49,12 +59,15 @@ public class AntsMaster : MonoBehaviour
 
         //Invoke("SpawnWorker", 2.5f);
         //Invoke("SpawnWarrior", 2.5f);
+
         AddFood(540);
+
         Invoke("BuyWorker", 2.5f);
-        Invoke("BuyWarrior", 2.5f);        
-        Invoke("BuyWorker", 4.5f);
-        Invoke("BuyWarrior", 4.5f);        
-        Invoke("BuyWorker", 6.5f);
+        Invoke("BuyWorker", 2.5f);
+        Invoke("BuyWorker", 2.5f);
+
+        Invoke("BuyWarrior", 2.5f);
+        Invoke("BuyWarrior", 4.5f);
         Invoke("BuyWarrior", 6.5f);
         //Invoke("Zerg", 2.5f);
 
@@ -85,7 +98,12 @@ public class AntsMaster : MonoBehaviour
         if (CanAddAnt() && foodGathered >= workerPrice)
         {
             foodGathered -= workerPrice;
-            SpawnWorker();
+            workersQueued++;
+
+            if (workerSpawnCoroutine == null)
+            {
+                workerSpawnCoroutine = StartCoroutine(WorkerSpawnIEnumerator());
+            }
         }
     }
 
@@ -94,27 +112,58 @@ public class AntsMaster : MonoBehaviour
         if (CanAddAnt() && foodGathered >= warriorPrice)
         {
             foodGathered -= warriorPrice;
+            warriorsQueued++;
 
-            if (!dangerSpotted)
-                warriorsStacked++;
-            
-            else
-                SpawnWarrior();
+            if (dangerSpotted)
+            {
+                if (warriorSpawnCoroutine == null && warriorsQueued > 0)
+                {
+                    warriorSpawnCoroutine = StartCoroutine(WarriorSpawnIEnumerator());
+                }
+            }
         }
     }
+
 
     // Alarm
     public void Alarm()
     {
         dangerSpotted = true;
-        if (warriorsStacked > 0)
-        {
-            for (int i = 0; i < warriorsStacked; i++)
-            {
-                SpawnWarrior();
-            }
-        }
+        if (warriorsQueued > 0 && warriorSpawnCoroutine == null)
+            warriorSpawnCoroutine = StartCoroutine(WarriorSpawnIEnumerator());
+
     }
+
+
+    // Coroutine Ants
+
+    IEnumerator WorkerSpawnIEnumerator()
+    {
+        workersQueued--;
+        yield return new WaitForSeconds(workerSpawnDelay);
+        
+        SpawnWorker();
+
+        if (workersQueued > 0)
+            workerSpawnCoroutine = StartCoroutine(WorkerSpawnIEnumerator());
+
+        else
+            workerSpawnCoroutine = null;
+    }
+
+    IEnumerator WarriorSpawnIEnumerator()
+    {
+        warriorsQueued--;
+        yield return new WaitForSeconds(warriorSpawnDelay);
+
+        SpawnWarrior();
+
+        if (warriorsQueued > 0)
+            warriorSpawnCoroutine = StartCoroutine(WarriorSpawnIEnumerator());
+        else
+            warriorSpawnCoroutine = null;
+    }
+
 
     // Ants
     Vector3 AsignYPosition(Vector3 position)
@@ -190,7 +239,7 @@ public class AntsMaster : MonoBehaviour
     public void SetMovementRange(int value)
     {
         movementRange = value;
-        for(int i = 0; i < antWorkers.Count; i++)
+        for (int i = 0; i < antWorkers.Count; i++)
         {
             antWorkers[i].SetMovementRange(value);
         }

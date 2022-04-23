@@ -9,8 +9,13 @@ public class PheromoneMap : MonoBehaviour
     public GameObject tile;
     int width;
     int height;
+    int treesCount;
     Tile[,] tileMap;    // changed from pheromones
     MapInfo mapInfo;
+
+    // Food Spawn Coroutine
+    float foodSpawnTime;
+    Coroutine foodSpawnCoroutine;
 
     // Pheromones
     float pheromonesDecreseTime = 10f;
@@ -28,22 +33,18 @@ public class PheromoneMap : MonoBehaviour
         mapInfo = GetComponent<MapInfo>();
         width = mapInfo.GetWidht();
         height = mapInfo.GetHeight();
-        
+        treesCount = mapInfo.GetTreesCount();
+
         CreateTileMap();
         AsignSurroundings();
 
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
+        InitializeWorldObjects();
 
-        Invoke("TestSpawnFood", 1.5f);
+        /* Invoke("TestSpawnFood", 1.5f);
         Invoke("TestSpawnPlayersAnthill", 1.5f);
         Invoke("TestSpawnAiAnthill", 1.5f);
-        Invoke("TestSpawnTrees", 1.5f);
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        Invoke("TestSpawnTrees", 1.5f); */
 
     }
 
@@ -53,12 +54,43 @@ public class PheromoneMap : MonoBehaviour
     void TestSpawnAiAnthill() => SpawnAnthillAtIndex(Owner.AI, 20, 20);
     void TestSpawnTrees()
     {
-        SpawnTreeAtIndex(0,0);
-        SpawnTreeAtIndex(10,6);
-        SpawnTreeAtIndex(8,14);
-        SpawnTreeAtIndex(14,15);
-        SpawnTreeAtIndex(17,24);
+        SpawnTreeAtIndex(0, 0);
+        SpawnTreeAtIndex(10, 6);
+        SpawnTreeAtIndex(8, 14);
+        SpawnTreeAtIndex(14, 15);
+        SpawnTreeAtIndex(17, 24);
     }
+
+    void InitializeWorldObjects()
+    {
+        SpawnAnthill(Owner.player);
+        SpawnAnthill(Owner.AI);
+
+        for (int i = 0; i < treesCount; i++)
+        {
+            SpawnTree();
+        }
+
+        foodSpawnCoroutine = StartCoroutine(FoodSpawn(1.5f));
+    }
+
+    IEnumerator FoodSpawn(float time)
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(time);
+            SpawnFood();
+            SpawnFood();
+            time = Random.Range(40, 181);
+        }
+    }
+
+    void SpawnFood()
+    {
+        Vector2Int position = mapInfo.RandomPosition(2);
+        SpawnFoodAtIndex(position.x, position.y);
+    }
+
     void SpawnFoodAtIndex(int i, int j)
     {
         Vector3 position = tileMap[i, j].transform.position;
@@ -66,6 +98,11 @@ public class PheromoneMap : MonoBehaviour
         Instantiate(foodPrefab, position, foodPrefab.transform.rotation);
     }
 
+    void SpawnAnthill(Owner owner)
+    {
+        Vector2Int position = mapInfo.RandomAnthillPosition();
+        SpawnAnthillAtIndex(owner, position.x, position.y);
+    }
     void SpawnAnthillAtIndex(Owner owner, int i, int j)
     {
         Anthill prefabScript = anthillPrefab.GetComponent<Anthill>();
@@ -76,6 +113,12 @@ public class PheromoneMap : MonoBehaviour
 
         Anthill spawned = Instantiate(anthillPrefab, position, anthillPrefab.transform.rotation).GetComponent<Anthill>();
         spawned.SetTile(tileMap[i, j]);
+    }
+
+    void SpawnTree()
+    {
+        Vector2Int position = mapInfo.RandomPosition(3);
+        SpawnTreeAtIndex(position.x, position.y);
     }
 
     void SpawnTreeAtIndex(int i, int j)

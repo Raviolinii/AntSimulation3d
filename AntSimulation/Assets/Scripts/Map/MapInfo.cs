@@ -7,17 +7,22 @@ public class MapInfo : MonoBehaviour
     // Parameters
     int width = 50;         // 40??
     int height = 50;        // 40??
-
+    int treesCount = 20;
 
     // Map
     int[,] map;
-    Vector2Int anthillsQuarters = new Vector2Int();
     byte[] anthillsInQuarters = new byte[4];
 
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(Random.Range(0, 2));
+        Debug.Log(Random.Range(0, 2));
+        Debug.Log(Random.Range(0, 2));
+        Debug.Log(Random.Range(0, 2));
+        Debug.Log(Random.Range(0, 2));
+        Debug.Log(Random.Range(0, 2));
         map = new int[height, width];
     }
 
@@ -38,7 +43,10 @@ public class MapInfo : MonoBehaviour
     public Vector2Int RandomPosition(int objectType)
     {
         int quarter = RandomQuarter();
-        Vector2Int result = ValidatedRandomPosition(quarter);
+        Vector2Int result = RandomPositionForObject(quarter);
+        if (!PositionValidation(result.x, result.y))
+            result = RandomPosition(objectType);
+
         map[result.x, result.y] = objectType;
 
         return result;
@@ -47,7 +55,7 @@ public class MapInfo : MonoBehaviour
     public Vector2Int RandomAnthillPosition()
     {
         int quarter = RandomQuarterAnthill();
-        anthillsQuarters[quarter] = 1;
+        anthillsInQuarters[quarter] = 1;
 
         Vector2Int result = ValidatedRandomAnthillPosition(quarter);
 
@@ -63,36 +71,33 @@ public class MapInfo : MonoBehaviour
     }
 
 
-    // Validated Points
-    Vector2Int ValidatedRandomPosition(int quarter)
+    // Points
+    Vector2Int RandomPositionForObject(int quarter)
     {
         Vector2Int result = new Vector2Int();
 
         switch (quarter)
         {
             case 0:
-                result.x = Random.Range(1, height / 2);
-                result.y = Random.Range(1, width / 2);
+                result.x = Random.Range(1, height / 2 - 1);
+                result.y = Random.Range(1, width / 2 - 1);
                 break;
 
             case 1:
-                result.x = Random.Range(1, height / 2);
-                result.y = Random.Range(width / 2 + 1, width);
+                result.x = Random.Range(1, height / 2 - 1);
+                result.y = Random.Range(width / 2 + 1, width - 1);
                 break;
 
             case 2:
-                result.x = Random.Range(height / 2 + 1, height);
-                result.y = Random.Range(1, width / 2);
+                result.x = Random.Range(height / 2 + 1, height - 1);
+                result.y = Random.Range(1, width / 2 - 1);
                 break;
 
             case 3:
-                result.x = Random.Range(height / 2 + 1, height);
-                result.y = Random.Range(width / 2 + 1, width);
+                result.x = Random.Range(height / 2 + 1, height - 1);
+                result.y = Random.Range(width / 2 + 1, width - 1);
                 break;
         }
-
-        if (!PositionValidation(result.x, result.y))
-            result = ValidatedRandomPosition(quarter);
 
         return result;
     }
@@ -104,23 +109,23 @@ public class MapInfo : MonoBehaviour
         switch (quarter)
         {
             case 0:
-                result.x = Random.Range(2, height / 2 - 1);
-                result.y = Random.Range(2, width / 2 - 1);
+                result.x = Random.Range(2, height / 2 - 2);
+                result.y = Random.Range(2, width / 2 - 2);
                 break;
 
             case 1:
-                result.x = Random.Range(2, height / 2 - 1);
-                result.y = Random.Range(width / 2 + 2, width - 1);
+                result.x = Random.Range(2, height / 2 - 2);
+                result.y = Random.Range(width / 2 + 2, width - 2);
                 break;
 
             case 2:
-                result.x = Random.Range(height / 2 + 2, height - 1);
-                result.y = Random.Range(2, width / 2 - 1);
+                result.x = Random.Range(height / 2 + 2, height - 2);
+                result.y = Random.Range(2, width / 2 - 2);
                 break;
 
             case 3:
-                result.x = Random.Range(height / 2 + 2, height - 1);
-                result.y = Random.Range(width / 2 + 2, width - 1);
+                result.x = Random.Range(height / 2 + 2, height - 2);
+                result.y = Random.Range(width / 2 + 2, width - 2);
                 break;
         }
 
@@ -129,8 +134,8 @@ public class MapInfo : MonoBehaviour
 
         return result;
     }
-    
-    
+
+
     // Validation
     bool AnthillPositionValidation(int i, int j)
     {
@@ -151,6 +156,7 @@ public class MapInfo : MonoBehaviour
         {
             for (int y = -1; y < 2; y++)
             {
+                Debug.Log($"j: {i}, x: {x}, i: {j}, y: {y}");
                 if (map[i + x, j + y] != 0)
                     return false;
             }
@@ -162,4 +168,5 @@ public class MapInfo : MonoBehaviour
     // Parameters
     public int GetWidht() => width;
     public int GetHeight() => height;
+    public int GetTreesCount() => treesCount;
 }

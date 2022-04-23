@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6317467282697957070}
   - component: {fileID: 6317467282697957069}
+  - component: {fileID: -781120585059202310}
   m_Layer: 0
   m_Name: PheromoneMap
   m_TagString: Untagged
@@ -47,3 +48,15 @@ MonoBehaviour:
   foodPrefab: {fileID: 4522986440629134478, guid: 3b3de57570e8e204b95a7522de692224, type: 3}
   anthillPrefab: {fileID: 7078397792803786314, guid: 99c9d35d8c0bbf5458259c8b93f8866b, type: 3}
   treePrefab: {fileID: 2370524701010018709, guid: c772a66946e5dc045948e6c0e0f7a16d, type: 3}
+--- !u!114 &-781120585059202310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6317467282697957068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6586de765d4fda643a370ea7198dc286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -7,13 +7,14 @@ public class PheromoneMap : MonoBehaviour
 {
     // Map
     public GameObject tile;
-    int width = 50;
-    int height = 50;
+    int width;
+    int height;
     Tile[,] tileMap;    // changed from pheromones
+    MapInfo mapInfo;
 
     // Pheromones
     float pheromonesDecreseTime = 10f;
-    int pheromoneDecreseValue = 2;
+    int pheromoneDecreseValue = 2;          // Move it to pheromone script
 
     // World Objects
     public GameObject foodPrefab;
@@ -24,6 +25,10 @@ public class PheromoneMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mapInfo = GetComponent<MapInfo>();
+        width = mapInfo.GetWidht();
+        height = mapInfo.GetHeight();
+        
         CreateTileMap();
         AsignSurroundings();
 

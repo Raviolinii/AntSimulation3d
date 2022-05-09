@@ -51,16 +51,5 @@ public class Food : WorldObject
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-
-        if (other.CompareTag("AntWorker"))
-        {
-            WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
-            if (workerScript.WantToGather())
-            {
-                workerScript.StopAntNearDestination();
-                workerScript.GoToPreviousTile();
-                workerScript.GatherFood();
-            }
-        }
     }
 }

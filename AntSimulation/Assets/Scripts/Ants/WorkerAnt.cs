@@ -11,7 +11,7 @@ public class WorkerAnt : Ant
     Food foodScript;
     int gatheringAmount = 20;
     float gatheringTime = 2.5f;
-    int foodGathered = 0;
+    public int foodGathered = 0;
     Coroutine gatherFoodCoroutine;
 
 
@@ -97,6 +97,39 @@ public class WorkerAnt : Ant
                 Alarm();
             }
         }
+
+        else if (other.CompareTag("Anthill"))
+        {
+            anthillScript = other.GetComponent<Anthill>();
+
+            if (anthillScript.GetOwner() == _owner)
+            {
+
+                if (WantToAlarm())
+                {
+                    StopAntNearDestination();
+                    GoToPreviousTile();
+                    RaiseAlarm();
+                }
+
+                if (WantToStoreFood())
+                {
+                    StopAntNearDestination();
+                    GoToPreviousTile();
+                    StoreFood();
+                }
+            }
+        }
+        else if (other.CompareTag("Food"))
+        {
+            if (WantToGather())
+            {
+                foodScript = other.GetComponent<Food>();
+                StopAntNearDestination();
+                GoToPreviousTile();
+                GatherFood();
+            }
+        }
     }
 
 
@@ -175,21 +208,18 @@ public class WorkerAnt : Ant
         storeFoodCoroutine = null;
     }
 
-    void AnthillFound(Anthill anthill)
+    void AnthillFound()
     {
         if (!anthillInRange)
         {
-            anthillScript = anthill;
             anthillInRange = true;
             UpdateTargetTile();
             Move();
         }
     }
 
-    public bool WantToStoreFood() => anthillInRange ? true : false;
-    //public bool WantToStoreFood() => anthillInRange && foodGathered > 0 ? true : false;
-
-    public void SetAnthillScript(Anthill script) => anthillScript = script;
+    //public bool WantToStoreFood() => anthillInRange ? true : false;
+    public bool WantToStoreFood() => anthillInRange && foodGathered > 0 ? true : false;
 
 
     // Food
@@ -215,12 +245,11 @@ public class WorkerAnt : Ant
         gatherFoodCoroutine = null;
     }
 
-    void FoundFood(Food food)
+    void FoundFood()
     {
         if (!foodInRange)
         {
             foodInRange = true;
-            foodScript = food;
             UpdateTargetTile();
             Move();
         }
@@ -295,7 +324,7 @@ public class WorkerAnt : Ant
                     Anthill anthill = (Anthill)surroundings[i].GetSpawnedObject();
                     if (anthill.GetOwner() == _owner)
                     {
-                        AnthillFound(anthill);
+                        AnthillFound();
                         chosenMoveIndex = i;
                         return;
                     }
@@ -332,7 +361,7 @@ public class WorkerAnt : Ant
                 if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.food)
                 {
                     Food food = (Food)surroundings[i].GetSpawnedObject();
-                    FoundFood(food);
+                    FoundFood();
                     chosenMoveIndex = i;
                     return;
                 }

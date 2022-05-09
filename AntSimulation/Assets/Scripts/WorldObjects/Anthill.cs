@@ -6,7 +6,7 @@ public class Anthill : WorldObject
 {
     // Owner
     public Owner _owner;
-    protected AntsMaster antsMaster;
+    public AntsMaster antsMaster;
     //public GameObject queen;
 
     // Alarm
@@ -30,30 +30,6 @@ public class Anthill : WorldObject
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
-
-        if (other.CompareTag("AntWorker"))
-        {
-            WorkerAnt workerScript = other.GetComponentInParent<WorkerAnt>();
-
-            if (!workerScript.WantToAlarm() && !workerScript.WantToStoreFood())
-                return;
-
-            if (workerScript.WantToAlarm())
-            {
-                //Debug.Log("Wants to alarm");
-                workerScript.StopAntNearDestination();
-                workerScript.GoToPreviousTile();
-                workerScript.SetAnthillScript(this);
-                workerScript.RaiseAlarm();
-            }
-
-            if (workerScript.WantToStoreFood())
-            {
-                workerScript.StopAntNearDestination();
-                workerScript.GoToPreviousTile();
-                workerScript.StoreFood();
-            }
-        }
     }
 
 
@@ -72,7 +48,6 @@ public class Anthill : WorldObject
     {
         if (!dangerSpotted)
         {
-            //Debug.Log("Alarm from anthill");
             dangerSpotted = true;
             antsMaster.Alarm();
         }

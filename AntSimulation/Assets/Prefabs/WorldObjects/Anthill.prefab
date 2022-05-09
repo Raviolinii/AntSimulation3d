@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 1138522514193671152}
   - component: {fileID: 8132475505759076156}
   - component: {fileID: -4611203753044307864}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Anthill
   m_TagString: Anthill
   m_Icon: {fileID: 0}

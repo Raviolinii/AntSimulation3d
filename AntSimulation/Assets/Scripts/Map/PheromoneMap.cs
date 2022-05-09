@@ -51,7 +51,7 @@ public class PheromoneMap : MonoBehaviour
     // World Objects
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
     void TestSpawnPlayersAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 4);
-    void TestSpawnAiAnthill() => SpawnAnthillAtIndex(Owner.AI, 20, 20);
+    void TestSpawnAiAnthill() => SpawnAnthillAtIndex(Owner.AI, 4, 4);
     void TestSpawnTrees()
     {
         SpawnTreeAtIndex(0, 0);
@@ -65,6 +65,7 @@ public class PheromoneMap : MonoBehaviour
     {
         SpawnAnthill(Owner.player);
         SpawnAnthill(Owner.AI);
+        //TestSpawnAiAnthill();
 
         for (int i = 0; i < treesCount; i++)
         {

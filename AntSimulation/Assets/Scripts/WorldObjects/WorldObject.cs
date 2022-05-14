@@ -28,10 +28,6 @@ public class WorldObject : MonoBehaviour
             tileScript.ObjectSpawned(this, typeOfObject);
         }
     }
-    protected virtual void OnDestroy()
-    {
-        _tile.ObjectDestroyed();
-    }
 
     public virtual void SetTile(Tile tile) => _tile = tile;
     public Tile GetTile() => _tile;

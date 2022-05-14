@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AntWarrior : Ant
 {
-    
+    // Fight
+    float anthillAttackSpeed = 2f;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -37,7 +39,9 @@ public class AntWarrior : Ant
 
         if (other.CompareTag("AntWorker") || other.CompareTag("AntWarrior"))
         {
-            AntDetected(other);
+            var antScript = other.GetComponent<Ant>();
+            if (antScript.GetOwner() != _owner)
+                AntDetected(antScript);
         }
     }
 
@@ -45,7 +49,15 @@ public class AntWarrior : Ant
     {
         if (other.CompareTag("AntWorker") || other.CompareTag("AntWarrior"))
         {
-            AntDetected(other);
+            var antScript = other.GetComponent<Ant>();
+            if (antScript.GetOwner() != _owner)
+                AntDetected(antScript);
+        }
+        if (other.CompareTag("Anthill"))
+        {
+            var anthillScript = other.GetComponent<Anthill>();
+            if (anthillScript.GetOwner() != _owner)
+                AnthillDetected(anthillScript);
         }
     }
 
@@ -65,7 +77,8 @@ public class AntWarrior : Ant
                     Anthill anthillScript = surroundings[i].GetSpawnedObject().GetComponent<Anthill>();
                     if (anthillScript.GetOwner() != _owner)
                     {
-                        // Attack anthill
+                        chosenMoveIndex = i;
+                        return;
                     }
                 }
                 else if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
@@ -95,13 +108,43 @@ public class AntWarrior : Ant
 
 
     // Fight
-    void AntDetected(Collider ant)
+    void AntDetected(Ant ant)
     {
-        var antScript = ant.GetComponent<Ant>();
-        if (antScript.GetOwner() == _owner)
-            return;
+        Fight(ant);
+        ant.Fight(this);
+    }
 
-        Fight(antScript);
-        antScript.Fight(this);
+    void AnthillDetected(Anthill anthill)
+    {
+        anthill.Alarm();
+        anthill.Fight(this);
+        Fight(anthill);
+    }
+
+    void Fight(Anthill anthill)
+    {
+        if (!inFight)
+        {
+            //Debug.Log("InFight");
+            inFight = true;
+            agent.isStopped = true;
+            attackCoroutine = StartCoroutine(AttackAnthill(anthill));
+        }
+    }
+
+    IEnumerator AttackAnthill(Anthill anthill)
+    {
+        yield return new WaitForSeconds(anthillAttackSpeed);
+
+        if (anthill != null)
+        {
+            anthill.DecreseHp(dmg);
+        }
+        inFight = false;
+        agent.isStopped = false;
+        if (anthill != null && anthill.GetHp() > 0)
+        {
+            Fight(anthill);
+        }
     }
 }

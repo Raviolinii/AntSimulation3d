@@ -37,6 +37,7 @@ public abstract class Ant : MonoBehaviour
     protected int dmg;
     protected bool inFight = false;
     protected Coroutine attackCoroutine;
+    protected float attackSpeed = 1.5f;
 
 
     // Start is called before the first frame update
@@ -127,6 +128,7 @@ public abstract class Ant : MonoBehaviour
             hp -= value;
         else
         {
+            Debug.Log("Zero");
             hp = 0;
             Dead();
         }
@@ -134,7 +136,7 @@ public abstract class Ant : MonoBehaviour
 
     public IEnumerator Attack(Ant target)
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(attackSpeed);
 
         //Debug.Log("Dmg");
         if (target != null)

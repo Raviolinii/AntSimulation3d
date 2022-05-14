@@ -15,6 +15,12 @@ public class Anthill : WorldObject
     // Tiles
     public Tile[] surroundings = new Tile[16];
 
+    // Fight
+    int hp = 100;
+    int dmg = 2;
+    bool inFight = false;
+    Coroutine attackCoroutine;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,14 +61,14 @@ public class Anthill : WorldObject
 
 
     // Destroy
-    protected override void OnDestroy()
+    protected void OnDestroy()
     {
         Tile[] otherParts = _tile.GetActualSurroundings();
         for (int i = 0; i < 8; i++)
         {
             otherParts[i].ObjectDestroyed();
         }
-        base.OnDestroy();
+        _tile.ObjectDestroyed();
     }
 
 
@@ -100,4 +106,50 @@ public class Anthill : WorldObject
         surroundings[15] = current.GetTile(7);
     }
     public Tile[] GetSurroundings() => surroundings;
+
+    // Fight
+    public int GetHp() => hp;
+    public int GetDmg() => dmg;
+    public bool IsInFight() => inFight;
+    public void SetIsInFight(bool value) => inFight = value;
+    public void DecreseHp(int value)
+    {
+        if (hp - value > 0)
+            hp -= value;
+        else
+        {
+            hp = 0;
+            QuinDied();
+        }
+    }
+
+    private IEnumerator Attack(Ant target)
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        //Debug.Log("Dmg");
+        if (target != null)
+            target.DecreseHp(dmg);
+        inFight = false;
+        if (target != null && target.GetHp() > 0)
+        {
+            Fight(target);
+        }
+    }
+    protected void QuinDied()
+    {
+        Debug.Log($"GG, {_owner} lost");
+        //Destroy(gameObject);
+    }
+    
+    public void Fight(Ant target)
+    {
+        if (!inFight)
+        {
+            //Debug.Log("InFight");
+            inFight = true;
+            
+            attackCoroutine = StartCoroutine(Attack(target));
+        }
+    }
 }

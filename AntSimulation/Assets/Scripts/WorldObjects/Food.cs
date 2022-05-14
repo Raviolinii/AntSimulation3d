@@ -18,7 +18,7 @@ public class Food : WorldObject
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public int GetFoodAmount() => amount;
@@ -44,7 +44,7 @@ public class Food : WorldObject
     void Depleted()
     {
         //Debug.Log(_tile);
-        //_tile.ObjectDestroyed();
+        _tile.ObjectDestroyed();
         Destroy(gameObject);
     }
 

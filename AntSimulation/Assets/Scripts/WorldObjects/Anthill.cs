@@ -139,7 +139,7 @@ public class Anthill : WorldObject
     protected void QuinDied()
     {
         Debug.Log($"GG, {_owner} lost");
-        //Destroy(gameObject);
+        antsMaster.QuinDied();
     }
     
     public void Fight(Ant target)

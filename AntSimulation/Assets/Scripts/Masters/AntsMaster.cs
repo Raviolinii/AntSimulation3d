@@ -131,7 +131,6 @@ public class AntsMaster : MonoBehaviour
         dangerSpotted = true;
         if (warriorsQueued > 0 && warriorSpawnCoroutine == null)
             warriorSpawnCoroutine = StartCoroutine(WarriorSpawnIEnumerator());
-
     }
 
 
@@ -141,7 +140,7 @@ public class AntsMaster : MonoBehaviour
     {
         workersQueued--;
         yield return new WaitForSeconds(workerSpawnDelay);
-        
+
         SpawnWorker();
 
         if (workersQueued > 0)
@@ -312,4 +311,23 @@ public class AntsMaster : MonoBehaviour
 
     public int GetFoodGathered() => foodGathered;
     public int GetMaxFoodAmount() => maxFoodAmount;
+
+
+    // Game over
+    public void QuinDied()
+    {
+        workersQueued = 0;
+        warriorsQueued = 0;
+        if (antWorkers.Count > 0)
+            foreach (var ant in antWorkers)
+            {
+                ant.Dead();
+            }
+        if (antWarriors.Count > 0)
+            foreach (var ant in antWarriors)
+            {
+                ant.Dead();
+            }
+        Destroy(anthill.gameObject);
+    }
 }

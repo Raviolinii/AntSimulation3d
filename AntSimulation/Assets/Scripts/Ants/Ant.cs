@@ -149,7 +149,7 @@ public abstract class Ant : MonoBehaviour
         }
     }
 
-    protected void Dead()
+    public void Dead()
     {
         _master.DecreasePopulation();
         Destroy(gameObject);

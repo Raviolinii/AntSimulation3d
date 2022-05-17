@@ -21,10 +21,19 @@ public class Anthill : WorldObject
     bool inFight = false;
     Coroutine attackCoroutine;
 
+    // SupplyAnts
+    List<GameObject> supplyAnts = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
         stoppingDistance = GetComponentInChildren<SphereCollider>();
+        var supplyAntsGameObject = gameObject.transform.GetChild(3);
+        for (int i = 0; i < supplyAntsGameObject.childCount; i++)
+        {
+            var toAdd = supplyAntsGameObject.GetChild(i);
+            supplyAnts.Add(toAdd.gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -37,6 +46,10 @@ public class Anthill : WorldObject
     {
         base.OnTriggerEnter(other);
     }
+
+
+    // SupplyAnts
+
 
 
     // Owner

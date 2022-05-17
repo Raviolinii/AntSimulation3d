@@ -10,16 +10,16 @@ public class AntsMaster : MonoBehaviour
 
 
     // Food
-    int maxFoodAmount = 540;
+    public int maxFoodAmount = 500;
     public int foodGathered;
-    int maxReachableFoodAmount = 2_000;
-    protected int foodIncreaseValue;
+    //int maxReachableFoodAmount = 2_000;
+    protected int foodIncreaseValue = 200;
 
 
     // Population
     protected int population = 0;
-    protected int maxPopulation = 10;
-    protected int maxReachablePopulation = 50;
+    public int maxPopulation = 10;
+    //protected int maxReachablePopulation = 50;
     protected int populationIncreaseValue = 5;
 
 
@@ -28,6 +28,7 @@ public class AntsMaster : MonoBehaviour
     public GameObject antWarriorPrefab;
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
+    protected List<SupplyAnt> supplyAnts = new List<SupplyAnt>();
     int movementRange = 50;
     public int warriorsStacked = 0;
 
@@ -35,16 +36,19 @@ public class AntsMaster : MonoBehaviour
     // Coroutine Ants
     Coroutine workerSpawnCoroutine;
     Coroutine warriorSpawnCoroutine;
+    Coroutine supplyAntSpawnCoroutine;
     float workerSpawnDelay = 1.5f;
     float warriorSpawnDelay = 1.5f;
+    float supplyAntsSpawnDelay = 2.5f;
     public int workersQueued = 0;
     public int warriorsQueued = 0;
-    Queue<IEnumerator> workersQueue = new Queue<IEnumerator>();
+    public bool supplyAntQueued = false;
 
 
     // Buy Ants
     int workerPrice = 60;
-    int warriorPrice = 120;
+    int warriorPrice = 100;
+    int supplyAntPrice = 200;
 
 
     // Alarm
@@ -60,17 +64,19 @@ public class AntsMaster : MonoBehaviour
         //Invoke("SpawnWorker", 2.5f);
         //Invoke("SpawnWarrior", 2.5f);
 
-        AddFood(540);
+        AddFood(500);
 
-        Invoke("BuyWorker", 2.5f);
+        /* Invoke("BuyWorker", 2.5f);
         Invoke("BuyWorker", 2.5f);
         Invoke("BuyWorker", 2.5f);
 
         Invoke("BuyWarrior", 2.5f);
         Invoke("BuyWarrior", 4.5f);
-        Invoke("BuyWarrior", 6.5f);
+        Invoke("BuyWarrior", 6.5f); */
         //Invoke("Zerg", 2.5f);
 
+        //Invoke("BuySupplyAnt", 2.5f);
+        //Invoke("SupplyAntDied", 10f);
     }
 
     void Zerg()
@@ -124,6 +130,15 @@ public class AntsMaster : MonoBehaviour
         }
     }
 
+    public void BuySupplyAnt()
+    {
+        if (CanIncreasePopulation() && !supplyAntQueued && foodGathered >= supplyAntPrice)
+        {
+            foodGathered -= supplyAntPrice;
+            supplyAntQueued = true;
+            supplyAntSpawnCoroutine = StartCoroutine(SupplyAntSpawnIEnumerator());
+        }
+    }
 
     // Alarm
     public void Alarm()
@@ -135,7 +150,6 @@ public class AntsMaster : MonoBehaviour
 
 
     // Coroutine Ants
-
     IEnumerator WorkerSpawnIEnumerator()
     {
         workersQueued--;
@@ -161,6 +175,13 @@ public class AntsMaster : MonoBehaviour
             warriorSpawnCoroutine = StartCoroutine(WarriorSpawnIEnumerator());
         else
             warriorSpawnCoroutine = null;
+    }
+
+    IEnumerator SupplyAntSpawnIEnumerator()
+    {
+        yield return new WaitForSeconds(supplyAntsSpawnDelay);
+        SpawnSupplyAnt();
+        supplyAntSpawnCoroutine = null;
     }
 
 
@@ -235,6 +256,13 @@ public class AntsMaster : MonoBehaviour
         }
     }
 
+    protected void SpawnSupplyAnt()
+    {
+        //anthill.SpawnSupplyAnt();
+        IncreaseMaxPopulation();
+        IncreseMaxFoodAmount();
+        supplyAntQueued = false;
+    }
     public void SetMovementRange(int value)
     {
         movementRange = value;
@@ -244,6 +272,13 @@ public class AntsMaster : MonoBehaviour
         }
     }
 
+    public void SupplyAntDied()
+    {
+        DecreaseMaxPopulation();
+        DecreaseMaxFoodAmount();
+    }
+
+
     // Population
     public int GetPopulation() => population;
     public void IncreasePopulation(int value) => population += value;
@@ -251,13 +286,9 @@ public class AntsMaster : MonoBehaviour
     public void DecreasePopulation(int value) => population -= value;
     public void DecreasePopulation() => population--;
     public bool CanAddAnt() => population < maxPopulation ? true : false;
-    public void IncreaseMaxPopulation()
-    {
-        if (maxPopulation + populationIncreaseValue <= maxReachablePopulation)
-            maxPopulation += populationIncreaseValue;
-    }
-
+    public void IncreaseMaxPopulation() => maxPopulation += populationIncreaseValue;
     public void DecreaseMaxPopulation() => maxPopulation -= populationIncreaseValue;
+    public bool CanIncreasePopulation() => supplyAnts.Count < 8? true : false;
 
 
     // Initialization
@@ -276,14 +307,7 @@ public class AntsMaster : MonoBehaviour
 
     // Food
     public void DecreaseMaxFoodAmount() => maxFoodAmount -= foodIncreaseValue;
-    public void IncreseMaxFoodAmount()
-    {
-        if (maxFoodAmount + foodIncreaseValue <= maxReachableFoodAmount)
-            maxFoodAmount += foodIncreaseValue;
-        else
-            Debug.Log("Cant");
-    }
-
+    public void IncreseMaxFoodAmount() => maxFoodAmount += foodIncreaseValue;
     public bool AddFood(int value)
     {
         if (foodGathered + value <= maxFoodAmount)

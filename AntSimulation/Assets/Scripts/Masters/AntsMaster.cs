@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class AntsMaster : MonoBehaviour
@@ -7,6 +8,12 @@ public class AntsMaster : MonoBehaviour
 
     protected Anthill anthill;
     protected Owner owner;
+
+    // UI
+    public TextMeshProUGUI populationTMP;
+    public TextMeshProUGUI workersTMP;
+    public TextMeshProUGUI warriorsTMP;
+    public TextMeshProUGUI foodTMP;
 
 
     // Food
@@ -97,6 +104,13 @@ public class AntsMaster : MonoBehaviour
     {
 
     }
+
+
+    // UI
+    public void UpdatePopulationCountText(int count) => populationTMP.text = $"Population {count}/{maxPopulation}";
+    public void UpdateFoodCountText(int count) => foodTMP.text = $"Food {count}/{maxFoodAmount}";
+    public void UpdateWarriorsCountText(int count) => warriorsTMP.text = $"Warriors {count}";
+    public void UpdateWorkersCountText(int count) => workersTMP.text = $"Workers {count}";
 
 
     // Buy Ants
@@ -224,6 +238,7 @@ public class AntsMaster : MonoBehaviour
             newAntScript.SetMaster(this);
             antWorkers.Add(newAntScript);
             IncreasePopulation();
+            UpdateWorkersCountText(antWorkers.Count);
         }
     }
 
@@ -254,6 +269,7 @@ public class AntsMaster : MonoBehaviour
             newAntScript.SetMaster(this);
             antWarriors.Add(newAntScript);
             IncreasePopulation();
+            UpdateWarriorsCountText(antWarriors.Count);
         }
     }
 
@@ -282,14 +298,44 @@ public class AntsMaster : MonoBehaviour
 
     // Population
     public int GetPopulation() => population;
-    public void IncreasePopulation(int value) => population += value;
-    public void IncreasePopulation() => population++;
-    public void DecreasePopulation(int value) => population -= value;
-    public void DecreasePopulation() => population--;
+    public void IncreasePopulation(int value)
+    {
+        population += value;
+        UpdatePopulationCountText(population);
+    }
+
+    public void IncreasePopulation()
+    {
+        population++;
+        UpdatePopulationCountText(population);
+    }
+
+    public void DecreasePopulation(int value)
+    {
+        population -= value;
+        UpdatePopulationCountText(population);
+    }
+
+    public void DecreasePopulation()
+    {
+        population--;
+        UpdatePopulationCountText(population);
+    }
+
     public bool CanAddAnt() => population < maxPopulation ? true : false;
-    public void IncreaseMaxPopulation() => maxPopulation += populationIncreaseValue;
-    public void DecreaseMaxPopulation() => maxPopulation -= populationIncreaseValue;
-    public bool CanIncreasePopulation() => supplyAnts.Count < 8? true : false;
+    public void IncreaseMaxPopulation()
+    {
+        maxPopulation += populationIncreaseValue;
+        UpdatePopulationCountText(population);
+    }
+
+    public void DecreaseMaxPopulation()
+    {
+        maxPopulation -= populationIncreaseValue;
+        UpdatePopulationCountText(population);
+    }
+
+    public bool CanIncreasePopulation() => supplyAnts.Count < 8 ? true : false;
 
 
     // Initialization
@@ -307,13 +353,24 @@ public class AntsMaster : MonoBehaviour
 
 
     // Food
-    public void DecreaseMaxFoodAmount() => maxFoodAmount -= foodIncreaseValue;
-    public void IncreseMaxFoodAmount() => maxFoodAmount += foodIncreaseValue;
+    public void DecreaseMaxFoodAmount()
+    {
+        maxFoodAmount -= foodIncreaseValue;
+        UpdateFoodCountText(foodGathered);
+    }
+
+    public void IncreseMaxFoodAmount()
+    {
+        maxFoodAmount += foodIncreaseValue;
+        UpdateFoodCountText(foodGathered);
+    }
+
     public bool AddFood(int value)
     {
         if (foodGathered + value <= maxFoodAmount)
         {
             foodGathered += value;
+            UpdateFoodCountText(foodGathered);
             return true;
         }
         else
@@ -327,6 +384,7 @@ public class AntsMaster : MonoBehaviour
         if (foodGathered >= value)
         {
             foodGathered -= value;
+            UpdateFoodCountText(foodGathered);
             return true;
 
         }

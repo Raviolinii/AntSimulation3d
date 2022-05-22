@@ -10,13 +10,13 @@ public class Player : MonoBehaviour
     public Vector2 moveLimit = new Vector2(100f,100f);
 
     public float scrollSpeed = 20f;
-    public float minScroll = 20f;
+    public float minScroll = 50f;
     public float maxScroll = 120f;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        //layerAsLayerMask = (1 << layer);
     }
 
     // Update is called once per frame
@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     {
         MoveCamera();
     }
+
     private void MoveCamera()
     {
         Vector3 pos = transform.position;
@@ -47,4 +48,5 @@ public class Player : MonoBehaviour
         pos.z = Mathf.Clamp(pos.z, -moveLimit.y, moveLimit.y);
         transform.position = pos;
     }
+
 }

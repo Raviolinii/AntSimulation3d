@@ -75,8 +75,9 @@ public class AntsMaster : MonoBehaviour
         Invoke("BuyWarrior", 6.5f); */
         //Invoke("Zerg", 2.5f);
 
-        //Invoke("BuySupplyAnt", 2.5f);
-        //Invoke("SupplyAntDied", 10f);
+        Invoke("BuySupplyAnt", 2.5f);
+        Invoke("BuySupplyAnt", 5.5f);
+        Invoke("SupplyAntDied", 10f);
     }
 
     void Zerg()
@@ -258,7 +259,7 @@ public class AntsMaster : MonoBehaviour
 
     protected void SpawnSupplyAnt()
     {
-        //anthill.SpawnSupplyAnt();
+        anthill.CreateSupplyAnt();
         IncreaseMaxPopulation();
         IncreseMaxFoodAmount();
         supplyAntQueued = false;

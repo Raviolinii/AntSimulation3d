@@ -21,10 +21,15 @@ public class Anthill : WorldObject
     bool inFight = false;
     Coroutine attackCoroutine;
 
+    // SupplyAnts
+    List<GameObject> supplyAnts = new List<GameObject>();
+    int activeSupplyAnts = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         stoppingDistance = GetComponentInChildren<SphereCollider>();
+        AsignSupplyAnts();
     }
 
     // Update is called once per frame
@@ -36,6 +41,31 @@ public class Anthill : WorldObject
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
+    }
+
+
+    // SupplyAnts
+    public void AsignSupplyAnts()
+    {
+        var supplyAntsGameObject = gameObject.transform.GetChild(3);
+        for (int i = 0; i < supplyAntsGameObject.childCount; i++)
+        {
+            var toAdd = supplyAntsGameObject.GetChild(i);
+            supplyAnts.Add(toAdd.gameObject);
+        }
+    }
+
+    public void CreateSupplyAnt()
+    {
+        supplyAnts[activeSupplyAnts].SetActive(true);
+        activeSupplyAnts++;
+    }
+
+    public void DeleteSupplyAnt()
+    {
+        activeSupplyAnts--;
+        supplyAnts[activeSupplyAnts].SetActive(false);
+        antsMaster.SupplyAntDied();
     }
 
 
@@ -114,13 +144,18 @@ public class Anthill : WorldObject
     public void SetIsInFight(bool value) => inFight = value;
     public void DecreseHp(int value)
     {
-        if (hp - value > 0)
-            hp -= value;
-        else
+        if (activeSupplyAnts == 0)
         {
-            hp = 0;
-            QuinDied();
+            if (hp - value > 0)
+                hp -= value;
+            else
+            {
+                hp = 0;
+                QuinDied();
+            }
         }
+        else
+            DeleteSupplyAnt();
     }
 
     private IEnumerator Attack(Ant target)
@@ -141,14 +176,14 @@ public class Anthill : WorldObject
         Debug.Log($"GG, {_owner} lost");
         antsMaster.QuinDied();
     }
-    
+
     public void Fight(Ant target)
     {
         if (!inFight)
         {
             //Debug.Log("InFight");
             inFight = true;
-            
+
             attackCoroutine = StartCoroutine(Attack(target));
         }
     }

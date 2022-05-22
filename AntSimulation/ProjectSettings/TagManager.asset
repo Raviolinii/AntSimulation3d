@@ -13,6 +13,7 @@ TagManager:
   - Tile
   - Anthill
   - AntWarrior
+  - SupplyAnt
   layers:
   - Default
   - TransparentFX

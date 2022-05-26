@@ -9,6 +9,11 @@ public class PlayersMaster : AntsMaster
     [SerializeField]
     LayerMask layerMask;
 
+    // UI Details Manager
+    [SerializeField]
+    DetailsManager detailsManager;
+
+
     // UI Texts
     public TextMeshProUGUI populationTMP;
     public TextMeshProUGUI workersTMP;
@@ -26,7 +31,8 @@ public class PlayersMaster : AntsMaster
     // Update is called once per frame
     void Update()
     {
-        Selection();
+        if (Input.GetButtonDown("Select"))
+            Selection();
     }
 
 
@@ -36,6 +42,7 @@ public class PlayersMaster : AntsMaster
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        detailsManager.CloseDetails();
         if (Physics.Raycast(ray, out hit, 300.0f, layerMask))
         {
             if (hit.transform != null)
@@ -44,14 +51,21 @@ public class PlayersMaster : AntsMaster
                 {
                     var script = hit.transform.GetComponent<Anthill>();
                     if (script.GetOwner() == this.owner)
+                    {
                         Debug.Log("Thats my anthill");
+                        detailsManager.ShowAnthillDetails();
+                    }
                     else
+                    {
                         Debug.Log("Enemy...");
+                        detailsManager.CloseDetails();
+                    }
                 }
-
             }
         }
     }
+
+    // UI Details Manager
 
 
     // UI Texts

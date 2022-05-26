@@ -7,7 +7,8 @@ public class Player : MonoBehaviour
 
     public float moveSpeed = 50f;
     public float borderMoveArea = 10f;
-    public Vector2 moveLimit = new Vector2(100f,100f);
+    private Vector2 moveLimitX = new Vector2(0f, 250f);
+    private Vector2 moveLimitZ = new Vector2(-250f, 0f);
 
     public float scrollSpeed = 20f;
     public float minScroll = 50f;
@@ -31,21 +32,21 @@ public class Player : MonoBehaviour
         if (Input.GetButton("MoveRight") || Input.mousePosition.x >= Screen.width - borderMoveArea)
             pos.x += Time.deltaTime * moveSpeed;
 
-        if (Input.GetButton("MoveLeft") || Input.mousePosition.x <=  borderMoveArea)
+        if (Input.GetButton("MoveLeft") || Input.mousePosition.x <= borderMoveArea)
             pos.x -= Time.deltaTime * moveSpeed;
 
         if (Input.GetButton("MoveUp") || Input.mousePosition.y >= Screen.height - borderMoveArea)
             pos.z += Time.deltaTime * moveSpeed;
 
-            if (Input.GetButton("MoveDown") || Input.mousePosition.y <= borderMoveArea)
+        if (Input.GetButton("MoveDown") || Input.mousePosition.y <= borderMoveArea)
             pos.z -= Time.deltaTime * moveSpeed;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         pos.y -= scroll * scrollSpeed * Time.deltaTime * 100f;
 
-        pos.x = Mathf.Clamp(pos.x, -moveLimit.x, moveLimit.x);
+        pos.x = Mathf.Clamp(pos.x, moveLimitX.x, moveLimitX.y);
         pos.y = Mathf.Clamp(pos.y, minScroll, maxScroll);
-        pos.z = Mathf.Clamp(pos.z, -moveLimit.y, moveLimit.y);
+        pos.z = Mathf.Clamp(pos.z, moveLimitZ.x, moveLimitZ.y);
         transform.position = pos;
     }
 

@@ -756,10 +756,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 4228527007954446026}
   m_HandleRect: {fileID: 5744838071686925559}
   m_Direction: 2
-  m_MinValue: 10
-  m_MaxValue: 250
+  m_MinValue: 50
+  m_MaxValue: 1000
   m_WholeNumbers: 1
-  m_Value: 10
+  m_Value: 50
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1262,19 +1262,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3291871129932410037}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11500000, guid: fe0e280e76b3d684eb0571e59f49ecb9, type: 3}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3363469037137450822
 GameObject:
   m_ObjectHideFlags: 0

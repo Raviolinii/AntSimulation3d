@@ -29,7 +29,7 @@ public class AntsMaster : MonoBehaviour
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
     protected List<SupplyAnt> supplyAnts = new List<SupplyAnt>();
-    int movementRange = 50;
+    public int movementRange = 50;
     public int warriorsStacked = 0;
 
 
@@ -104,7 +104,7 @@ public class AntsMaster : MonoBehaviour
     {
         if (CanAddAnt() && foodGathered >= workerPrice)
         {
-            foodGathered -= workerPrice;
+            SpendFood(workerPrice);
             workersQueued++;
 
             if (workerSpawnCoroutine == null)
@@ -118,7 +118,7 @@ public class AntsMaster : MonoBehaviour
     {
         if (CanAddAnt() && foodGathered >= warriorPrice)
         {
-            foodGathered -= warriorPrice;
+            SpendFood(warriorPrice);
             warriorsQueued++;
 
             if (dangerSpotted)
@@ -135,7 +135,7 @@ public class AntsMaster : MonoBehaviour
     {
         if (CanIncreasePopulation() && !supplyAntQueued && foodGathered >= supplyAntPrice)
         {
-            foodGathered -= supplyAntPrice;
+            SpendFood(supplyAntPrice);
             supplyAntQueued = true;
             supplyAntSpawnCoroutine = StartCoroutine(SupplyAntSpawnIEnumerator());
         }
@@ -284,6 +284,7 @@ public class AntsMaster : MonoBehaviour
     public int GetWorkersQueued() => workersQueued;
     public int GetWarriorsQueued() => warriorsQueued;
     public bool ISSupplyAntQueued() => supplyAntQueued;
+
 
     // Population
     public int GetPopulation() => population;

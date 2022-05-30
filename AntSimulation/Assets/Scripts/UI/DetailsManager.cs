@@ -6,14 +6,20 @@ using UnityEngine.UI;
 
 public class DetailsManager : MonoBehaviour
 {
+
+    // Anthill Details
+    public GameObject anthillDetailsPrefab;
+    AntsMaster _master;
+
+    // Details
     [SerializeField]
     private Canvas canvas;
-    public GameObject anthillDetailsPrefab;
     public GameObject details;
 
 
-
     // Anthill Details
+    public void AnthillSliderValueChanged(float value) => _master.SetMovementRange((int)value);
+
     public void UpdateAnthillDetailsQueuesTexts(int workers, int warriors, bool supply)
     {
         if (details != null && details.CompareTag("MyAnthillDetails"))
@@ -22,9 +28,13 @@ public class DetailsManager : MonoBehaviour
             var queuePanel = contentPanel.transform.GetChild(1);
             var textMeshes = queuePanel.GetComponentsInChildren<TextMeshProUGUI>();
 
-            textMeshes[0].text = workers.ToString();
-            textMeshes[1].text = warriors.ToString();
-            textMeshes[2].text = supply.ToString();
+            textMeshes[0].text = $"Workers queued: {workers.ToString()}";
+            textMeshes[1].text = $"Warriors queued: {warriors.ToString()}";
+            if (supply)
+                textMeshes[2].text = $"Supply Ant queued";
+            else
+                textMeshes[2].text = $"Supply Ant not queued";
+
         }
     }
 
@@ -37,6 +47,9 @@ public class DetailsManager : MonoBehaviour
 
             CloseDetails();
         }
+
+        if (_master == null)
+            _master = master;
 
         details = Instantiate(anthillDetailsPrefab, canvas.transform);
         var buttons = details.GetComponentsInChildren<Button>();
@@ -55,8 +68,14 @@ public class DetailsManager : MonoBehaviour
         var supply = master.ISSupplyAntQueued();
 
         UpdateAnthillDetailsQueuesTexts(workers, warriors, supply);
+
+        var slider = details.GetComponentInChildren<Slider>();
+
+        slider.onValueChanged.AddListener((value) => { AnthillSliderValueChanged(value); });
     }
 
+
+    // Details
     public void CloseDetails()
     {
         if (details != null)

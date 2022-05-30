@@ -364,8 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67e843bae580af478afcde394a866c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 952179650}
   anthillDetailsPrefab: {fileID: 972809631183295713, guid: 7a747699c600c5546b0c3448dbc3dbff, type: 3}
+  canvas: {fileID: 952179650}
   details: {fileID: 0}
 --- !u!4 &425233072
 Transform:
@@ -1063,6 +1063,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 952179650}
+    - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
       propertyPath: foodTMP
       value: 
       objectReference: {fileID: 1265241906}
@@ -1086,6 +1090,10 @@ PrefabInstance:
       propertyPath: layerMask.m_Bits
       value: 4160
       objectReference: {fileID: 0}
+    - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
+      propertyPath: anthillDetailsPrefab
+      value: 
+      objectReference: {fileID: 972809631183295713, guid: 7a747699c600c5546b0c3448dbc3dbff, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
 --- !u!1001 &2620953719568528452

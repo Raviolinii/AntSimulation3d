@@ -15,6 +15,7 @@ TagManager:
   - AntWarrior
   - SupplyAnt
   - Obstacle
+  - MyAnthillDetails
   layers:
   - Default
   - TransparentFX

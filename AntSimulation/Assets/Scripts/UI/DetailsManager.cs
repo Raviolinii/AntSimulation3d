@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DetailsManager : MonoBehaviour
 {
@@ -10,10 +12,49 @@ public class DetailsManager : MonoBehaviour
     public GameObject details;
 
 
-    public void ShowAnthillDetails()
+
+    // Anthill Details
+    public void UpdateAnthillDetailsQueuesTexts(int workers, int warriors, bool supply)
     {
-        if (details == null)
-            details = Instantiate(anthillDetailsPrefab, canvas.transform);
+        if (details != null && details.CompareTag("MyAnthillDetails"))
+        {
+            var contentPanel = details.transform.GetChild(1);
+            var queuePanel = contentPanel.transform.GetChild(1);
+            var textMeshes = queuePanel.GetComponentsInChildren<TextMeshProUGUI>();
+
+            textMeshes[0].text = workers.ToString();
+            textMeshes[1].text = warriors.ToString();
+            textMeshes[2].text = supply.ToString();
+        }
+    }
+
+    public void ShowAnthillDetails(AntsMaster master)
+    {
+        if (details != null)
+        {
+            if (details.CompareTag("MyAnthillDetails"))
+                return;
+
+            CloseDetails();
+        }
+
+        details = Instantiate(anthillDetailsPrefab, canvas.transform);
+        var buttons = details.GetComponentsInChildren<Button>();
+
+        buttons[0].onClick.AddListener(() => { master.BuyWorker(); });
+        buttons[1].onClick.AddListener(() => { master.BuyWarrior(); });
+        buttons[2].onClick.AddListener(() => { master.BuySupplyAnt(); });
+
+        var contentPanel = details.transform.GetChild(1);
+        var queuePanel = contentPanel.transform.GetChild(1);
+
+        var textMeshes = queuePanel.GetComponentsInChildren<TextMeshProUGUI>();
+
+        var workers = master.GetWorkersQueued();
+        var warriors = master.GetWarriorsQueued();
+        var supply = master.ISSupplyAntQueued();
+
+        UpdateAnthillDetailsQueuesTexts(workers, warriors, supply);
     }
 
     public void CloseDetails()
@@ -31,6 +72,6 @@ public class DetailsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayersMaster : AntsMaster
 {
     // Selection
     [SerializeField]
     LayerMask layerMask;
+
+    // UI Details
+    [SerializeField]
+    DetailsManager detailsManager;
+
 
     // UI Texts
     public TextMeshProUGUI populationTMP;
@@ -21,12 +27,17 @@ public class PlayersMaster : AntsMaster
     {
         owner = Owner.player;
         base.Start();
+        UpdateFoodCountText(foodGathered);
+        UpdatePopulationCountText(population);
+        UpdateWarriorsCountText(antWarriors.Count);
+        UpdateWorkersCountText(antWorkers.Count);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Selection();
+        if (Input.GetButtonDown("Select"))
+            Selection();
     }
 
 
@@ -36,6 +47,7 @@ public class PlayersMaster : AntsMaster
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        //detailsManager.CloseDetails();
         if (Physics.Raycast(ray, out hit, 300.0f, layerMask))
         {
             if (hit.transform != null)
@@ -44,15 +56,27 @@ public class PlayersMaster : AntsMaster
                 {
                     var script = hit.transform.GetComponent<Anthill>();
                     if (script.GetOwner() == this.owner)
+                    {
                         Debug.Log("Thats my anthill");
+                        detailsManager.ShowAnthillDetails(this);
+                    }
                     else
+                    {
                         Debug.Log("Enemy...");
+                        detailsManager.CloseDetails();
+                    }
                 }
-
             }
         }
     }
 
+
+    // UI Details
+
+    public void UpdateDetailsQueuesTexts()
+    {
+        detailsManager.UpdateAnthillDetailsQueuesTexts(workersQueued, warriorsQueued, supplyAntQueued);
+    }
 
     // UI Texts
     public void UpdatePopulationCountText(int count) => populationTMP.text = $"Population {count}/{maxPopulation}";
@@ -60,6 +84,45 @@ public class PlayersMaster : AntsMaster
     public void UpdateWarriorsCountText(int count) => warriorsTMP.text = $"Warriors {count}";
     public void UpdateWorkersCountText(int count) => workersTMP.text = $"Workers {count}";
 
+
+    // Buy Ants
+    public override void BuyWorker()
+    {
+        base.BuyWorker();
+        UpdateDetailsQueuesTexts();
+    }
+
+    public override void BuyWarrior()
+    {
+        base.BuyWarrior();
+        UpdateDetailsQueuesTexts();
+    }
+
+    public override void BuySupplyAnt()
+    {
+        base.BuySupplyAnt();
+        UpdateDetailsQueuesTexts();
+    }
+
+
+    // Coroutine Ants
+    protected override IEnumerator WorkerSpawnIEnumerator()
+    {
+        yield return base.WorkerSpawnIEnumerator();
+            UpdateDetailsQueuesTexts();
+    }
+
+    protected override IEnumerator WarriorSpawnIEnumerator()
+    {
+        yield return base.WarriorSpawnIEnumerator();
+            UpdateDetailsQueuesTexts();
+    }
+
+    protected override IEnumerator SupplyAntSpawnIEnumerator()
+    {
+        yield return base.SupplyAntSpawnIEnumerator();
+            UpdateDetailsQueuesTexts();
+    }
 
     // Ants
     protected override void SpawnWorker()

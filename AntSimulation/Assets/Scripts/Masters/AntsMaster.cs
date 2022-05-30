@@ -29,7 +29,7 @@ public class AntsMaster : MonoBehaviour
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
     protected List<SupplyAnt> supplyAnts = new List<SupplyAnt>();
-    int movementRange = 50;
+    public int movementRange = 50;
     public int warriorsStacked = 0;
 
 
@@ -40,9 +40,9 @@ public class AntsMaster : MonoBehaviour
     float workerSpawnDelay = 1.5f;
     float warriorSpawnDelay = 1.5f;
     float supplyAntsSpawnDelay = 2.5f;
-    public int workersQueued = 0;
-    public int warriorsQueued = 0;
-    public bool supplyAntQueued = false;
+    protected int workersQueued = 0;
+    protected int warriorsQueued = 0;
+    protected bool supplyAntQueued = false;
 
 
     // Buy Ants
@@ -75,9 +75,9 @@ public class AntsMaster : MonoBehaviour
         Invoke("BuyWarrior", 6.5f); */
         //Invoke("Zerg", 2.5f);
 
-        Invoke("BuySupplyAnt", 2.5f);
-        Invoke("BuySupplyAnt", 5.5f);
-        Invoke("SupplyAntDied", 10f);
+        //Invoke("BuySupplyAnt", 2.5f);
+        //Invoke("BuySupplyAnt", 5.5f);
+        //Invoke("SupplyAntDied", 10f);
     }
 
     void Zerg()
@@ -100,11 +100,11 @@ public class AntsMaster : MonoBehaviour
 
 
     // Buy Ants
-    public void BuyWorker()
+    public virtual void BuyWorker()
     {
         if (CanAddAnt() && foodGathered >= workerPrice)
         {
-            foodGathered -= workerPrice;
+            SpendFood(workerPrice);
             workersQueued++;
 
             if (workerSpawnCoroutine == null)
@@ -114,11 +114,11 @@ public class AntsMaster : MonoBehaviour
         }
     }
 
-    public void BuyWarrior()
+    public virtual void BuyWarrior()
     {
         if (CanAddAnt() && foodGathered >= warriorPrice)
         {
-            foodGathered -= warriorPrice;
+            SpendFood(warriorPrice);
             warriorsQueued++;
 
             if (dangerSpotted)
@@ -131,11 +131,11 @@ public class AntsMaster : MonoBehaviour
         }
     }
 
-    public void BuySupplyAnt()
+    public virtual void BuySupplyAnt()
     {
         if (CanIncreasePopulation() && !supplyAntQueued && foodGathered >= supplyAntPrice)
         {
-            foodGathered -= supplyAntPrice;
+            SpendFood(supplyAntPrice);
             supplyAntQueued = true;
             supplyAntSpawnCoroutine = StartCoroutine(SupplyAntSpawnIEnumerator());
         }
@@ -151,12 +151,12 @@ public class AntsMaster : MonoBehaviour
 
 
     // Coroutine Ants
-    IEnumerator WorkerSpawnIEnumerator()
+    protected virtual IEnumerator WorkerSpawnIEnumerator()
     {
-        workersQueued--;
         yield return new WaitForSeconds(workerSpawnDelay);
 
         SpawnWorker();
+        workersQueued--;
 
         if (workersQueued > 0)
             workerSpawnCoroutine = StartCoroutine(WorkerSpawnIEnumerator());
@@ -165,12 +165,12 @@ public class AntsMaster : MonoBehaviour
             workerSpawnCoroutine = null;
     }
 
-    IEnumerator WarriorSpawnIEnumerator()
+    protected virtual IEnumerator WarriorSpawnIEnumerator()
     {
-        warriorsQueued--;
         yield return new WaitForSeconds(warriorSpawnDelay);
 
         SpawnWarrior();
+        warriorsQueued--;
 
         if (warriorsQueued > 0)
             warriorSpawnCoroutine = StartCoroutine(WarriorSpawnIEnumerator());
@@ -178,7 +178,7 @@ public class AntsMaster : MonoBehaviour
             warriorSpawnCoroutine = null;
     }
 
-    IEnumerator SupplyAntSpawnIEnumerator()
+    protected virtual IEnumerator SupplyAntSpawnIEnumerator()
     {
         yield return new WaitForSeconds(supplyAntsSpawnDelay);
         SpawnSupplyAnt();
@@ -280,6 +280,10 @@ public class AntsMaster : MonoBehaviour
         DecreaseMaxPopulation();
         DecreaseMaxFoodAmount();
     }
+
+    public int GetWorkersQueued() => workersQueued;
+    public int GetWarriorsQueued() => warriorsQueued;
+    public bool ISSupplyAntQueued() => supplyAntQueued;
 
 
     // Population

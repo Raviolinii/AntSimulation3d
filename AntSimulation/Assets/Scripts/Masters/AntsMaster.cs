@@ -28,7 +28,7 @@ public class AntsMaster : MonoBehaviour
     public GameObject antWarriorPrefab;
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
-    protected List<SupplyAnt> supplyAnts = new List<SupplyAnt>();
+    protected int supplyAnts = 0;
     public int movementRange = 50;
     public int warriorsStacked = 0;
 
@@ -46,9 +46,9 @@ public class AntsMaster : MonoBehaviour
 
 
     // Buy Ants
-    int workerPrice = 60;
-    int warriorPrice = 100;
-    int supplyAntPrice = 200;
+    protected int workerPrice = 60;
+    protected int warriorPrice = 100;
+    protected int supplyAntPrice = 200;
 
 
     // Alarm
@@ -64,7 +64,8 @@ public class AntsMaster : MonoBehaviour
         //Invoke("SpawnWorker", 2.5f);
         //Invoke("SpawnWarrior", 2.5f);
 
-        AddFood(500);
+        Invoke("SetInitialFoodAmount", 2.5f);
+        //AddFood(500);
 
         /* Invoke("BuyWorker", 2.5f);
         Invoke("BuyWorker", 2.5f);
@@ -264,6 +265,7 @@ public class AntsMaster : MonoBehaviour
         IncreaseMaxPopulation();
         IncreseMaxFoodAmount();
         supplyAntQueued = false;
+        supplyAnts++;
     }
 
     public void SetMovementRange(int value)
@@ -279,6 +281,7 @@ public class AntsMaster : MonoBehaviour
     {
         DecreaseMaxPopulation();
         DecreaseMaxFoodAmount();
+        supplyAnts--;
     }
 
     public int GetWorkersQueued() => workersQueued;
@@ -295,10 +298,11 @@ public class AntsMaster : MonoBehaviour
     public bool CanAddAnt() => population < maxPopulation ? true : false;
     public virtual void IncreaseMaxPopulation() => maxPopulation += populationIncreaseValue;
     public virtual void DecreaseMaxPopulation() => maxPopulation -= populationIncreaseValue;
-    public bool CanIncreasePopulation() => supplyAnts.Count < 8 ? true : false;
+    public bool CanIncreasePopulation() => supplyAnts < 8 ? true : false;
 
 
     // Initialization
+    protected virtual void SetInitialFoodAmount() => foodGathered = maxFoodAmount;
     protected void SetAnthillMaster() => anthill.SetMaster(this);
     protected void FindAnthill()
     {

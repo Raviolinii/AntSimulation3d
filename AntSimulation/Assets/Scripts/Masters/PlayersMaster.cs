@@ -27,7 +27,7 @@ public class PlayersMaster : AntsMaster
     {
         owner = Owner.player;
         base.Start();
-        UpdateFoodCountText(foodGathered);
+        UpdateFoodCountText(maxFoodAmount);
         UpdatePopulationCountText(population);
         UpdateWarriorsCountText(antWarriors.Count);
         UpdateWorkersCountText(antWorkers.Count);

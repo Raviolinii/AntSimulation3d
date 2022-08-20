@@ -1736,6 +1736,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PheromoneMap
       objectReference: {fileID: 0}
+    - target: {fileID: 6317467282697957069, guid: f6ff1d897b4428b4bb0f1d51662b116f, type: 3}
+      propertyPath: treePrefab
+      value: 
+      objectReference: {fileID: 2370524701010018709, guid: c772a66946e5dc045948e6c0e0f7a16d, type: 3}
     - target: {fileID: 6317467282697957070, guid: f6ff1d897b4428b4bb0f1d51662b116f, type: 3}
       propertyPath: m_RootOrder
       value: 2

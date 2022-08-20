@@ -15,4 +15,9 @@ public class Tree : WorldObject
     {
         
     }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+    }
 }

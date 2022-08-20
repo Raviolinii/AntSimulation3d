@@ -47,9 +47,4 @@ public class Food : WorldObject
         _tile.ObjectDestroyed();
         Destroy(gameObject);
     }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-    }
 }

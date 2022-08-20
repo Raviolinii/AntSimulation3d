@@ -9,15 +9,4 @@ public class Tree : WorldObject
     {
         typeOfObject = SpawnedObject.obstacle;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-    }
 }

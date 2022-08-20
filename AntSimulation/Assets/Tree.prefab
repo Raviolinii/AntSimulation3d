@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tile: {fileID: 0}
+  typeOfObject: 0
 --- !u!21 &-910402622025897911
 Material:
   serializedVersion: 6

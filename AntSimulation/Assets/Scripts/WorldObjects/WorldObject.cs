@@ -26,6 +26,7 @@ public class WorldObject : MonoBehaviour
         {
             Tile tileScript = other.GetComponent<Tile>();
             tileScript.ObjectSpawned(this, typeOfObject);
+            SetTile(tileScript);
         }
     }
 

@@ -40,7 +40,11 @@ public class Anthill : WorldObject
 
     protected override void OnTriggerEnter(Collider other)
     {
-        base.OnTriggerEnter(other);
+        if (other.CompareTag("Tile"))
+        {
+            Tile tileScript = other.GetComponent<Tile>();
+            tileScript.ObjectSpawned(this, typeOfObject);
+        }
     }
 
 

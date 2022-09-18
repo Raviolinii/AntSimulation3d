@@ -150,10 +150,11 @@ public class WorkerAnt : Ant
             lookingForFood = false;
             foodInRange = false;
             StopCoroutine(gatherFoodCoroutine);
+            animator.SetBool(isGathering, false);
             gatherFoodCoroutine = null;
             agent.isStopped = false;
+            animator.SetBool(isMoving, true);
         }
-
     }
 
     public bool WantToAlarm() => dangerSpotted ? true : false;
@@ -167,10 +168,13 @@ public class WorkerAnt : Ant
         if (gatherFoodCoroutine != null)
         {
             StopCoroutine(gatherFoodCoroutine);
+            animator.SetBool(isGathering, false);
             gatherFoodCoroutine = null;
         }
 
-        yield return new WaitForSeconds(1f);                                            // Tests
+        animator.SetBool(isGathering, true);
+        yield return new WaitForSeconds(storingTime);                                            // Tests
+        animator.SetBool(isGathering, false);
         if (anthillScript != null)
             anthillScript.Alarm();
 
@@ -180,6 +184,7 @@ public class WorkerAnt : Ant
             lookingForFood = true;
             anthillScript = null;
             agent.isStopped = false;
+            animator.SetBool(isMoving, true);
         }
         dangerSpotted = false;
         raiseAlarmCoroutine = null;
@@ -194,7 +199,10 @@ public class WorkerAnt : Ant
 
     IEnumerator StoreFoodIEnumerator()
     {
+        animator.SetBool(isStoring, true);
         yield return new WaitForSeconds(storingTime);
+        animator.SetBool(isStoring, false);
+        
         if (anthillInRange == true && anthillScript != null)
         {
             if (anthillScript.AddFood(foodGathered))
@@ -204,6 +212,7 @@ public class WorkerAnt : Ant
             lookingForFood = true;
             anthillScript = null;
             agent.isStopped = false;
+            animator.SetBool(isMoving, true);
         }
         storeFoodCoroutine = null;
     }
@@ -230,7 +239,10 @@ public class WorkerAnt : Ant
 
     IEnumerator GatherFoodIEnumerator()
     {
+        animator.SetBool(isGathering, true);
         yield return new WaitForSeconds(gatheringTime);
+        animator.SetBool(isGathering, false);
+        
         if (foodScript != null)
         {
             foodGathered = foodScript.GatherFood(gatheringAmount);
@@ -242,6 +254,7 @@ public class WorkerAnt : Ant
         foodInRange = false;
         lookingForFood = false;
         agent.isStopped = false;
+        animator.SetBool(isMoving, true);
         gatherFoodCoroutine = null;
     }
 
@@ -391,7 +404,10 @@ public class WorkerAnt : Ant
     public void StopAntNearDestination()
     {
         if (foodInRange || anthillInRange || dangerSpotted)
+        {
             agent.isStopped = true;
+            animator.SetBool(isMoving, false);
+        }
     }
 
     public void SetMovementRange(int value) => movementRange = value;

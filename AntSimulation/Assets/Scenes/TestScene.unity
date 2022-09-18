@@ -216,7 +216,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &208247260 stripped
 MonoBehaviour:
@@ -900,6 +900,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI
       objectReference: {fileID: 0}
+    - target: {fileID: 238962089663522659, guid: 5c8ce226be7bec54d80fe70a1f42e012, type: 3}
+      propertyPath: antWorkerPrefab
+      value: 
+      objectReference: {fileID: 5744702342484655247, guid: c870650c0fee72a44ab47326a4126a74, type: 3}
     - target: {fileID: 238962089663522660, guid: 5c8ce226be7bec54d80fe70a1f42e012, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1087,6 +1091,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 425233071}
     - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
+      propertyPath: antWorkerPrefab
+      value: 
+      objectReference: {fileID: 5744702342484655247, guid: c870650c0fee72a44ab47326a4126a74, type: 3}
+    - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
       propertyPath: layerMask.m_Bits
       value: 4160
       objectReference: {fileID: 0}
@@ -1265,7 +1273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2620953719872287053, guid: 0f95a9dcd2026bf489aeb1254d766d05, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2620953719872287053, guid: 0f95a9dcd2026bf489aeb1254d766d05, type: 3}
       propertyPath: m_AnchorMax.x

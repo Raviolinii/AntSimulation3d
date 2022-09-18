@@ -40,11 +40,21 @@ public abstract class Ant : MonoBehaviour
     protected float attackSpeed = 1.5f;
 
 
+    // Animations
+    protected Animator animator;
+    protected const string isAttacking = "IsAttacking";
+    protected const string isDying = "IsDying";
+    protected const string isMoving = "IsMoving";
+    protected const string isStoring = "IsStoring";
+    protected const string isGathering = "IsGathering";
+    
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
+        animator = GetComponent<Animator>();
         areaDetector = GetComponentInChildren<SphereCollider>();
         chosenMoveIndex = Random.Range(0, 8);
     }
@@ -53,7 +63,7 @@ public abstract class Ant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //animator.SetBool(isMoving, agent.velocity.magnitude > 0.01f);
     }
 
 
@@ -136,7 +146,9 @@ public abstract class Ant : MonoBehaviour
 
     public IEnumerator Attack(Ant target)
     {
+        animator.SetBool(isAttacking, true);
         yield return new WaitForSeconds(attackSpeed);
+        animator.SetBool(isAttacking, false);
 
         //Debug.Log("Dmg");
         if (target != null)
@@ -162,6 +174,7 @@ public abstract class Ant : MonoBehaviour
             //Debug.Log("InFight");
             inFight = true;
             agent.isStopped = true;
+            animator.SetBool(isMoving, false);
             
             attackCoroutine = StartCoroutine(Attack(target));
         }

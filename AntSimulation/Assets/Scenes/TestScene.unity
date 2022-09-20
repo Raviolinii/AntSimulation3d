@@ -903,7 +903,11 @@ PrefabInstance:
     - target: {fileID: 238962089663522659, guid: 5c8ce226be7bec54d80fe70a1f42e012, type: 3}
       propertyPath: antWorkerPrefab
       value: 
-      objectReference: {fileID: 5744702342484655247, guid: c870650c0fee72a44ab47326a4126a74, type: 3}
+      objectReference: {fileID: 6766429061953189052, guid: cdfafb2a67def8341b409d0ff0f5d4d2, type: 3}
+    - target: {fileID: 238962089663522659, guid: 5c8ce226be7bec54d80fe70a1f42e012, type: 3}
+      propertyPath: antWarriorPrefab
+      value: 
+      objectReference: {fileID: 6766429061953189052, guid: f5f6b6e186069c7498fabd62f0bc7b31, type: 3}
     - target: {fileID: 238962089663522660, guid: 5c8ce226be7bec54d80fe70a1f42e012, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1094,6 +1098,10 @@ PrefabInstance:
       propertyPath: antWorkerPrefab
       value: 
       objectReference: {fileID: 5744702342484655247, guid: c870650c0fee72a44ab47326a4126a74, type: 3}
+    - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
+      propertyPath: antWarriorPrefab
+      value: 
+      objectReference: {fileID: 8348664382624175291, guid: e1f8c97c3870ed046aeccc763e29a9d4, type: 3}
     - target: {fileID: 7751625944412234936, guid: a798c25aaf065d74b9046193bcaab9f3, type: 3}
       propertyPath: layerMask.m_Bits
       value: 4160

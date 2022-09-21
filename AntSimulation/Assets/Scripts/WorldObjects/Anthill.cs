@@ -22,14 +22,14 @@ public class Anthill : WorldObject
     Coroutine attackCoroutine;
 
     // SupplyAnts
-    List<GameObject> supplyAnts = new List<GameObject>();
+    [SerializeField]
+    GameObject[] supplyAnts = new GameObject[8];
     int activeSupplyAnts = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         stoppingDistance = GetComponentInChildren<SphereCollider>();
-        AsignSupplyAnts();
     }
 
     // Update is called once per frame
@@ -49,15 +49,6 @@ public class Anthill : WorldObject
 
 
     // SupplyAnts
-    public void AsignSupplyAnts()
-    {
-        var supplyAntsGameObject = gameObject.transform.GetChild(3);
-        for (int i = 0; i < supplyAntsGameObject.childCount; i++)
-        {
-            var toAdd = supplyAntsGameObject.GetChild(i);
-            supplyAnts.Add(toAdd.gameObject);
-        }
-    }
 
     public void CreateSupplyAnt()
     {

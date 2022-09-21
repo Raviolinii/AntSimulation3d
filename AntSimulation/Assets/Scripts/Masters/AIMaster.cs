@@ -38,8 +38,8 @@ public class AIMaster : AntsMaster
         else if(foodGathered > supplyAntPrice)
             BuySupplyAnt();
 
-        Debug.Log($"workers : {workersCount}, warriors : {warriorsCount}, supply : {supplyAnts}");
-        Debug.Log(foodGathered);
+/*         Debug.Log($"workers : {workersCount}, warriors : {warriorsCount}, supply : {supplyAnts}");
+        Debug.Log(foodGathered); */
     }
 
     // Food

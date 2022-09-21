@@ -2419,7 +2419,7 @@ GameObject:
   - component: {fileID: 7437596938527822325}
   m_Layer: 6
   m_Name: AIAntWarriorPrefab
-  m_TagString: AntWorker
+  m_TagString: AntWarrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

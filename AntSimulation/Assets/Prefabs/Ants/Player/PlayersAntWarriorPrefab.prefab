@@ -3030,7 +3030,7 @@ GameObject:
   - component: {fileID: 5263830992466457074}
   m_Layer: 6
   m_Name: PlayersAntWarriorPrefab
-  m_TagString: AntWorker
+  m_TagString: AntWarrior
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

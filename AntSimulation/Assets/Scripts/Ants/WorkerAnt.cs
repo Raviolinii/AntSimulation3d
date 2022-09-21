@@ -10,7 +10,7 @@ public class WorkerAnt : Ant
     public bool foodInRange = false;
     Food foodScript;
     int gatheringAmount = 20;
-    float gatheringTime = 2.5f;
+    float gatheringTime = 4.2f;
     public int foodGathered = 0;
     Coroutine gatherFoodCoroutine;
 
@@ -18,7 +18,7 @@ public class WorkerAnt : Ant
     // Anthill
     public bool anthillInRange = false;
     public Anthill anthillScript;
-    float storingTime = 1.5f;
+    float storingTime = 5f;
     Coroutine storeFoodCoroutine;
 
     // Alarm
@@ -28,6 +28,10 @@ public class WorkerAnt : Ant
 
     // Movement
     float movementRange = 50;
+
+    // Animations
+    protected const string isStoring = "IsStoring";
+    protected const string isGathering = "IsGathering";
 
 
     // Start is called before the first frame update
@@ -202,7 +206,7 @@ public class WorkerAnt : Ant
         animator.SetBool(isStoring, true);
         yield return new WaitForSeconds(storingTime);
         animator.SetBool(isStoring, false);
-        
+
         if (anthillInRange == true && anthillScript != null)
         {
             if (anthillScript.AddFood(foodGathered))
@@ -242,7 +246,7 @@ public class WorkerAnt : Ant
         animator.SetBool(isGathering, true);
         yield return new WaitForSeconds(gatheringTime);
         animator.SetBool(isGathering, false);
-        
+
         if (foodScript != null)
         {
             foodGathered = foodScript.GatherFood(gatheringAmount);

@@ -127,6 +127,7 @@ public class AntWarrior : Ant
         {
             //Debug.Log("InFight");
             inFight = true;
+            animator.SetBool(isMoving, false);
             agent.isStopped = true;
             attackCoroutine = StartCoroutine(AttackAnthill(anthill));
         }
@@ -134,17 +135,17 @@ public class AntWarrior : Ant
 
     IEnumerator AttackAnthill(Anthill anthill)
     {
-        yield return new WaitForSeconds(anthillAttackSpeed);
+        animator.SetBool(isAttacking, true);
+        yield return new WaitForSeconds(attackSpeed);
+        animator.SetBool(isAttacking, false);
 
+        inFight = false;
+        agent.isStopped = false;
         if (anthill != null)
         {
             anthill.DecreseHp(dmg);
-        }
-        inFight = false;
-        agent.isStopped = false;
-        if (anthill != null && anthill.GetHp() > 0)
-        {
-            Fight(anthill);
+            if (anthill.GetHp() > 0)
+                Fight(anthill);
         }
     }
 }

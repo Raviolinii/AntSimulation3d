@@ -37,7 +37,13 @@ public abstract class Ant : MonoBehaviour
     protected int dmg;
     protected bool inFight = false;
     protected Coroutine attackCoroutine;
-    protected float attackSpeed = 1.5f;
+    protected float attackSpeed = 3f;
+
+
+    // Death 
+    protected bool isDead = false;
+    protected Coroutine dyigCoroutine;
+    protected float dyingTime = 3f;
 
 
     // Animations
@@ -45,9 +51,7 @@ public abstract class Ant : MonoBehaviour
     protected const string isAttacking = "IsAttacking";
     protected const string isDying = "IsDying";
     protected const string isMoving = "IsMoving";
-    protected const string isStoring = "IsStoring";
-    protected const string isGathering = "IsGathering";
-    
+
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -151,22 +155,23 @@ public abstract class Ant : MonoBehaviour
         animator.SetBool(isAttacking, false);
 
         //Debug.Log("Dmg");
-        if (target != null)
-            target.DecreseHp(dmg);
         inFight = false;
-        agent.isStopped = false;
-        if (target != null && target.GetHp() > 0)
+        if (target != null)
         {
-            Fight(target);
+            target.DecreseHp(dmg);
+
+            if (target.GetHp() > 0)
+                Fight(target);
         }
+        else
+        {
+            agent.isStopped = false;
+            animator.SetBool(isMoving, true);
+        }
+
     }
 
-    public void Dead()
-    {
-        _master.DecreasePopulation();
-        Destroy(gameObject);
-    }
-    
+
     public void Fight(Ant target)
     {
         if (!inFight)
@@ -175,8 +180,28 @@ public abstract class Ant : MonoBehaviour
             inFight = true;
             agent.isStopped = true;
             animator.SetBool(isMoving, false);
-            
+
             attackCoroutine = StartCoroutine(Attack(target));
         }
     }
+
+
+    // Death
+    public void Dead()
+    {
+        if (dyigCoroutine == null)
+            dyigCoroutine = StartCoroutine(DyingHandler());
+    }
+
+    public IEnumerator DyingHandler()
+    {
+        _master.DecreasePopulation();
+        animator.SetBool(isDying, true);
+        yield return new WaitForSeconds(dyingTime);
+        animator.SetBool(isDying, false);
+
+        Destroy(gameObject);
+    }
+
+    public bool GetIsDead() => isDead;
 }

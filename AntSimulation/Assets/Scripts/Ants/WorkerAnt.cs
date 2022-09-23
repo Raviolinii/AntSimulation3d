@@ -60,7 +60,7 @@ public class WorkerAnt : Ant
                 tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
             else if (!dangerSpotted)
                 tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
-            else
+            if (dangerSpotted)
                 tileScript.AddWarriorPheromone(pheromoneLeaveAmount);
             if (foodInRange && foodScript == null)
                 foodInRange = false;

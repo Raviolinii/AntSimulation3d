@@ -25,7 +25,8 @@ public abstract class Ant : MonoBehaviour
 
 
     // Pheromones
-    protected int pheromoneLeaveAmount = 5;
+    protected int pheromoneLeaveAmount = 7;
+    protected int pheromoneMultiply = 3;
 
 
     // Colliders

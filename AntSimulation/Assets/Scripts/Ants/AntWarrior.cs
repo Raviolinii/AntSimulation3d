@@ -83,7 +83,7 @@ public class AntWarrior : Ant
                 }
                 else if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
                 {
-                    pheromoneValues[i] = surroundings[i].GetWarriorPheromoneValue();
+                    pheromoneValues[i] = surroundings[i].GetWarriorPheromoneValue() * pheromoneMultiply;
                     sum += (int)pheromoneValues[i] + 1;
                     pheromoneValues[i] = sum;
                 }

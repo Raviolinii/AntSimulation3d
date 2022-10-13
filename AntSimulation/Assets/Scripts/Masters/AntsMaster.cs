@@ -32,7 +32,7 @@ public class AntsMaster : MonoBehaviour
     protected List<WorkerAnt> antWorkers = new List<WorkerAnt>();
     protected List<AntWarrior> antWarriors = new List<AntWarrior>();
     protected int supplyAnts = 0;
-    public int movementRange = 50;
+    protected int movementRange = 50;
     public int warriorsStacked = 0;
 
 
@@ -278,6 +278,7 @@ public class AntsMaster : MonoBehaviour
         movementRange = value;
         for (int i = 0; i < antWorkers.Count; i++)
         {
+            Debug.Log(movementRange);
             antWorkers[i].SetMovementRange(value);
         }
     }

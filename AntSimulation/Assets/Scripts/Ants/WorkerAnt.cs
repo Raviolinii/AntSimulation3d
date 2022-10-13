@@ -9,7 +9,7 @@ public class WorkerAnt : Ant
     public bool lookingForFood = true;
     public bool foodInRange = false;
     Food foodScript;
-    int gatheringAmount = 20;
+    int gatheringAmount = 40;
     float gatheringTime = 4.2f;
     public int foodGathered = 0;
     Coroutine gatherFoodCoroutine;
@@ -29,6 +29,12 @@ public class WorkerAnt : Ant
     // Movement
     float movementRange = 50;
 
+    // Movement Limit
+    float moveLimitTime = 50f;
+    int foodToRefreshMovementLimit = 5;
+    Coroutine moveLimitCoroutine;
+    bool movementLimitReached = false;
+
     // Animations
     protected const string isStoring = "IsStoring";
     protected const string isGathering = "IsGathering";
@@ -40,12 +46,13 @@ public class WorkerAnt : Ant
         base.Start();
         hp = 10;
         dmg = 2;
+        moveLimitCoroutine = StartCoroutine(MoveLimitEnumerator());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //MoveInDirection(new Vector3(1,0,0));
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,19 +76,8 @@ public class WorkerAnt : Ant
             {
                 if (!foodInRange)
                 {
-                    /*                 previousTile = currentTile;
-                                    currentTile = other.transform.position;
-
-                                    tileScript = other.GetComponent<Tile>();
-                                    if (lookingForFood)
-                                        tileScript.AddWorkerPheromone(pheromoneLeaveAmount);
-                                    else if (!dangerSpotted)
-                                        tileScript.AddWorkerFoodPheromone(pheromoneLeaveAmount);
-                                    else
-                                        tileScript.AddWarriorPheromone(pheromoneLeaveAmount); */
-
                     surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
-                    if (!dangerSpotted)
+                    if (!dangerSpotted && !movementLimitReached)
                     {
                         GoToNextTile();
                     }
@@ -108,6 +104,12 @@ public class WorkerAnt : Ant
 
             if (anthillScript.GetOwner() == _owner)
             {
+                if (movementLimitReached)
+                {
+                    StopAntNearDestination();
+                    GoToPreviousTile();
+                    RestartMovementLimit();
+                }
 
                 if (WantToAlarm())
                 {
@@ -177,7 +179,7 @@ public class WorkerAnt : Ant
         }
 
         animator.SetBool(isGathering, true);
-        yield return new WaitForSeconds(storingTime);                                            // Tests
+        yield return new WaitForSeconds(storingTime);
         animator.SetBool(isGathering, false);
         if (anthillScript != null)
             anthillScript.Alarm();
@@ -207,10 +209,11 @@ public class WorkerAnt : Ant
         yield return new WaitForSeconds(storingTime);
         animator.SetBool(isStoring, false);
 
-        if (anthillInRange == true && anthillScript != null)
+        if (anthillScript != null)
+        //if (anthillInRange == true && anthillScript != null)
         {
-            if (anthillScript.AddFood(foodGathered))
-                foodGathered = 0;              // should excess food be destroyed?? 
+            anthillScript.AddFood(foodGathered);
+            foodGathered = 0;
 
             anthillInRange = false;
             lookingForFood = true;
@@ -250,7 +253,7 @@ public class WorkerAnt : Ant
         if (foodScript != null)
         {
             foodGathered = foodScript.GatherFood(gatheringAmount);
-            foodScript = null;              // null food script
+            foodScript = null;
         }
         else
             GoToPreviousTile();
@@ -273,6 +276,35 @@ public class WorkerAnt : Ant
     }
 
     public bool WantToGather() => foodInRange ? true : false;
+
+
+    // Movement Limit
+    IEnumerator MoveLimitEnumerator()
+    {
+        movementLimitReached = false;
+        yield return new WaitForSeconds(moveLimitTime);
+        movementLimitReached = true;
+    }
+
+    void RestartMovementLimit()
+    {
+        moveLimitCoroutine = null;
+        bool refreshed = anthillScript.SpendFood(foodToRefreshMovementLimit);
+        if (refreshed)
+        {
+            moveLimitCoroutine = StartCoroutine(MoveLimitEnumerator());
+            if (!WantToStoreFood() && !WantToAlarm())
+            {
+                agent.isStopped = false;
+                animator.SetBool(isMoving, true);
+            }
+        }
+        else
+        {
+            anthillScript.AddFood(5);
+            Dead();
+        }
+    }
 
 
     // Movement
@@ -352,7 +384,7 @@ public class WorkerAnt : Ant
 
                 if (distance <= movementRange)
                 {
-                    pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue();
+                    pheromoneValues[i] = surroundings[i].GetWorkerPheromoneValue() * pheromoneMultiply;
                     sum += (int)pheromoneValues[i] + 1;
                     pheromoneValues[i] = sum;
                 }
@@ -390,7 +422,7 @@ public class WorkerAnt : Ant
 
                     if (distance <= movementRange)
                     {
-                        pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue();
+                        pheromoneValues[i] = surroundings[i].GetWorkerFoodPheromoneValue() * pheromoneMultiply;
                         sum += (int)pheromoneValues[i] + 1;
                         pheromoneValues[i] = sum;
                     }

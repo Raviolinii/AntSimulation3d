@@ -19,8 +19,8 @@ public class PheromoneMap : MonoBehaviour
     public int foodCount = 0;
     int minFoodCount = 60;
     // Pheromones
-    float pheromonesDecreseTime = 10f;
-    int pheromoneDecreseValue = 2;
+    float pheromonesDecreseTime = 20f;
+    int pheromoneDecreseValue = 1;
 
     // World Objects
     public GameObject foodPrefab;

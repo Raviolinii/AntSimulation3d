@@ -49,7 +49,6 @@ public class Anthill : WorldObject
 
 
     // SupplyAnts
-
     public void CreateSupplyAnt()
     {
         supplyAnts[activeSupplyAnts].SetActive(true);
@@ -72,7 +71,11 @@ public class Anthill : WorldObject
 
     // Food
     public bool AddFood(int value) => antsMaster.AddFood(value);
+    public int GetFoodGathered() => antsMaster.GetFoodGathered();
 
+
+    // Movement Limit
+    public bool SpendFood(int value) => antsMaster.SpendFood(value);
 
     // Alarm
     public void Alarm()

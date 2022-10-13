@@ -25,10 +25,10 @@ public class AIMaster : AntsMaster
 
     private void TryBuyAnts()
     {
-        var workersCount = antWorkers.Count;
+        var workersCount = antWorkers.Count + workersQueued;
         var warriorsCount = antWarriors.Count + warriorsQueued;
 
-        if (population < maxPopulation)
+        if (population + warriorsQueued + workersQueued < maxPopulation)
         {
             if (workersCount >= 3 * warriorsCount && foodGathered > warriorPrice)
                 BuyWarrior();

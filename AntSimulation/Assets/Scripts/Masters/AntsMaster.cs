@@ -24,7 +24,7 @@ public class AntsMaster : MonoBehaviour
     // was 10 start and 5 increase
     // good was 40 and 20 increase
 
-    protected int spawnMultiply = 1;
+    protected int spawnMultiply = 5;
 
     // Ants
     public GameObject antWorkerPrefab;

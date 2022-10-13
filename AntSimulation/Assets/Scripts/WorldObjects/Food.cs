@@ -5,14 +5,15 @@ using UnityEngine;
 public class Food : WorldObject
 {
     object _ = new object();
-    public int amount = 2_000;
+    protected int amount;
+    PheromoneMap map;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Invoke("Depleted", 2.5f);
         stoppingDistance = GetComponentInChildren<SphereCollider>();
         typeOfObject = SpawnedObject.food;
+        amount = Random.Range(200, 601);
     }
 
     // Update is called once per frame
@@ -43,8 +44,10 @@ public class Food : WorldObject
     }
     void Depleted()
     {
-        //Debug.Log(_tile);
         _tile.ObjectDestroyed();
+        map.DecreaseFoodCount();
         Destroy(gameObject);
     }
+
+    public void SetPheromoneMap(PheromoneMap pheromoneMap) => map = pheromoneMap;
 }

@@ -10,16 +10,17 @@ public class PheromoneMap : MonoBehaviour
     int width;
     int height;
     int treesCount;
-    Tile[,] tileMap;    // changed from pheromones
+    Tile[,] tileMap;
     MapInfo mapInfo;
 
-    // Food Spawn Coroutine
-    float foodSpawnTime;
+    // Food Spawn
+    float foodSpawnTime = 1.5f;
     Coroutine foodSpawnCoroutine;
-
+    public int foodCount = 0;
+    int minFoodCount = 60;
     // Pheromones
     float pheromonesDecreseTime = 10f;
-    int pheromoneDecreseValue = 2;          // Move it to pheromone script
+    int pheromoneDecreseValue = 2;
 
     // World Objects
     public GameObject foodPrefab;
@@ -48,6 +49,15 @@ public class PheromoneMap : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if (foodCount < minFoodCount)
+        {
+            foodCount++;
+            SpawnFood();
+        }
+    }
+
     // World Objects
     void TestSpawnFood() => SpawnFoodAtIndex(1, 1);
     void TestSpawnPlayersAnthill() => SpawnAnthillAtIndex(Owner.player, 4, 4);
@@ -71,19 +81,6 @@ public class PheromoneMap : MonoBehaviour
         {
             SpawnTree();
         }
-
-        foodSpawnCoroutine = StartCoroutine(FoodSpawn(1.5f));
-    }
-
-    IEnumerator FoodSpawn(float time)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(time);
-            SpawnFood();
-            SpawnFood();
-            time = Random.Range(40, 181);
-        }
     }
 
     void SpawnFood()
@@ -96,8 +93,12 @@ public class PheromoneMap : MonoBehaviour
     {
         Vector3 position = tileMap[i, j].transform.position;
         position.y = 10;
-        Instantiate(foodPrefab, position, foodPrefab.transform.rotation);
+        GameObject foodObj = Instantiate(foodPrefab, position, foodPrefab.transform.rotation);
+        Food foodScript = foodObj.GetComponent<Food>();
+        foodScript.SetPheromoneMap(this);
     }
+
+    public void DecreaseFoodCount() => foodCount--;
 
     void SpawnAnthill(Owner owner)
     {

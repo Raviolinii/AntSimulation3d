@@ -18,10 +18,13 @@ public class AntsMaster : MonoBehaviour
 
     // Population
     protected int population = 0;
-    public int maxPopulation = 10;
-    //protected int maxReachablePopulation = 50;
-    protected int populationIncreaseValue = 5;
+    protected int maxPopulation = 60;
+    //protected int maxReachablePopulation = 300;
+    protected int populationIncreaseValue = 30;
+    // was 10 start and 5 increase
+    // good was 40 and 20 increase
 
+    protected int spawnMultiply = 1;
 
     // Ants
     public GameObject antWorkerPrefab;
@@ -103,10 +106,11 @@ public class AntsMaster : MonoBehaviour
     // Buy Ants
     public virtual void BuyWorker()
     {
-        if (CanAddAnt() && foodGathered >= workerPrice)
+        if (CanAddAnt(spawnMultiply) && foodGathered >= workerPrice)
         {
             SpendFood(workerPrice);
-            workersQueued++;
+            for(int i = 0; i < spawnMultiply; i++)
+                workersQueued++;
 
             if (workerSpawnCoroutine == null)
             {
@@ -117,10 +121,11 @@ public class AntsMaster : MonoBehaviour
 
     public virtual void BuyWarrior()
     {
-        if (CanAddAnt() && foodGathered >= warriorPrice)
+        if (CanAddAnt(spawnMultiply) && foodGathered >= warriorPrice)
         {
             SpendFood(warriorPrice);
-            warriorsQueued++;
+            for(int i = 0; i < spawnMultiply; i++)
+                warriorsQueued++;
 
             if (dangerSpotted)
             {
@@ -296,6 +301,7 @@ public class AntsMaster : MonoBehaviour
     public virtual void DecreasePopulation(int value) => population -= value;
     public virtual void DecreasePopulation() => population--;
     public bool CanAddAnt() => population < maxPopulation ? true : false;
+    public bool CanAddAnt(int x) => warriorsQueued + workersQueued + population <= maxPopulation - x ? true : false;
     public virtual void IncreaseMaxPopulation() => maxPopulation += populationIncreaseValue;
     public virtual void DecreaseMaxPopulation() => maxPopulation -= populationIncreaseValue;
     public bool CanIncreasePopulation() => supplyAnts < 8 ? true : false;

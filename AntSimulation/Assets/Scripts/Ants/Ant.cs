@@ -143,7 +143,6 @@ public abstract class Ant : MonoBehaviour
             hp -= value;
         else
         {
-            Debug.Log("Zero");
             hp = 0;
             Dead();
         }
@@ -155,7 +154,6 @@ public abstract class Ant : MonoBehaviour
         yield return new WaitForSeconds(attackSpeed);
         animator.SetBool(isAttacking, false);
 
-        //Debug.Log("Dmg");
         inFight = false;
         if (target != null)
         {
@@ -177,7 +175,6 @@ public abstract class Ant : MonoBehaviour
     {
         if (!inFight)
         {
-            //Debug.Log("InFight");
             inFight = true;
             agent.isStopped = true;
             animator.SetBool(isMoving, false);

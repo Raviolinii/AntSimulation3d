@@ -128,7 +128,6 @@ public class Tile : MonoBehaviour
     public WorldObject GetSpawnedObject() => objectOnTile;
     public void ObjectSpawned(WorldObject objectSpawned, SpawnedObject spawned)
     {
-        Debug.Log(spawned);
         objectOnTile = objectSpawned;
         spawnedObjectType = spawned;
     }

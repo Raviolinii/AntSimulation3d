@@ -192,7 +192,6 @@ public class PheromoneMap : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                //Debug.Log(tileMap[i,j].GetWorkerPheromoneValue());
                 tileMap[i, j].DecreasePheromones(pheromoneDecreseValue);
             }
         }

@@ -439,7 +439,7 @@ public class WorkerAnt : Ant
 
     public void StopAntNearDestination()
     {
-        if (foodInRange || anthillInRange || dangerSpotted)
+        if (foodInRange || anthillInRange || dangerSpotted || movementLimitReached)
         {
             agent.isStopped = true;
             animator.SetBool(isMoving, false);

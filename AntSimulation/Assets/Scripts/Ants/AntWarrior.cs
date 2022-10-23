@@ -125,7 +125,6 @@ public class AntWarrior : Ant
     {
         if (!inFight)
         {
-            //Debug.Log("InFight");
             inFight = true;
             animator.SetBool(isMoving, false);
             agent.isStopped = true;

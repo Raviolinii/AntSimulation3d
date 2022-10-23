@@ -37,9 +37,6 @@ public class AIMaster : AntsMaster
         }
         else if(foodGathered > supplyAntPrice)
             BuySupplyAnt();
-
-/*         Debug.Log($"workers : {workersCount}, warriors : {warriorsCount}, supply : {supplyAnts}");
-        Debug.Log(foodGathered); */
     }
 
     // Food
@@ -58,13 +55,9 @@ public class AIMaster : AntsMaster
 
     private void BuyFirst8Ants()
     {
-        Debug.Log(foodGathered);
         BuyWorker();
-        Debug.Log(foodGathered);
         BuyWorker();
-        Debug.Log(foodGathered);
         BuyWorker();
-        Debug.Log(foodGathered);
         BuyWorker();
         BuyWorker();
         BuyWorker();

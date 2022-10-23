@@ -160,7 +160,6 @@ public class Anthill : WorldObject
     {
         yield return new WaitForSeconds(1.5f);
 
-        //Debug.Log("Dmg");
         if (target != null)
             target.DecreseHp(dmg);
         inFight = false;
@@ -171,7 +170,6 @@ public class Anthill : WorldObject
     }
     protected void QuinDied()
     {
-        Debug.Log($"GG, {_owner} lost");
         antsMaster.QuinDied();
     }
 
@@ -179,7 +177,6 @@ public class Anthill : WorldObject
     {
         if (!inFight)
         {
-            //Debug.Log("InFight");
             inFight = true;
 
             attackCoroutine = StartCoroutine(Attack(target));

@@ -57,7 +57,6 @@ public class PlayersMaster : AntsMaster
                     var script = hit.transform.GetComponent<Anthill>();
                     if (script.GetOwner() == this.owner)
                     {
-                        Debug.Log("Thats my anthill");
                         detailsManager.ShowAnthillDetails(this);
                     }
                     else

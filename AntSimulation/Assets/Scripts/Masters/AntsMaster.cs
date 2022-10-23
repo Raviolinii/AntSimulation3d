@@ -278,7 +278,6 @@ public class AntsMaster : MonoBehaviour
         movementRange = value;
         for (int i = 0; i < antWorkers.Count; i++)
         {
-            Debug.Log(movementRange);
             antWorkers[i].SetMovementRange(value);
         }
     }
@@ -319,7 +318,6 @@ public class AntsMaster : MonoBehaviour
             if (anthillsFound[i].GetOwner() == owner)
                 anthill = anthillsFound[i];
         }
-        //Debug.Log(anthill);
     }
 
 

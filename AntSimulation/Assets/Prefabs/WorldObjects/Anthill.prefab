@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98e5c94ebdf0b3b42ae9e01662a218c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tile: {fileID: 0}
   typeOfObject: 1
   _owner: 0
   antsMaster: {fileID: 0}

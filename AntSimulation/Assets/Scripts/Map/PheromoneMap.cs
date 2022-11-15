@@ -41,12 +41,6 @@ public class PheromoneMap : MonoBehaviour
 
         InvokeRepeating("DecreasePheromones", pheromonesDecreseTime, pheromonesDecreseTime);
         InitializeWorldObjects();
-
-        /* Invoke("TestSpawnFood", 1.5f);
-        Invoke("TestSpawnPlayersAnthill", 1.5f);
-        Invoke("TestSpawnAiAnthill", 1.5f);
-        Invoke("TestSpawnTrees", 1.5f); */
-
     }
 
     void Update()
@@ -75,7 +69,6 @@ public class PheromoneMap : MonoBehaviour
     {
         SpawnAnthill(Owner.player);
         SpawnAnthill(Owner.AI);
-        //TestSpawnAiAnthill();
 
         for (int i = 0; i < treesCount; i++)
         {

@@ -10,7 +10,6 @@ public class AIMaster : AntsMaster
         owner = Owner.AI;
         base.Start();
 
-        //Invoke("BuyFirst8Ants", 2.5f);
         InvokeRepeating("Add200Food", 7f, 2);
     }
 

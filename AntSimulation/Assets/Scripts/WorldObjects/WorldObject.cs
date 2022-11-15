@@ -5,7 +5,7 @@ using static Tile;
 
 public class WorldObject : MonoBehaviour
 {
-    public Tile _tile;
+    protected Tile _tile;
     protected SphereCollider stoppingDistance;
     public SpawnedObject typeOfObject;
 

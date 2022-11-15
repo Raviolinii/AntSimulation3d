@@ -72,19 +72,16 @@ public class WorkerAnt : Ant
             if (foodInRange && foodScript == null)
                 foodInRange = false;
 
-            if (!anthillInRange)
+            if (!anthillInRange && !foodInRange)
             {
-                if (!foodInRange)
+                surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
+                if (!dangerSpotted && !movementLimitReached)
                 {
-                    surroundings = tileScript.GetSurroundingsNulls(chosenMoveIndex);
-                    if (!dangerSpotted && !movementLimitReached)
-                    {
-                        GoToNextTile();
-                    }
-                    else
-                    {
-                        MoveCloserToAnthill();
-                    }
+                    GoToNextTile();
+                }
+                else
+                {
+                    MoveCloserToAnthill();
                 }
             }
         }

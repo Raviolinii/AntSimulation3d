@@ -109,7 +109,7 @@ public class AntsMaster : MonoBehaviour
         if (CanAddAnt(spawnMultiply) && foodGathered >= workerPrice)
         {
             SpendFood(workerPrice);
-            for(int i = 0; i < spawnMultiply; i++)
+            for (int i = 0; i < spawnMultiply; i++)
                 workersQueued++;
 
             if (workerSpawnCoroutine == null)
@@ -124,7 +124,7 @@ public class AntsMaster : MonoBehaviour
         if (CanAddAnt(spawnMultiply) && foodGathered >= warriorPrice)
         {
             SpendFood(warriorPrice);
-            for(int i = 0; i < spawnMultiply; i++)
+            for (int i = 0; i < spawnMultiply; i++)
                 warriorsQueued++;
 
             if (dangerSpotted)
@@ -201,36 +201,37 @@ public class AntsMaster : MonoBehaviour
 
     protected virtual void SpawnWorker()
     {
-        if (CanAddAnt())
+        if (!CanAddAnt())
+            return;
+
+        Tile[] surroundings = anthill.GetSurroundings();
+        int maxFoodPheromone = -1;
+        int index = -1;
+        for (int i = 0; i < 16; i++)
         {
-            Tile[] surroundings = anthill.GetSurroundings();
-            int maxFoodPheromone = -1;
-            int index = -1;
-            for (int i = 0; i < 16; i++)
+            if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
             {
-                if (surroundings[i].GetSpawnedObjectType() == SpawnedObject.no)
+                int pheromoneValue = surroundings[i].GetWorkerFoodPheromoneValue();
+                if (maxFoodPheromone < pheromoneValue)
                 {
-                    int pheromoneValue = surroundings[i].GetWorkerFoodPheromoneValue();
-                    if (maxFoodPheromone < pheromoneValue)
-                    {
-                        maxFoodPheromone = pheromoneValue;
-                        index = i;
-                    }
+                    maxFoodPheromone = pheromoneValue;
+                    index = i;
                 }
             }
-
-            Vector3 position = surroundings[index].transform.position;
-            position = AsignYPosition(position);
-
-            GameObject newAnt = Instantiate(antWorkerPrefab, position, antWorkerPrefab.transform.rotation);
-            WorkerAnt newAntScript = newAnt.GetComponent<WorkerAnt>();
-            newAntScript.SetOwner(owner);
-            newAntScript.SetAnthillsPosition(anthill.transform.position);
-            newAntScript.SetMovementRange(movementRange);
-            newAntScript.SetMaster(this);
-            antWorkers.Add(newAntScript);
-            IncreasePopulation();
         }
+
+        Vector3 position = surroundings[index].transform.position;
+        position = AsignYPosition(position);
+
+        GameObject newAnt = Instantiate(antWorkerPrefab, position, antWorkerPrefab.transform.rotation);
+        WorkerAnt newAntScript = newAnt.GetComponent<WorkerAnt>();
+        newAntScript.SetOwner(owner);
+        newAntScript.SetAnthillsPosition(anthill.transform.position);
+        newAntScript.SetMovementRange(movementRange);
+        newAntScript.SetMaster(this);
+        antWorkers.Add(newAntScript);
+        IncreasePopulation();
+
     }
 
     protected virtual void SpawnWarrior()
@@ -342,7 +343,7 @@ public class AntsMaster : MonoBehaviour
     {
         if (foodGathered >= value)
         {
-            foodGathered -= value;            
+            foodGathered -= value;
             return true;
         }
         else

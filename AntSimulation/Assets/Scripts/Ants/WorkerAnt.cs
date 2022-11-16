@@ -34,6 +34,7 @@ public class WorkerAnt : Ant
     int foodToRefreshMovementLimit = 5;
     Coroutine moveLimitCoroutine;
     bool movementLimitReached = false;
+    Coroutine moveAgain;
 
     // Animations
     protected const string isStoring = "IsStoring";
@@ -49,16 +50,19 @@ public class WorkerAnt : Ant
         moveLimitCoroutine = StartCoroutine(MoveLimitEnumerator());
     }
 
+    public bool isStopped = false;
     // Update is called once per frame
     void Update()
     {
-
+        if (isStopped != agent.isStopped)
+        isStopped = agent.isStopped;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Tile"))
         {
+            MoveAgain();
             previousTile = currentTile;
             currentTile = other.transform.position;
 
@@ -103,7 +107,6 @@ public class WorkerAnt : Ant
             {
                 if (movementLimitReached)
                 {
-                    StopAntNearDestination();
                     GoToPreviousTile();
                     RestartMovementLimit();
                 }
@@ -120,6 +123,15 @@ public class WorkerAnt : Ant
                     StopAntNearDestination();
                     GoToPreviousTile();
                     StoreFood();
+                }
+                GoToPreviousTile();
+                if (raiseAlarmCoroutine == null && storeFoodCoroutine == null)
+                {
+                    agent.isStopped = false;
+                    animator.SetBool(isMoving, true);
+                    anthillScript = null;
+                    anthillInRange = false;
+                    lookingForFood = true;
                 }
             }
         }
@@ -218,6 +230,8 @@ public class WorkerAnt : Ant
             agent.isStopped = false;
             animator.SetBool(isMoving, true);
         }
+        else
+            Debug.Log("Anthil script is null");
         storeFoodCoroutine = null;
     }
 
@@ -232,7 +246,7 @@ public class WorkerAnt : Ant
     }
 
     //public bool WantToStoreFood() => anthillInRange ? true : false;
-    public bool WantToStoreFood() => anthillInRange && foodGathered > 0 ? true : false;
+    public bool WantToStoreFood() => /* anthillInRange &&  */foodGathered > 0 ? true : false;
 
 
     // Food
@@ -370,8 +384,8 @@ public class WorkerAnt : Ant
                     Anthill anthill = (Anthill)surroundings[i].GetSpawnedObject();
                     if (anthill.GetOwner() == _owner)
                     {
-                        AnthillFound();
                         chosenMoveIndex = i;
+                        AnthillFound();
                         return;
                     }
                 }
@@ -444,4 +458,21 @@ public class WorkerAnt : Ant
     }
 
     public void SetMovementRange(int value) => movementRange = value;
+
+    void MoveAgain()
+    {
+        if (moveAgain != null)
+            StopCoroutine(moveAgain);
+        moveAgain = StartCoroutine(MoveAgainIEnumerator());
+    }
+
+    IEnumerator MoveAgainIEnumerator()
+    {
+        yield return new WaitForSeconds(10);
+        animator.SetBool(isMoving, true);
+        agent.isStopped = false;
+        GoToPreviousTile();
+
+        moveAgain = null;
+    }
 }

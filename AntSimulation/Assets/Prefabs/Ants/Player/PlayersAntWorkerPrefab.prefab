@@ -2176,6 +2176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _owner: 0
   chosenMoveIndex: 0
+  targetTile: {x: 0, y: 0, z: 0}
   surroundings:
   - {fileID: 0}
   - {fileID: 0}
@@ -2186,6 +2187,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   previousTile: {x: 0, y: 0, z: 0}
+  currentTile: {x: 0, y: 0, z: 0}
   hp: 0
   lookingForFood: 1
   foodInRange: 0
@@ -2193,6 +2195,7 @@ MonoBehaviour:
   anthillInRange: 0
   anthillScript: {fileID: 0}
   dangerSpotted: 0
+  isStopped: 0
 --- !u!1 &5786797149270413426
 GameObject:
   m_ObjectHideFlags: 0
@@ -3502,5 +3505,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}

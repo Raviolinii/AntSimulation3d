@@ -17,11 +17,11 @@ public abstract class Ant : MonoBehaviour
 
 
     // Tiles and positions
-    protected Vector3 targetTile;
+    public Vector3 targetTile;
     public Tile[] surroundings = new Tile[8];
     protected Tile tileScript;
     public Vector3 previousTile;
-    protected Vector3 currentTile;
+    public Vector3 currentTile;
 
 
     // Pheromones

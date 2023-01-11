@@ -10,7 +10,7 @@ public class AIMaster : AntsMaster
         owner = Owner.AI;
         base.Start();
 
-        InvokeRepeating("Add200Food", 7f, 2);
+        InvokeRepeating("Add200Food", 7f, 7);
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class AIMaster : AntsMaster
             TryBuyAnts();
     }
 
-    public void Add200Food() => AddFood(200);
+    public void Add200Food() => AddFood(50);
 
     private void TryBuyAnts()
     {
